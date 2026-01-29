@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.Snaplink" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!-- For example, you can set your primary colors -->
+        <!--
+            <item name="colorPrimary">@color/my_primary_color</item>
+            <item name="colorSecondary">@color/my_secondary_color</item>
+        -->
+    </style>
+
+</resources>

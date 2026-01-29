@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:orientation="vertical">
+
+    <!-- Post Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp">
+
+        <!-- User Avatar -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivPostUserAvatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="User Avatar"
+            android:src="@drawable/img_user_post_1"
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="0dp" />
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/tvPostUsername"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="_.tushal"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <!-- More Options -->
+        <ImageView
+            android:id="@+id/ivPostOptions"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="More Options"
+            android:src="@drawable/ic_more_vertical" />
+    </LinearLayout>
+
+    <!-- Post Image -->
+    <ImageView
+        android:id="@+id/ivPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:contentDescription="Post Image"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_post_1" />
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp">
+
+        <!-- Like Button -->
+        <ImageView
+            android:id="@+id/ivLike"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:contentDescription="Like"
+            android:src="@drawable/ic_heart_outline" />
+
+        <!-- Comment Button -->
+        <ImageView
+            android:id="@+id/ivComment"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="14dp"
+            android:contentDescription="Comment"
+            android:src="@drawable/ic_comment" />
+
+        <!-- Share Button -->
+        <ImageView
+            android:id="@+id/ivShare"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="14dp"
+            android:contentDescription="Share"
+            android:src="@drawable/ic_share" />
+
+        <!-- Spacer -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- Bookmark Button -->
+        <ImageView
+            android:id="@+id/ivBookmark"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Bookmark"
+            android:src="@drawable/ic_bookmark_outline" />
+    </LinearLayout>
+
+    <!-- Caption -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:id="@+id/tvCaptionUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="user_name"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvCaption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..."
+            android:textColor="#FFFFFF"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+
+
+    <!-- Time Ago -->
+    <TextView
+        android:id="@+id/tvTimeAgo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:text="10 minutes ago"
+        android:textColor="#888888"
+        android:textSize="11sp" />
+
+    <!-- Comment Input -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="12dp">
+
+        <!-- User Avatar Small -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivCommentUserAvatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Your Avatar"
+            android:src="@drawable/img_user_post_1" />
+
+        <!-- Comment Input Field -->
+        <EditText
+            android:id="@+id/etComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="Type your comment..."
+            android:textColor="#FFFFFF"
+            android:textColorHint="#666666"
+            android:textSize="13sp" />
+
+        <!-- Emoji Icons -->
+        <ImageView
+            android:id="@+id/ivEmoji1"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Emoji"
+            android:src="@drawable/ic_emoji_1" />
+
+        <ImageView
+            android:id="@+id/ivEmoji2"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Emoji"
+            android:src="@drawable/ic_emoji_2" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

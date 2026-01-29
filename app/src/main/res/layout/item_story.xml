@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingStart="6dp"
+    android:paddingEnd="6dp">
+
+    <!-- Story Border with Gradient -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Gradient Border Background -->
+        <View
+            android:id="@+id/storyBorder"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/story_gradient_border" />
+
+        <!-- Black Inner Circle (spacing) -->
+        <View
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_gravity="center"
+            android:background="@drawable/story_gradient_border"
+            android:backgroundTint="#000000" />
+
+        <!-- User Avatar -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivStoryAvatar"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            android:contentDescription="User Avatar"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_user_placeholder"
+            app:civ_border_color="#000000"
+            app:civ_border_width="2dp" />
+
+        <!-- Add Icon for "Your Story" -->
+        <ImageView
+            android:id="@+id/ivAddStory"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/page_indicator_active"
+            android:contentDescription="Add Story"
+            android:padding="3dp"
+            android:src="@drawable/ic_add_post"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <!-- Username -->
+    <TextView
+        android:id="@+id/tvStoryUsername"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="username"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp" />
+
+</LinearLayout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Signin"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Enter your email or username"
+        android:padding="14dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#9CA3AF"
+        android:background="@drawable/bg_input"
+        android:layout_marginBottom="14dp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Password"
+        android:padding="14dp"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#9CA3AF"
+        android:background="@drawable/bg_input" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password?"
+        android:textColor="#3B82F6"
+        android:gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Sign in"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:backgroundTint="#2563EB" />
+
+
+    <TextView
+        android:id="@+id/tvRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account? Create Now"
+        android:textColor="#3B82F6"
+        android:layout_marginTop="24dp" />
+
+</LinearLayout>

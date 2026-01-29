@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder User Avatar -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <path
+        android:fillColor="#555555"
+        android:pathData="M0,0h200v200h-200z" />
+    <path
+        android:fillColor="#888888"
+        android:pathData="M100,50C116.57,50 130,63.43 130,80C130,96.57 116.57,110 100,110C83.43,110 70,96.57 70,80C70,63.43 83.43,50 100,50M100,180C75,180 54.17,168.33 50,151.67C50.25,133.33 83.33,123.33 100,123.33C116.58,123.33 149.75,133.33 150,151.67C145.83,168.33 125,180 100,180Z" />
+</vector>
