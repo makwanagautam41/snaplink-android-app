@@ -9,17 +9,18 @@
     <!-- Top Toolbar -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="76dp"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="16dp"
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_back" 
-            app:tint="#FFFFFF"/>
+            android:src="@drawable/ic_back"
+            app:tint="#FFFFFF" />
 
         <TextView
             android:id="@+id/tvUsernameTitle"
