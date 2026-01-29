@@ -35,6 +35,11 @@ class HomeActivityKt : AppCompatActivity() {
         loadNavProfileImage()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadNavProfileImage()
+    }
+
     private fun initViews() {
         rvStories = findViewById(R.id.rvStories)
         rvPosts = findViewById(R.id.rvPosts)

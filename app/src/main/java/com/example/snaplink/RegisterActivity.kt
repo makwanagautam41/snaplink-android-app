@@ -19,8 +19,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         
-        // Initialize TokenManager
-        TokenManager.init(applicationContext)
+
 
         findViewById<android.widget.TextView>(R.id.tvLogin).setOnClickListener {
             finish()

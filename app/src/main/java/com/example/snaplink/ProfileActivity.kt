@@ -53,12 +53,7 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
-        // Ensure TokenManager is initialized
-        try {
-            TokenManager.init(applicationContext)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+
 
         try {
             initViews()
@@ -86,6 +81,11 @@ class ProfileActivity : AppCompatActivity() {
                 showFullImageDialog(url)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadNavProfileImage()
     }
 
     private fun initViews() {
@@ -173,7 +173,6 @@ class ProfileActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
-        TokenManager.saveProfileImage("")
     }
 
     private fun loadNavProfileImage() {

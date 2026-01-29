@@ -46,7 +46,7 @@ object TokenManager {
      * Clear stored token (logout)
      */
     fun clearToken() {
-        prefs?.edit()?.remove(KEY_TOKEN)?.apply()
+        prefs?.edit()?.remove(KEY_TOKEN)?.remove(KEY_PROFILE_IMAGE)?.apply()
     }
     
     /**

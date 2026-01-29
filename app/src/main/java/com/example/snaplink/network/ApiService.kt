@@ -6,7 +6,7 @@ import retrofit2.http.POST
 
 data class LoginRequest(val identifier: String, val password: String)
 data class RegisterRequest(val name: String, val email: String, val password: String, val username: String, val phone: String, val gender: String)
-data class ApiResponse(val message: String, val token: String?, val accessToken: String?)
+data class ApiResponse(val message: String, val token: String?, val accessToken: String?, val user: User?)
 
 data class User(
     val _id: String,

@@ -19,8 +19,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Initialize TokenManager
-        TokenManager.init(applicationContext)
+
         
         // Check for existing valid token
         if (TokenManager.isLoggedIn()) {
@@ -74,6 +73,11 @@ class LoginActivity : AppCompatActivity() {
                         if (token != null) {
                             // Store JWT token
                             TokenManager.saveToken(token)
+
+                            // Save profile image if available
+                            apiResponse.user?.profileImg?.let {
+                                TokenManager.saveProfileImage(it)
+                            }
                             
                             Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
                             
