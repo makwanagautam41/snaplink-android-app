@@ -16,10 +16,14 @@
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".setting_menu"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

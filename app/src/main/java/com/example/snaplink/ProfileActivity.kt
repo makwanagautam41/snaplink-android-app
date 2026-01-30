@@ -41,6 +41,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var navReels: ImageView
     private lateinit var navProfile: CircleImageView
 
+    private lateinit var btnSettingMenu: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
@@ -105,6 +107,8 @@ class ProfileActivity : AppCompatActivity() {
         navAdd = findViewById(R.id.navAdd);
         navReels = findViewById(R.id.navReels);
         navProfile = findViewById(R.id.navProfile);
+
+        btnSettingMenu = findViewById(R.id.btnSettingMenu)
     }
 
     private fun fetchProfile() {
@@ -208,7 +212,12 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         navProfile.setOnClickListener {
+            // user on the same page
+        }
 
+        btnSettingMenu.setOnClickListener {
+            val intent = Intent(this, setting_menu::class.java)
+            startActivity(intent)
         }
     }
 
