@@ -3,15 +3,17 @@ package com.example.snaplink
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.activity.enableEdgeToEdge
+import com.example.snaplink.network.ApiClient
 
 class setting_menu : AppCompatActivity() {
 
     private lateinit var btnBackFromSetting: ImageView
+    private lateinit var layoutLogout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,28 +22,48 @@ class setting_menu : AppCompatActivity() {
             setContentView(R.layout.activity_setting_menu)
         } catch (e: Exception) {
             e.printStackTrace()
-            // If layout inflation fails, we can't do much, but at least we log it.
-            Toast.makeText(this, "Error loading profile layout", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Error loading settings layout", Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
         try {
             initViews()
+            setupListeners()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, "Error initializing views", Toast.LENGTH_SHORT).show()
             finish()
-            return
         }
     }
+
     private fun initViews() {
         btnBackFromSetting = findViewById(R.id.btnBackFromSetting)
+        layoutLogout = findViewById(R.id.layoutLogout)
+    }
 
+    private fun setupListeners() {
         btnBackFromSetting.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
+            finish()
+        }
+
+        layoutLogout.setOnClickListener {
+            performLogout()
+        }
+    }
+
+    private fun performLogout() {
+        try {
+            ApiClient.clearAuth()
+
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Logout failed", Toast.LENGTH_SHORT).show()
         }
     }
 }

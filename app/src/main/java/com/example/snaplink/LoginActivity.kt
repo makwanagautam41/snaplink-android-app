@@ -18,9 +18,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
 
-        
         // Check for existing valid token
         if (TokenManager.isLoggedIn()) {
             // Verify token is still valid by making a profile request

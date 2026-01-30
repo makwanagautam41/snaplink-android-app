@@ -31,7 +31,6 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvPostsCount: TextView
     private lateinit var tvFollowersCount: TextView
     private lateinit var tvFollowingCount: TextView
-    private lateinit var btnLogout: Button
     private lateinit var btnBack: ImageView
     private var currentProfileImageUrl: String? = null
 
@@ -70,9 +69,6 @@ class ProfileActivity : AppCompatActivity() {
 
         fetchProfile()
 
-        btnLogout.setOnClickListener {
-            performLogout()
-        }
 
         btnBack.setOnClickListener {
             finish()
@@ -99,7 +95,6 @@ class ProfileActivity : AppCompatActivity() {
         tvPostsCount = findViewById(R.id.tvPostsCount)
         tvFollowersCount = findViewById(R.id.tvFollowersCount)
         tvFollowingCount = findViewById(R.id.tvFollowingCount)
-        btnLogout = findViewById(R.id.btnLogout)
         btnBack = findViewById(R.id.btnBack)
 
         navHome = findViewById(R.id.navHome);
