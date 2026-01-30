@@ -140,6 +140,7 @@ class ProfileActivity : AppCompatActivity() {
                                     Glide.with(this@ProfileActivity)
                                         .load(url)
                                         .placeholder(R.drawable.img_current_user)
+                                        .circleCrop()
                                         .into(ivProfile)
 
                                     TokenManager.saveProfileImage(url)

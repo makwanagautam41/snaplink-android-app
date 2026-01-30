@@ -76,12 +76,12 @@
     <LinearLayout
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:background="#000000"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingTop="6dp"
-        android:paddingBottom="6dp"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -125,14 +125,14 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/navProfile"
             android:layout_width="0dp"
-            android:layout_height="26dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
-            android:contentDescription="Profile"
+            android:scaleType="centerCrop"
             android:src="@drawable/img_current_user"
-            android:clickable="true"
-            android:focusable="true"
             app:civ_border_color="#FFFFFF"
             app:civ_border_width="1dp" />
+
+
     </LinearLayout>
 
     <!-- Top Border for Bottom Navigation -->
