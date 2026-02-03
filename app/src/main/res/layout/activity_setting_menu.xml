@@ -136,7 +136,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -187,7 +187,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -220,7 +220,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -253,7 +253,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -286,7 +286,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -319,7 +319,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -370,7 +370,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -403,7 +403,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -436,7 +436,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -469,7 +469,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -520,7 +520,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -553,7 +553,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_chevron_right"
                     android:tint="#888888" />
             </LinearLayout>
 
@@ -617,7 +617,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_lock_power_off"
+                    android:src="@drawable/ic_logout"
                     android:tint="#FF3B30" />
 
                 <TextView
