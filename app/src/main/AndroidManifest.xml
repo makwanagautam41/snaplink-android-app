@@ -36,9 +36,6 @@
         <activity
             android:name=".HomeActivityKt"
             android:exported="false" />
-        <activity
-            android:name=".HomeActivityJava"
-            android:exported="false" />
     </application>
 
 </manifest>

@@ -145,9 +145,6 @@ class HomeActivityKt : AppCompatActivity() {
 
     private fun setupFeed() {
         rvFeed.layoutManager = LinearLayoutManager(this)
-        // Convert Kotlin models to Java models for FeedAdapter
-        val javaPosts = postList.map { Post(it.username, it.userAvatar, it.postImage, it.caption, it.timeAgo) }
-        val javaStories = storyList.map { Story(it.username, it.avatarResource, it.isYourStory) }
-        rvFeed.adapter = FeedAdapter(javaPosts, javaStories)
+        rvFeed.adapter = FeedAdapter(postList, storyList)
     }
 }
