@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".EditProfile"
+            android:exported="false" />
+        <activity
             android:name=".setting_menu"
             android:exported="false" />
         <activity

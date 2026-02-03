@@ -40,6 +40,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var navReels: ImageView
     private lateinit var navProfile: CircleImageView
 
+    private lateinit var btnEditProfile: Button
+
     private lateinit var btnSettingMenu: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,6 +106,7 @@ class ProfileActivity : AppCompatActivity() {
         navProfile = findViewById(R.id.navProfile);
 
         btnSettingMenu = findViewById(R.id.btnSettingMenu)
+        btnEditProfile = findViewById(R.id.btnEditProfile)
     }
 
     private fun fetchProfile() {
@@ -213,6 +216,11 @@ class ProfileActivity : AppCompatActivity() {
 
         btnSettingMenu.setOnClickListener {
             val intent = Intent(this, setting_menu::class.java)
+            startActivity(intent)
+        }
+
+        btnEditProfile.setOnClickListener {
+            val intent = Intent(this, EditProfile::class.java)
             startActivity(intent)
         }
     }
