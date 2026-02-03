@@ -12,15 +12,12 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class HomeActivityKt : AppCompatActivity() {
 
-    private lateinit var rvStories: RecyclerView
-    private lateinit var rvPosts: RecyclerView
+    private lateinit var rvFeed: RecyclerView
     private lateinit var navHome: ImageView
     private lateinit var navSearch: ImageView
     private lateinit var navAdd: ImageView
     private lateinit var navReels: ImageView
     private lateinit var navProfile: CircleImageView
-    private lateinit var storyAdapter: StoryAdapterKt
-    private lateinit var postAdapter: PostAdapterKt
     private val storyList = mutableListOf<StoryKt>()
     private val postList = mutableListOf<PostKt>()
 
@@ -31,6 +28,7 @@ class HomeActivityKt : AppCompatActivity() {
         initViews()
         setupStories()
         setupPosts()
+        setupFeed()
         setupNavigation()
         loadNavProfileImage()
     }
@@ -41,8 +39,7 @@ class HomeActivityKt : AppCompatActivity() {
     }
 
     private fun initViews() {
-        rvStories = findViewById(R.id.rvStories)
-        rvPosts = findViewById(R.id.rvPosts)
+        rvFeed = findViewById(R.id.rvFeed)
         navHome = findViewById(R.id.navHome)
         navSearch = findViewById(R.id.navSearch)
         navAdd = findViewById(R.id.navAdd)
@@ -99,16 +96,6 @@ class HomeActivityKt : AppCompatActivity() {
             add(StoryKt("jane_smith", R.drawable.img_user_placeholder, false))
             add(StoryKt("mike_ross", R.drawable.img_user_placeholder, false))
         }
-
-        rvStories.apply {
-            layoutManager = LinearLayoutManager(
-                this@HomeActivityKt,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-            storyAdapter = StoryAdapterKt(storyList)
-            adapter = storyAdapter
-        }
     }
 
     private fun setupPosts() {
@@ -154,11 +141,13 @@ class HomeActivityKt : AppCompatActivity() {
                 )
             )
         }
+    }
 
-        rvPosts.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivityKt)
-            postAdapter = PostAdapterKt(postList)
-            adapter = postAdapter
-        }
+    private fun setupFeed() {
+        rvFeed.layoutManager = LinearLayoutManager(this)
+        // Convert Kotlin models to Java models for FeedAdapter
+        val javaPosts = postList.map { Post(it.username, it.userAvatar, it.postImage, it.caption, it.timeAgo) }
+        val javaStories = storyList.map { Story(it.username, it.avatarResource, it.isYourStory) }
+        rvFeed.adapter = FeedAdapter(javaPosts, javaStories)
     }
 }

@@ -39,37 +39,14 @@
     </LinearLayout>
 
 
-    <!-- Stories RecyclerView -->
+    <!-- Unified Feed RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvStories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000000"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:orientation="horizontal"
-        android:paddingStart="12dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="12dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBar"
-        tools:listitem="@layout/item_story" />
-
-    <!-- Posts RecyclerView (Scrollable for Multiple Posts) -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPosts"
+        android:id="@+id/rvFeed"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#000000"
-        android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvStories"
         tools:listitem="@layout/item_post" />
 
     <!-- Bottom Navigation -->

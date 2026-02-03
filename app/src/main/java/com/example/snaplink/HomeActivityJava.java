@@ -13,12 +13,9 @@ import java.util.List;
 
 public class HomeActivityJava extends AppCompatActivity {
 
-    private RecyclerView rvStories;
-    private RecyclerView rvPosts;
+    private RecyclerView rvFeed;
     private ImageView navHome, navSearch, navAdd, navReels;
     private CircleImageView navProfile;
-    private StoryAdapter storyAdapter;
-    private PostAdapter postAdapter;
     private List<Story> storyList;
     private List<Post> postList;
 
@@ -30,12 +27,12 @@ public class HomeActivityJava extends AppCompatActivity {
         initViews();
         setupStories();
         setupPosts();
+        setupFeed();
         setupNavigation();
     }
 
     private void initViews() {
-        rvStories = findViewById(R.id.rvStories);
-        rvPosts = findViewById(R.id.rvPosts);
+        rvFeed = findViewById(R.id.rvFeed);
         navHome = findViewById(R.id.navHome);
         navSearch = findViewById(R.id.navSearch);
         navAdd = findViewById(R.id.navAdd);
@@ -71,10 +68,6 @@ public class HomeActivityJava extends AppCompatActivity {
         storyList.add(new Story("john_doe", R.drawable.img_user_placeholder, false));
         storyList.add(new Story("jane_smith", R.drawable.img_user_placeholder, false));
         storyList.add(new Story("mike_ross", R.drawable.img_user_placeholder, false));
-
-        storyAdapter = new StoryAdapter(storyList);
-        rvStories.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rvStories.setAdapter(storyAdapter);
     }
 
     private void setupPosts() {
@@ -89,9 +82,10 @@ public class HomeActivityJava extends AppCompatActivity {
                 "New adventure begins today! Can't wait to share more 🚀", "3 hours ago"));
         postList.add(new Post("talvin", R.drawable.img_user_4, R.drawable.img_post_placeholder,
                 "Coffee and code ☕💻 #developerlife", "5 hours ago"));
+    }
 
-        postAdapter = new PostAdapter(postList);
-        rvPosts.setLayoutManager(new LinearLayoutManager(this));
-        rvPosts.setAdapter(postAdapter);
+    private void setupFeed() {
+        rvFeed.setLayoutManager(new LinearLayoutManager(this));
+        rvFeed.setAdapter(new FeedAdapter(postList, storyList));
     }
 }

@@ -46,13 +46,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return postList.size();
     }
 
-    static class PostViewHolder extends RecyclerView.ViewHolder {
-        CircleImageView ivUserAvatar;
-        TextView tvUsername;
-        ImageView ivPostImage;
-        TextView tvCaptionUsername;
-        TextView tvCaption;
-        TextView tvTimeAgo;
+    public static class PostViewHolder extends RecyclerView.ViewHolder {
+        public CircleImageView ivUserAvatar;
+        public TextView tvUsername;
+        public ImageView ivPostImage;
+        public TextView tvCaptionUsername;
+        public TextView tvCaption;
+        public TextView tvTimeAgo;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
