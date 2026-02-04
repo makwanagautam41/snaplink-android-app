@@ -9,7 +9,8 @@ import com.bumptech.glide.Glide
 import com.example.snaplink.models.Post
 
 class ProfilePostAdapter(
-    private var posts: List<Post>
+    private var posts: List<Post>,
+    private val onPostClick: (Int) -> Unit
 ) : RecyclerView.Adapter<ProfilePostAdapter.PostViewHolder>() {
 
     fun updatePosts(newPosts: List<Post>) {
@@ -31,6 +32,10 @@ class ProfilePostAdapter(
                 .placeholder(R.drawable.img_post_placeholder)
                 .centerCrop()
                 .into(holder.ivPostImage)
+        }
+        
+        holder.itemView.setOnClickListener {
+            onPostClick(position)
         }
     }
 

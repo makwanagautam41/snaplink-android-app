@@ -10,7 +10,8 @@ import com.example.snaplink.models.Post
 
 class FeedAdapter(
     private val posts: List<Post>,
-    private val stories: List<StoryKt>
+    private val stories: List<StoryKt>,
+    private val showStories: Boolean = true
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -18,10 +19,10 @@ class FeedAdapter(
         private const val TYPE_POST = 1
     }
 
-    override fun getItemCount(): Int = posts.size + 1
+    override fun getItemCount(): Int = if (showStories) posts.size + 1 else posts.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) TYPE_STORIES else TYPE_POST
+        return if (showStories && position == 0) TYPE_STORIES else TYPE_POST
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -40,7 +41,8 @@ class FeedAdapter(
         when (holder) {
             is StoriesHolder -> holder.bind(stories)
             is PostAdapterKt.PostViewHolder -> {
-                val post = posts[position - 1]
+                val realPosition = if (showStories) position - 1 else position
+                val post = posts[realPosition]
                 
                 // Bind username
                 holder.tvUsername.text = post.postedBy.username

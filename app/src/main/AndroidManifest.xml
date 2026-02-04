@@ -49,6 +49,9 @@
         <activity
             android:name=".HomeActivityKt"
             android:exported="false" />
+        <activity
+            android:name=".PostDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

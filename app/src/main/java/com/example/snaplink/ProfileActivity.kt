@@ -129,7 +129,19 @@ class ProfileActivity : AppCompatActivity() {
     }
     
     private fun setupRecyclerView() {
-        profilePostAdapter = ProfilePostAdapter(emptyList())
+        profilePostAdapter = ProfilePostAdapter(emptyList()) { position ->
+            // Handle post click
+            // Assuming we have access to the current list of posts locally. 
+            // We need to keep a reference to the list we passed to adapter.
+            // Let's modify fetchMyPosts to save the list in a property, or just access it via adapter (not ideal)
+            // or better, currentPosts property.
+            currentPosts?.let { posts ->
+                PostDataHolder.posts = posts
+                val intent = Intent(this, PostDetailActivity::class.java)
+                intent.putExtra("EXTRA_POSITION", position)
+                startActivity(intent)
+            }
+        }
         rvProfilePosts.layoutManager = GridLayoutManager(this, 3)
         rvProfilePosts.adapter = profilePostAdapter
         
@@ -159,6 +171,8 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
     
+    private var currentPosts: List<com.example.snaplink.models.Post>? = null
+
     private fun fetchMyPosts() {
         ApiClient.api.getMyPosts().enqueue(object : Callback<MyPostResponse> {
             override fun onResponse(call: Call<MyPostResponse>, response: Response<MyPostResponse>) {
@@ -166,6 +180,7 @@ class ProfileActivity : AppCompatActivity() {
                 
                 if (response.isSuccessful && response.body() != null) {
                     val posts = response.body()!!.posts
+                    currentPosts = posts
                     profilePostAdapter.updatePosts(posts)
                     // Optionally update post count from this list if accurate
                      tvPostsCount.text = posts.size.toString()
