@@ -5,6 +5,11 @@ data class FeedResponse(
     val posts: List<Post>
 )
 
+data class MyPostResponse(
+    val success: Boolean,
+    val posts: List<Post>
+)
+
 data class Post(
     val _id: String,
     val caption: String,

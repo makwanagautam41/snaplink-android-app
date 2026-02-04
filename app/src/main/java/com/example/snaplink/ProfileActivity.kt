@@ -21,6 +21,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.snaplink.models.MyPostResponse
+
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var ivProfile: CircleImageView
@@ -41,6 +45,14 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var navProfile: CircleImageView
 
     private lateinit var btnEditProfile: Button
+    
+    // Tabs & Grid
+    private lateinit var rvProfilePosts: RecyclerView
+    private lateinit var profilePostAdapter: ProfilePostAdapter
+    private lateinit var tabGrid: ImageView
+    private lateinit var tabTags: ImageView
+    private lateinit var indicatorGrid: android.view.View
+    private lateinit var indicatorTags: android.view.View
 
     private lateinit var btnSettingMenu: ImageView
 
@@ -50,17 +62,16 @@ class ProfileActivity : AppCompatActivity() {
             setContentView(R.layout.activity_profile)
         } catch (e: Exception) {
             e.printStackTrace()
-            // If layout inflation fails, we can't do much, but at least we log it.
             Toast.makeText(this, "Error loading profile layout", Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
 
-
         try {
             initViews()
             setupNavigation()
+            setupRecyclerView()
             loadNavProfileImage()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -70,6 +81,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         fetchProfile()
+        fetchMyPosts()
 
 
         btnBack.setOnClickListener {
@@ -86,6 +98,7 @@ class ProfileActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadNavProfileImage()
+        fetchMyPosts() // Refresh posts when returning
     }
 
     private fun initViews() {
@@ -107,6 +120,66 @@ class ProfileActivity : AppCompatActivity() {
 
         btnSettingMenu = findViewById(R.id.btnSettingMenu)
         btnEditProfile = findViewById(R.id.btnEditProfile)
+        
+        rvProfilePosts = findViewById(R.id.rvProfilePosts)
+        tabGrid = findViewById(R.id.tabGrid)
+        tabTags = findViewById(R.id.tabTags)
+        indicatorGrid = findViewById(R.id.indicatorGrid)
+        indicatorTags = findViewById(R.id.indicatorTags)
+    }
+    
+    private fun setupRecyclerView() {
+        profilePostAdapter = ProfilePostAdapter(emptyList())
+        rvProfilePosts.layoutManager = GridLayoutManager(this, 3)
+        rvProfilePosts.adapter = profilePostAdapter
+        
+        tabGrid.setOnClickListener {
+            updateTabSelection(true)
+            rvProfilePosts.visibility = android.view.View.VISIBLE
+        }
+        
+        tabTags.setOnClickListener {
+            updateTabSelection(false)
+            rvProfilePosts.visibility = android.view.View.GONE
+            Toast.makeText(this, "Tagged posts coming soon", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    private fun updateTabSelection(isGrid: Boolean) {
+        if (isGrid) {
+            tabGrid.setColorFilter(android.graphics.Color.WHITE)
+            tabTags.setColorFilter(android.graphics.Color.parseColor("#666666"))
+            indicatorGrid.setBackgroundColor(android.graphics.Color.WHITE)
+            indicatorTags.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        } else {
+            tabGrid.setColorFilter(android.graphics.Color.parseColor("#666666"))
+            tabTags.setColorFilter(android.graphics.Color.WHITE)
+            indicatorGrid.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+            indicatorTags.setBackgroundColor(android.graphics.Color.WHITE)
+        }
+    }
+    
+    private fun fetchMyPosts() {
+        ApiClient.api.getMyPosts().enqueue(object : Callback<MyPostResponse> {
+            override fun onResponse(call: Call<MyPostResponse>, response: Response<MyPostResponse>) {
+                if (isDestroyed || isFinishing) return
+                
+                if (response.isSuccessful && response.body() != null) {
+                    val posts = response.body()!!.posts
+                    profilePostAdapter.updatePosts(posts)
+                    // Optionally update post count from this list if accurate
+                     tvPostsCount.text = posts.size.toString()
+                } else {
+                    // Fail silently or log
+                    Log.e("ProfileActivity", "Failed to load posts: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<MyPostResponse>, t: Throwable) {
+                if (isDestroyed || isFinishing) return
+                Log.e("ProfileActivity", "Error loading posts", t)
+            }
+        })
     }
 
     private fun fetchProfile() {
@@ -123,18 +196,11 @@ class ProfileActivity : AppCompatActivity() {
                             tvEmail.text = it.email
                             tvBio.text = it.bio ?: ""
 
+                            // Don't overwrite post count if myPosts fetched it ? 
+                            // Usually profile API has accurate count. Keeping it here.
                             tvPostsCount.text = (it.postCount ?: 0).toString()
                             tvFollowersCount.text = (it.followers?.size ?: 0).toString()
                             tvFollowingCount.text = (it.following?.size ?: 0).toString()
-
-//                            Log.d("API_RESPONSE", "Code: ${response.code()}")
-//                            Log.d("API_RESPONSE", "Body: ${response.body()}")
-//                            Log.d("API_RESPONSE", "Error: ${response.errorBody()?.string()}")
-//
-//                            if (response.isSuccessful) {
-//                                val user = response.body()?.user
-//                                Log.d("API_USER", user.toString())
-//                            }
 
                             // Handle profile image
                             it.profileImg?.let { url ->
@@ -202,7 +268,8 @@ class ProfileActivity : AppCompatActivity() {
 
         navAdd.setOnClickListener {
             // Navigate to add post
-            android.widget.Toast.makeText(this, "Add Post coming soon", android.widget.Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, CreatePostActivity::class.java)
+             startActivity(intent)
         }
 
         navReels.setOnClickListener {

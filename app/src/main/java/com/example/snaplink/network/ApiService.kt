@@ -2,6 +2,7 @@ package com.example.snaplink.network
 
 import com.example.snaplink.models.CreatePostResponse
 import com.example.snaplink.models.FeedResponse
+import com.example.snaplink.models.MyPostResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -50,6 +51,9 @@ interface ApiService {
 
     @retrofit2.http.GET("posts/feed")
     fun getFeedPosts(): Call<FeedResponse>
+
+    @retrofit2.http.GET("posts/my-posts")
+    fun getMyPosts(): Call<MyPostResponse>
 
     @Multipart
     @POST("posts/create")

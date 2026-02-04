@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
@@ -18,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".SearchAndExplore"
+            android:exported="false" />
         <activity
             android:name=".CreatePostActivity"
             android:exported="false" />
