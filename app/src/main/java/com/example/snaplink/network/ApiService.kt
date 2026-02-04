@@ -21,7 +21,7 @@ data class User(
     val following: List<String>?,
     val postCount: Int?
 )
-
+    
 data class UserDetailsResponse(
     val success: Boolean,
     val user: User,
@@ -38,4 +38,8 @@ interface ApiService {
 
     @retrofit2.http.GET("users/profile")
     fun getUserDetails(): Call<UserDetailsResponse>
+
+    @retrofit2.http.PUT("users/update")
+    fun updateProfile(@Body request: UpdateProfileRequest): Call<UserDetailsResponse>
+
 }

@@ -1,6 +1,7 @@
 package com.example.snaplink
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -9,7 +10,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.snaplink.network.ApiClient
-//import com.example.snaplink.network.UpdateProfileRequest
+import com.example.snaplink.network.UpdateProfileRequest
 import com.example.snaplink.network.UserDetailsResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -42,6 +43,10 @@ class EditProfile : AppCompatActivity() {
 
         loadExistingProfile()
 
+        btnUpdate.setOnClickListener {
+            updateProfile()
+        }
+
     }
 
     private fun loadExistingProfile() {
@@ -66,23 +71,36 @@ class EditProfile : AppCompatActivity() {
 
     private fun updateProfile() {
         val bio = etBio.text.toString().trim()
+        val gender = spGender.selectedItem.toString()
 
+        if (gender == "Select Gender") {
+            Toast.makeText(this, "Please select gender", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        val request = UpdateProfileRequest(name, bio)
+        btnUpdate.isEnabled = false
+
+        val request = UpdateProfileRequest(bio, gender)
 
         ApiClient.api.updateProfile(request).enqueue(object : Callback<UserDetailsResponse> {
             override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+                btnUpdate.isEnabled = true
+                Log.d("API_RESPONSE", "Code: ${response}")
+                Log.d("API_RESPONSE", "Code: ${request}")
                 if (response.isSuccessful) {
-                    Toast.makeText(this@EditProfile, "Profile updated", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditProfile, "Profile updated 🎉", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this@EditProfile, "Update failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditProfile, "Update failed: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                btnUpdate.isEnabled = true
                 Toast.makeText(this@EditProfile, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
+
 }
