@@ -2,13 +2,21 @@ package com.example.snaplink
 
 import android.os.Bundle
 import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.example.snaplink.models.FeedResponse
+import com.example.snaplink.models.Post
+import com.example.snaplink.network.ApiClient
 import com.example.snaplink.network.TokenManager
 import de.hdodenhof.circleimageview.CircleImageView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeActivityKt : AppCompatActivity() {
 
@@ -18,8 +26,10 @@ class HomeActivityKt : AppCompatActivity() {
     private lateinit var navAdd: ImageView
     private lateinit var navReels: ImageView
     private lateinit var navProfile: CircleImageView
+    private lateinit var feedAdapter: FeedAdapter
+    
     private val storyList = mutableListOf<StoryKt>()
-    private val postList = mutableListOf<PostKt>()
+    private val postList = mutableListOf<Post>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +37,12 @@ class HomeActivityKt : AppCompatActivity() {
 
         initViews()
         setupStories()
-        setupPosts()
         setupFeed()
         setupNavigation()
         loadNavProfileImage()
+        
+        // Load feed data from API
+        loadFeedOnce()
     }
 
     override fun onResume() {
@@ -57,25 +69,21 @@ class HomeActivityKt : AppCompatActivity() {
         }
     }
 
-
     private fun setupNavigation() {
         navHome.setOnClickListener {
             // Already on home
         }
         
         navSearch.setOnClickListener {
-            // Navigate to search
-            android.widget.Toast.makeText(this, "Search coming soon", android.widget.Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Search coming soon", Toast.LENGTH_SHORT).show()
         }
         
         navAdd.setOnClickListener {
-            // Navigate to add post
-            android.widget.Toast.makeText(this, "Add Post coming soon", android.widget.Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Add Post coming soon", Toast.LENGTH_SHORT).show()
         }
         
         navReels.setOnClickListener {
-            // Navigate to reels
-            android.widget.Toast.makeText(this, "Reels coming soon", android.widget.Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Reels coming soon", Toast.LENGTH_SHORT).show()
         }
 
         navProfile.setOnClickListener {
@@ -85,7 +93,7 @@ class HomeActivityKt : AppCompatActivity() {
     }
 
     private fun setupStories() {
-        // Add dummy stories
+        // Keep stories as mock data for now
         storyList.apply {
             add(StoryKt("Your Story", R.drawable.img_current_user, true))
             add(StoryKt("punit_super", R.drawable.img_user_1, false))
@@ -98,53 +106,35 @@ class HomeActivityKt : AppCompatActivity() {
         }
     }
 
-    private fun setupPosts() {
-        // Add dummy posts
-        postList.apply {
-            add(
-                PostKt(
-                    username = "__tushill",
-                    userAvatar = R.drawable.img_user_post_1,
-                    postImage = R.drawable.img_post_1,
-                    caption = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor nuntium ex sanior...",
-                    timeAgo = "10 minutes ago"
-                )
-            )
-
-            add(
-                PostKt(
-                    username = "punit_super",
-                    userAvatar = R.drawable.img_user_1,
-                    postImage = R.drawable.img_post_placeholder,
-                    caption = "Amazing sunset view from my balcony! 🌅",
-                    timeAgo = "1 hour ago"
-                )
-            )
-
-            add(
-                PostKt(
-                    username = "siko.speed",
-                    userAvatar = R.drawable.img_user_2,
-                    postImage = R.drawable.img_post_placeholder,
-                    caption = "New adventure begins today! Can't wait to share more 🚀",
-                    timeAgo = "3 hours ago"
-                )
-            )
-
-            add(
-                PostKt(
-                    username = "talvin",
-                    userAvatar = R.drawable.img_user_4,
-                    postImage = R.drawable.img_post_placeholder,
-                    caption = "Coffee and code ☕💻 #developerlife",
-                    timeAgo = "5 hours ago"
-                )
-            )
-        }
-    }
-
     private fun setupFeed() {
         rvFeed.layoutManager = LinearLayoutManager(this)
-        rvFeed.adapter = FeedAdapter(postList, storyList)
+        feedAdapter = FeedAdapter(postList, storyList)
+        rvFeed.adapter = feedAdapter
+    }
+
+    private fun loadFeedOnce() {
+        ApiClient.api.getFeedPosts().enqueue(object : Callback<FeedResponse> {
+            override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    postList.clear()
+                    postList.addAll(response.body()!!.posts)
+                    feedAdapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(
+                        this@HomeActivityKt,
+                        "Failed to load feed: ${response.message()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<FeedResponse>, t: Throwable) {
+                Toast.makeText(
+                    this@HomeActivityKt,
+                    "Failed to load feed: ${t.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 }

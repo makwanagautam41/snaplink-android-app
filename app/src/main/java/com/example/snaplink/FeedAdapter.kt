@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.snaplink.models.Post
 
 class FeedAdapter(
-    private val posts: List<PostKt>,
+    private val posts: List<Post>,
     private val stories: List<StoryKt>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -39,13 +41,53 @@ class FeedAdapter(
             is StoriesHolder -> holder.bind(stories)
             is PostAdapterKt.PostViewHolder -> {
                 val post = posts[position - 1]
-                holder.tvUsername.text = post.username
-                holder.tvCaptionUsername.text = post.username
-                holder.ivUserAvatar.setImageResource(post.userAvatar)
-                holder.ivPostImage.setImageResource(post.postImage)
+                
+                // Bind username
+                holder.tvUsername.text = post.postedBy.username
+                holder.tvCaptionUsername.text = post.postedBy.username
+                
+                // Bind caption
                 holder.tvCaption.text = post.caption
-                holder.tvTimeAgo.text = post.timeAgo
+                
+                // Calculate time ago (simplified - you can enhance this)
+                holder.tvTimeAgo.text = getTimeAgo(post.createdAt)
+                
+                // Load profile image using Glide
+                Glide.with(holder.itemView.context)
+                    .load(post.postedBy.profileImg)
+                    .placeholder(R.drawable.img_current_user)
+                    .circleCrop()
+                    .into(holder.ivUserAvatar)
+                
+                // Load post image using Glide
+                if (post.images.isNotEmpty()) {
+                    Glide.with(holder.itemView.context)
+                        .load(post.images[0].url)
+                        .placeholder(R.drawable.img_post_placeholder)
+                        .into(holder.ivPostImage)
+                }
             }
+        }
+    }
+
+    private fun getTimeAgo(createdAt: String): String {
+        // Simple time ago calculation - you can enhance this with a library
+        return try {
+            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.getDefault())
+            sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
+            val time = sdf.parse(createdAt)?.time ?: return "Just now"
+            val now = System.currentTimeMillis()
+            val diff = now - time
+            
+            when {
+                diff < 60000 -> "Just now"
+                diff < 3600000 -> "${diff / 60000} minutes ago"
+                diff < 86400000 -> "${diff / 3600000} hours ago"
+                diff < 604800000 -> "${diff / 86400000} days ago"
+                else -> "${diff / 604800000} weeks ago"
+            }
+        } catch (e: Exception) {
+            "Just now"
         }
     }
 

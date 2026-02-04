@@ -1,5 +1,6 @@
 package com.example.snaplink.network
 
+import com.example.snaplink.models.FeedResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -21,7 +22,7 @@ data class User(
     val following: List<String>?,
     val postCount: Int?
 )
-    
+
 data class UserDetailsResponse(
     val success: Boolean,
     val user: User,
@@ -42,4 +43,6 @@ interface ApiService {
     @retrofit2.http.PUT("users/update")
     fun updateProfile(@Body request: UpdateProfileRequest): Call<UserDetailsResponse>
 
+    @retrofit2.http.GET("posts/feed")
+    fun getFeedPosts(): Call<FeedResponse>
 }
