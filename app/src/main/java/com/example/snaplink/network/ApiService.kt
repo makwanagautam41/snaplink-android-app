@@ -1,9 +1,14 @@
 package com.example.snaplink.network
 
+import com.example.snaplink.models.CreatePostResponse
 import com.example.snaplink.models.FeedResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 data class LoginRequest(val identifier: String, val password: String)
 data class RegisterRequest(val name: String, val email: String, val password: String, val username: String, val phone: String, val gender: String)
@@ -45,4 +50,11 @@ interface ApiService {
 
     @retrofit2.http.GET("posts/feed")
     fun getFeedPosts(): Call<FeedResponse>
+
+    @Multipart
+    @POST("posts/create")
+    fun createPost(
+        @Part images: List<MultipartBody.Part>,
+        @Part("caption") caption: RequestBody
+    ): Call<CreatePostResponse>
 }

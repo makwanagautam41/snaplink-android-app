@@ -29,3 +29,8 @@ data class Comment(
     val commentId: String?,
     val text: String?
 )
+
+data class CreatePostResponse(
+    val success: Boolean,
+    val message: String
+)

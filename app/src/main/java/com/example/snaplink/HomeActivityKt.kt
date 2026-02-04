@@ -79,7 +79,7 @@ class HomeActivityKt : AppCompatActivity() {
         }
         
         navAdd.setOnClickListener {
-            Toast.makeText(this, "Add Post coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, CreatePostActivity::class.java))
         }
         
         navReels.setOnClickListener {
