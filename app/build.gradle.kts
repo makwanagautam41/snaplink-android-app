@@ -60,6 +60,7 @@ dependencies {
     
     // Instagram-like UI dependencies
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // keep version-catalog (libs) dependencies as before

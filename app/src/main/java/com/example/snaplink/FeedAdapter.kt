@@ -61,12 +61,31 @@ class FeedAdapter(
                     .circleCrop()
                     .into(holder.ivUserAvatar)
                 
-                // Load post image using Glide
+                // Load post images using ViewPager2
                 if (post.images.isNotEmpty()) {
-                    Glide.with(holder.itemView.context)
-                        .load(post.images[0].url)
-                        .placeholder(R.drawable.img_post_placeholder)
-                        .into(holder.ivPostImage)
+                    val imageAdapter = ImageSliderAdapter(post.images)
+                    holder.vpPostImages.adapter = imageAdapter
+                    
+                    // Setup indicators
+                    setupIndicators(holder.layoutIndicators, post.images.size)
+                    
+                    // Hide indicators if only 1 image
+                    if (post.images.size > 1) {
+                        holder.layoutIndicators.visibility = View.VISIBLE
+                        holder.vpPostImages.registerOnPageChangeCallback(object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+                            override fun onPageSelected(position: Int) {
+                                super.onPageSelected(position)
+                                updateIndicators(holder.layoutIndicators, position)
+                            }
+                        })
+                    } else {
+                        holder.layoutIndicators.visibility = View.GONE
+                    }
+                } else {
+                     // Fallback or empty state? Usually posts have images.
+                     // We could clear adapter
+                     holder.vpPostImages.adapter = null
+                     holder.layoutIndicators.visibility = View.GONE
                 }
             }
         }
@@ -106,6 +125,48 @@ class FeedAdapter(
 
         fun bind(stories: List<StoryKt>) {
             rvStoriesInner.adapter = StoryAdapterKt(stories)
+        }
+    }
+
+    private fun setupIndicators(layout: android.widget.LinearLayout, count: Int) {
+        layout.removeAllViews()
+        val indicators = arrayOfNulls<android.widget.ImageView>(count)
+        val layoutParams = android.widget.LinearLayout.LayoutParams(
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.setMargins(4, 0, 4, 0)
+        
+        for (i in 0 until count) {
+            indicators[i] = android.widget.ImageView(layout.context)
+            indicators[i]?.setImageDrawable(
+                androidx.core.content.ContextCompat.getDrawable(layout.context, R.drawable.indicator_inactive)
+            )
+            indicators[i]?.layoutParams = layoutParams
+            layout.addView(indicators[i])
+        }
+        
+        if (count > 0) {
+            indicators[0]?.setImageDrawable(
+                androidx.core.content.ContextCompat.getDrawable(layout.context, R.drawable.indicator_active)
+            )
+        }
+    }
+    
+    private fun updateIndicators(layout: android.widget.LinearLayout, position: Int) {
+        for (i in 0 until layout.childCount) {
+            val child = layout.getChildAt(i)
+            if (child is android.widget.ImageView) {
+                if (i == position) {
+                     child.setImageDrawable(
+                        androidx.core.content.ContextCompat.getDrawable(layout.context, R.drawable.indicator_active)
+                    )
+                } else {
+                     child.setImageDrawable(
+                        androidx.core.content.ContextCompat.getDrawable(layout.context, R.drawable.indicator_inactive)
+                    )
+                }
+            }
         }
     }
 }

@@ -48,14 +48,46 @@
             android:src="@drawable/ic_more_vertical" />
     </LinearLayout>
 
-    <!-- Post Image -->
-    <ImageView
-        android:id="@+id/ivPostImage"
+    <!-- Post Image Carousel Container -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:contentDescription="Post Image"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_post_1" />
+        android:layout_height="450dp">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vpPostImages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#121212"/>
+            
+        <!-- Dots Indicator -->
+        <LinearLayout
+            android:id="@+id/layoutIndicators"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/search_bg"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="4dp"
+            android:alpha="0.8">
+            
+            <!-- Indicators will be added dynamically -->
+            
+        </LinearLayout>
+        
+        <!-- Fallback ImageView (kept just in case logic fails or for preview, but we'll primarily use VP2) -->
+        <!-- We can remove it or keep it GONE -->
+         <ImageView
+            android:id="@+id/ivPostImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_post_1"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
 
     <!-- Action Buttons -->
     <LinearLayout
