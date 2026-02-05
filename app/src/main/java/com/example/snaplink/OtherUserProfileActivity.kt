@@ -3,6 +3,7 @@ package com.example.snaplink
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -154,8 +155,12 @@ class OtherUserProfileActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         profilePostAdapter = ProfilePostAdapter(emptyList()) { position ->
-             // Handle post click
-             Toast.makeText(this, "Post clicked", Toast.LENGTH_SHORT).show()
+             currentPosts?.let { posts ->
+                  PostDataHolder.posts = posts
+                  val intent = Intent(this, PostDetailActivity::class.java)
+                  intent.putExtra("EXTRA_POSITION", position)
+                  startActivity(intent)
+             }
         }
         rvProfilePosts.layoutManager = GridLayoutManager(this, 3)
         rvProfilePosts.adapter = profilePostAdapter
@@ -182,20 +187,22 @@ class OtherUserProfileActivity : AppCompatActivity() {
 
     private fun fetchUserProfile() {
         username?.let { user ->
-            ApiClient.api.getOtherUserProfile(user).enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+            ApiClient.api.getOtherUserProfile(user).enqueue(object : Callback<com.example.snaplink.network.OtherUserResponse> {
+                override fun onResponse(call: Call<com.example.snaplink.network.OtherUserResponse>, response: Response<com.example.snaplink.network.OtherUserResponse>) {
                     if (isDestroyed || isFinishing) return
                     
                     try {
                         if (response.isSuccessful && response.body() != null) {
                             val body = response.body()!!
-                            if (body.success && body.user != null) {
-                                currentUser = body.user
-                                updateUI(body.user)
+                            if (body.success && !body.users.isNullOrEmpty()) {
+                                val user = body.users[0]
+                                currentUser = user
+                                updateUI(user)
                             } else {
                                 Toast.makeText(this@OtherUserProfileActivity, body.message ?: "Failed to load profile", Toast.LENGTH_SHORT).show()
                             }
                         } else {
+                            // ... error handling
                             Toast.makeText(this@OtherUserProfileActivity, "Failed to load profile", Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: Exception) {
@@ -204,7 +211,7 @@ class OtherUserProfileActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                override fun onFailure(call: Call<com.example.snaplink.network.OtherUserResponse>, t: Throwable) {
                     if (isDestroyed || isFinishing) return
                     Toast.makeText(this@OtherUserProfileActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -230,7 +237,11 @@ class OtherUserProfileActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        val isPrivate = user.isPrivate == true
+        // Check legacy isPrivate/isFollowing first, fallback to new profileVisibility 
+        // But the new API uses profileVisibility: "public" or "private"
+        val isPrivate = user.profileVisibility == "private"
+        // isFollowing field might not be in the new user object if it just returns raw user data
+        // For now, assuming isFollowing logic needs to be handled if available or defaulted
         val isFollowing = user.isFollowing == true
 
         if (isFollowing) {
@@ -244,7 +255,6 @@ class OtherUserProfileActivity : AppCompatActivity() {
             layoutPrivateAccount.visibility = View.GONE
             layoutPublicContent.visibility = View.VISIBLE
             
-            // Fetch posts
             fetchUserPosts(user.username)
              
         } else {
@@ -265,6 +275,8 @@ class OtherUserProfileActivity : AppCompatActivity() {
              }
         }
     }
+    
+    private var currentPosts: List<com.example.snaplink.models.Post>? = null
 
     private fun fetchUserPosts(username: String) {
         ApiClient.api.getUserPosts(username).enqueue(object : Callback<MyPostResponse> {
@@ -274,11 +286,10 @@ class OtherUserProfileActivity : AppCompatActivity() {
                 try {
                     if (response.isSuccessful && response.body() != null) {
                         val body = response.body()!!
-                         // Check success flag if MyPostResponse has it, usually it does.
                         if (body.success) {
                             val posts = body.posts
-                            // Ensure posts is not null (even if kotlin says non-null, json might be null)
                             if (posts != null) {
+                                currentPosts = posts
                                 profilePostAdapter.updatePosts(posts)
                                 tvPostsCount.text = posts.size.toString()
                             }
