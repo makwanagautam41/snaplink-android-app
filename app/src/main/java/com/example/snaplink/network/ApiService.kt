@@ -26,7 +26,9 @@ data class User(
     val bio: String?,
     val followers: List<String>?,
     val following: List<String>?,
-    val postCount: Int?
+    val postCount: Int?,
+    val isPrivate: Boolean? = false,
+    val isFollowing: Boolean? = false
 )
 
 data class UserDetailsResponse(
@@ -53,11 +55,17 @@ interface ApiService {
     @retrofit2.http.GET("users/profile")
     fun getUserDetails(): Call<UserDetailsResponse>
 
+    @retrofit2.http.GET("users/profile/{username}")
+    fun getOtherUserProfile(@retrofit2.http.Path("username") username: String): Call<UserDetailsResponse>
+
     @retrofit2.http.PUT("users/update")
     fun updateProfile(@Body request: UpdateProfileRequest): Call<UserDetailsResponse>
 
     @retrofit2.http.GET("posts/feed")
     fun getFeedPosts(): Call<FeedResponse>
+
+    @retrofit2.http.GET("posts/user/{username}")
+    fun getUserPosts(@retrofit2.http.Path("username") username: String): Call<MyPostResponse>
 
     @retrofit2.http.GET("posts/my-posts")
     fun getMyPosts(): Call<MyPostResponse>

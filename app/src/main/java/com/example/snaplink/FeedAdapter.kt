@@ -11,7 +11,8 @@ import com.example.snaplink.models.Post
 class FeedAdapter(
     private val posts: List<Post>,
     private val stories: List<StoryKt>,
-    private val showStories: Boolean = true
+    private val showStories: Boolean = true,
+    private val onUserClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -46,7 +47,10 @@ class FeedAdapter(
                 
                 // Bind username
                 holder.tvUsername.text = post.postedBy.username
+                holder.tvUsername.setOnClickListener { onUserClick(post.postedBy.username) }
+                
                 holder.tvCaptionUsername.text = post.postedBy.username
+                holder.tvCaptionUsername.setOnClickListener { onUserClick(post.postedBy.username) }
                 
                 // Bind caption
                 holder.tvCaption.text = post.caption
@@ -60,6 +64,7 @@ class FeedAdapter(
                     .placeholder(R.drawable.img_current_user)
                     .circleCrop()
                     .into(holder.ivUserAvatar)
+                holder.ivUserAvatar.setOnClickListener { onUserClick(post.postedBy.username) }
                 
                 // Load post images using ViewPager2
                 if (post.images.isNotEmpty()) {

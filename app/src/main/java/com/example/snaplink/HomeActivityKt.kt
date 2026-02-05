@@ -108,7 +108,13 @@ class HomeActivityKt : AppCompatActivity() {
 
     private fun setupFeed() {
         rvFeed.layoutManager = LinearLayoutManager(this)
-        feedAdapter = FeedAdapter(postList, storyList)
+        feedAdapter = FeedAdapter(postList, storyList, true) { username ->
+             if (username != "current_user_username_placeholder") { // Check if it's not me? (Optional)
+                 val intent = Intent(this, OtherUserProfileActivity::class.java)
+                 intent.putExtra("USERNAME", username)
+                 startActivity(intent)
+             }
+        }
         rvFeed.adapter = feedAdapter
     }
 

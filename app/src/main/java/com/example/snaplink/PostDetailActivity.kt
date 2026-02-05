@@ -34,7 +34,11 @@ class PostDetailActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(posts: List<com.example.snaplink.models.Post>, startPosition: Int) {
         // Reuse FeedAdapter but passing empty list for stories and disabling stories header
-        adapter = FeedAdapter(posts, emptyList(), showStories = false)
+        adapter = FeedAdapter(posts, emptyList(), showStories = false) { username ->
+            val intent = android.content.Intent(this, OtherUserProfileActivity::class.java)
+            intent.putExtra("USERNAME", username)
+            startActivity(intent)
+        }
         rvPosts.layoutManager = LinearLayoutManager(this)
         rvPosts.adapter = adapter
         
