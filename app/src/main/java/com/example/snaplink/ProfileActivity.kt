@@ -24,6 +24,15 @@ import retrofit2.Response
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.snaplink.models.MyPostResponse
+import com.example.snaplink.network.ImageUpdateResponse
+import androidx.activity.result.contract.ActivityResultContracts
+import android.net.Uri
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
+import java.io.FileOutputStream
+import android.app.AlertDialog
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -37,6 +46,12 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvFollowingCount: TextView
     private lateinit var btnBack: ImageView
     private var currentProfileImageUrl: String? = null
+    
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            uploadProfileImage(it)
+        }
+    }
 
     private lateinit var navHome: ImageView
     private lateinit var navSearch: ImageView
@@ -92,6 +107,11 @@ class ProfileActivity : AppCompatActivity() {
             currentProfileImageUrl?.let { url ->
                 showFullImageDialog(url)
             }
+        }
+
+        ivProfile.setOnLongClickListener {
+            showProfileOptionsDialog()
+            true
         }
     }
 
@@ -334,6 +354,122 @@ class ProfileActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, "Error showing image", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showProfileOptionsDialog() {
+        val options = arrayOf("Change Profile Image", "Remove Profile Image")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Profile Photo")
+        builder.setItems(options) { dialog, which ->
+            when (which) {
+                0 -> {
+                    // Change Profile Image
+                    pickImageLauncher.launch("image/*")
+                }
+                1 -> {
+                    // Remove Profile Image
+                    removeProfileImage()
+                }
+            }
+        }
+        builder.show()
+    }
+
+    private fun removeProfileImage() {
+        Toast.makeText(this, "Removing profile image...", Toast.LENGTH_SHORT).show()
+        
+        ApiClient.api.removeProfileImage().enqueue(object : Callback<ImageUpdateResponse> {
+            override fun onResponse(call: Call<ImageUpdateResponse>, response: Response<ImageUpdateResponse>) {
+                if (isDestroyed || isFinishing) return
+                
+                if (response.isSuccessful && response.body() != null) {
+                    Toast.makeText(this@ProfileActivity, "Profile image removed", Toast.LENGTH_SHORT).show()
+                    val defaultUrl = response.body()!!.DEFAULT_IMG_URL
+                    if (!defaultUrl.isNullOrEmpty()) {
+                         // Update UI directly or just fetch profile
+                         updateProfileImageUI(defaultUrl)
+                         TokenManager.saveProfileImage(defaultUrl)
+                    } else {
+                        fetchProfile()
+                    }
+                } else {
+                    Toast.makeText(this@ProfileActivity, "Failed to remove image", Toast.LENGTH_SHORT).show()
+                }
+            }
+            
+            override fun onFailure(call: Call<ImageUpdateResponse>, t: Throwable) {
+                if (isDestroyed || isFinishing) return
+                Toast.makeText(this@ProfileActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun uploadProfileImage(uri: Uri) {
+        val file = getFileFromUri(uri)
+        if (file != null) {
+            val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+            // Backend expects part name "image"
+            val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+            // Show loading or progress if needed
+            Toast.makeText(this, "Updating profile image...", Toast.LENGTH_SHORT).show()
+
+            ApiClient.api.updateProfileImage(body).enqueue(object : Callback<ImageUpdateResponse> {
+                override fun onResponse(call: Call<ImageUpdateResponse>, response: Response<ImageUpdateResponse>) {
+                     if (isDestroyed || isFinishing) return
+                     
+                     if (response.isSuccessful && response.body() != null) {
+                         Toast.makeText(this@ProfileActivity, "Profile image updated", Toast.LENGTH_SHORT).show()
+                         val newUrl = response.body()!!.imageUrl
+                         if (!newUrl.isNullOrEmpty()) {
+                             updateProfileImageUI(newUrl)
+                             TokenManager.saveProfileImage(newUrl)
+                         } else {
+                             fetchProfile()
+                         }
+                     } else {
+                         Toast.makeText(this@ProfileActivity, "Failed to update image", Toast.LENGTH_SHORT).show()
+                     }
+                }
+
+                override fun onFailure(call: Call<ImageUpdateResponse>, t: Throwable) {
+                     if (isDestroyed || isFinishing) return
+                     Toast.makeText(this@ProfileActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            Toast.makeText(this, "Error processing image file", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    private fun updateProfileImageUI(url: String) {
+        currentProfileImageUrl = url
+        try {
+            Glide.with(this@ProfileActivity)
+                .load(url)
+                .placeholder(R.drawable.img_current_user)
+                .circleCrop()
+                .into(ivProfile)
+                
+            loadNavProfileImage()             
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getFileFromUri(uri: Uri): File? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val tempFile = File.createTempFile("profile_img", ".jpg", cacheDir)
+            val outputStream = FileOutputStream(tempFile)
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+            tempFile
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }

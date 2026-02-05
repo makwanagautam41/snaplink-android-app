@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#000000"
     android:fitsSystemWindows="true"
-    tools:context=".HomeActivityJava">
+    tools:context=".HomeActivityKt">
 
     <!-- Top Bar -->
     <LinearLayout

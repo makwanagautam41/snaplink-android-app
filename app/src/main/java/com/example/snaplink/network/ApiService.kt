@@ -35,6 +35,13 @@ data class UserDetailsResponse(
     val message: String
 )
 
+data class ImageUpdateResponse(
+    val success: Boolean,
+    val message: String,
+    val imageUrl: String?,
+    val DEFAULT_IMG_URL: String?
+)
+
 interface ApiService {
 
     @POST("users/signin")
@@ -61,4 +68,13 @@ interface ApiService {
         @Part images: List<MultipartBody.Part>,
         @Part("caption") caption: RequestBody
     ): Call<CreatePostResponse>
+
+    @Multipart
+    @retrofit2.http.PUT("users/update-profile-img")
+    fun updateProfileImage(
+        @Part image: MultipartBody.Part
+    ): Call<ImageUpdateResponse>
+
+    @retrofit2.http.PUT("users/remove-profile-img")
+    fun removeProfileImage(): Call<ImageUpdateResponse>
 }
