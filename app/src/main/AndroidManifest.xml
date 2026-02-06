@@ -19,9 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".SearchAndExplore"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".SearchAndExplore"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".CreatePostActivity"
             android:exported="false" />

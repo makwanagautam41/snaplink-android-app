@@ -41,60 +41,63 @@ class FeedAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is StoriesHolder -> holder.bind(stories)
+
             is PostAdapterKt.PostViewHolder -> {
                 val realPosition = if (showStories) position - 1 else position
                 val post = posts[realPosition]
-                
-                // Bind username
-                holder.tvUsername.text = post.postedBy.username
-                holder.tvUsername.setOnClickListener { onUserClick(post.postedBy.username) }
-                
-                holder.tvCaptionUsername.text = post.postedBy.username
-                holder.tvCaptionUsername.setOnClickListener { onUserClick(post.postedBy.username) }
-                
-                // Bind caption
-                holder.tvCaption.text = post.caption
-                
-                // Calculate time ago (simplified - you can enhance this)
-                holder.tvTimeAgo.text = getTimeAgo(post.createdAt)
-                
-                // Load profile image using Glide
-                Glide.with(holder.itemView.context)
-                    .load(post.postedBy.profileImg)
-                    .placeholder(R.drawable.img_current_user)
-                    .circleCrop()
-                    .into(holder.ivUserAvatar)
-                holder.ivUserAvatar.setOnClickListener { onUserClick(post.postedBy.username) }
-                
-                // Load post images using ViewPager2
-                if (post.images.isNotEmpty()) {
+
+                val user = post.postedBy
+                val username = user?.username ?: "Unknown User"
+                val profileImg = user?.profileImg
+
+                holder.tvUsername.text = username
+                holder.tvUsername.setOnClickListener { user?.username?.let { onUserClick(it) } }
+
+                holder.tvCaptionUsername.text = username
+                holder.tvCaptionUsername.setOnClickListener { user?.username?.let { onUserClick(it) } }
+
+                holder.tvCaption.text = post.caption ?: ""
+                holder.tvTimeAgo.text = getTimeAgo(post.createdAt ?: "")
+
+                if (!profileImg.isNullOrEmpty()) {
+                    Glide.with(holder.itemView.context)
+                        .load(profileImg)
+                        .placeholder(R.drawable.img_current_user)
+                        .circleCrop()
+                        .into(holder.ivUserAvatar)
+                } else {
+                    holder.ivUserAvatar.setImageResource(R.drawable.img_current_user)
+                }
+
+                holder.ivUserAvatar.setOnClickListener { user?.username?.let { onUserClick(it) } }
+
+                if (!post.images.isNullOrEmpty()) {
                     val imageAdapter = ImageSliderAdapter(post.images)
                     holder.vpPostImages.adapter = imageAdapter
-                    
-                    // Setup indicators
+
                     setupIndicators(holder.layoutIndicators, post.images.size)
-                    
-                    // Hide indicators if only 1 image
+
                     if (post.images.size > 1) {
                         holder.layoutIndicators.visibility = View.VISIBLE
-                        holder.vpPostImages.registerOnPageChangeCallback(object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
-                            override fun onPageSelected(position: Int) {
-                                super.onPageSelected(position)
-                                updateIndicators(holder.layoutIndicators, position)
+                        holder.vpPostImages.registerOnPageChangeCallback(
+                            object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+                                override fun onPageSelected(position: Int) {
+                                    super.onPageSelected(position)
+                                    updateIndicators(holder.layoutIndicators, position)
+                                }
                             }
-                        })
+                        )
                     } else {
                         holder.layoutIndicators.visibility = View.GONE
                     }
                 } else {
-                     // Fallback or empty state? Usually posts have images.
-                     // We could clear adapter
-                     holder.vpPostImages.adapter = null
-                     holder.layoutIndicators.visibility = View.GONE
+                    holder.vpPostImages.adapter = null
+                    holder.layoutIndicators.visibility = View.GONE
                 }
             }
         }
     }
+
 
     private fun getTimeAgo(createdAt: String): String {
         // Simple time ago calculation - you can enhance this with a library
