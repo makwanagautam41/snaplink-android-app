@@ -52,6 +52,12 @@ data class ImageUpdateResponse(
     val DEFAULT_IMG_URL: String?
 )
 
+data class RecentSearchResponse(
+    val success: Boolean,
+    val recentSearches: List<User>?,
+    val message: String?
+)
+
 interface ApiService {
 
     @POST("users/signin")
@@ -63,8 +69,11 @@ interface ApiService {
     @retrofit2.http.GET("users/profile")
     fun getUserDetails(): Call<UserDetailsResponse>
 
-    @retrofit2.http.GET("users/profile/{username}")
-    fun getOtherUserProfile(@retrofit2.http.Path("username") username: String): Call<OtherUserResponse>
+    @retrofit2.http.GET("users/profile/{query}")
+    fun getOtherUserProfile(@retrofit2.http.Path("query") query: String): Call<OtherUserResponse>
+
+    @retrofit2.http.GET("users/past-searched-user")
+    fun getPastSearchedUsers(): Call<RecentSearchResponse>
 
     @retrofit2.http.PUT("users/update")
     fun updateProfile(@Body request: UpdateProfileRequest): Call<UserDetailsResponse>

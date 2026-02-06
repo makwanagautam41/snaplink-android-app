@@ -55,6 +55,12 @@
         <activity
             android:name=".PostDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".ExploreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

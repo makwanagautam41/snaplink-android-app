@@ -75,7 +75,8 @@ class HomeActivityKt : AppCompatActivity() {
         }
         
         navSearch.setOnClickListener {
-            Toast.makeText(this, "Search coming soon", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ExploreActivity::class.java)
+            startActivity(intent)
         }
         
         navAdd.setOnClickListener {
