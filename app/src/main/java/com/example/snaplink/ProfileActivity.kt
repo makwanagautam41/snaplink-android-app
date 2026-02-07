@@ -297,8 +297,8 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         navSearch.setOnClickListener {
-            // Navigate to search
-            android.widget.Toast.makeText(this, "Search coming soon", android.widget.Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ExploreActivity::class.java)
+            startActivity(intent)
         }
 
         navAdd.setOnClickListener {

@@ -97,7 +97,7 @@
             android:layout_weight="1"
             android:contentDescription="Reels"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_message" />
+            android:src="@drawable/ic_chat" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/navProfile"

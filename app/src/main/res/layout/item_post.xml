@@ -106,7 +106,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:contentDescription="Like"
-            android:src="@drawable/ic_heart_outline" />
+            android:src="@drawable/ic_heart" />
 
         <!-- Comment Button -->
         <ImageView
@@ -115,16 +115,7 @@
             android:layout_height="26dp"
             android:layout_marginStart="14dp"
             android:contentDescription="Comment"
-            android:src="@drawable/ic_comment" />
-
-        <!-- Share Button -->
-        <ImageView
-            android:id="@+id/ivShare"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_marginStart="14dp"
-            android:contentDescription="Share"
-            android:src="@drawable/ic_share" />
+            android:src="@drawable/ic_message" />
 
         <!-- Spacer -->
         <View
