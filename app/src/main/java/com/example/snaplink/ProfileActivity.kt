@@ -56,7 +56,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var navHome: ImageView
     private lateinit var navSearch: ImageView
     private lateinit var navAdd: ImageView
-    private lateinit var navReels: ImageView
+    private lateinit var navMessage: ImageView
     private lateinit var navProfile: CircleImageView
 
     private lateinit var btnEditProfile: Button
@@ -135,7 +135,7 @@ class ProfileActivity : AppCompatActivity() {
         navHome = findViewById(R.id.navHome);
         navSearch = findViewById(R.id.navSearch);
         navAdd = findViewById(R.id.navAdd);
-        navReels = findViewById(R.id.navReels);
+        navMessage = findViewById(R.id.navMessage);
         navProfile = findViewById(R.id.navProfile);
 
         btnSettingMenu = findViewById(R.id.btnSettingMenu)
@@ -307,9 +307,9 @@ class ProfileActivity : AppCompatActivity() {
              startActivity(intent)
         }
 
-        navReels.setOnClickListener {
+        navMessage.setOnClickListener {
             // Navigate to reels
-            android.widget.Toast.makeText(this, "Reels coming soon", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(this, "Message coming soon", android.widget.Toast.LENGTH_SHORT).show()
         }
 
         navProfile.setOnClickListener {

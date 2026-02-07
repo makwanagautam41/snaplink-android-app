@@ -91,13 +91,13 @@
             android:src="@drawable/ic_add_post" />
 
         <ImageView
-            android:id="@+id/navReels"
+            android:id="@+id/navMessage"
             android:layout_width="0dp"
             android:layout_height="26dp"
             android:layout_weight="1"
             android:contentDescription="Reels"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_reels" />
+            android:src="@drawable/ic_message" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/navProfile"
