@@ -101,7 +101,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_myplaces"
+                    android:src="@drawable/ic_user"
                     android:tint="#FFFFFF" />
 
                 <LinearLayout
@@ -166,7 +166,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_save"
+                    android:src="@drawable/ic_setting_save"
                     android:tint="#FFFFFF" />
 
                 <TextView
@@ -199,7 +199,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_recent_history"
+                    android:src="@drawable/ic_setting_archive"
                     android:tint="#FFFFFF" />
 
                 <TextView
@@ -207,39 +207,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Archive"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right"
-                    android:tint="#888888" />
-            </LinearLayout>
-
-            <!-- Your activity -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_today"
-                    android:tint="#FFFFFF" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Your activity"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:layout_marginStart="16dp" />
@@ -265,7 +232,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_popup_reminder"
+                    android:src="@drawable/ic_setting_notifications"
                     android:tint="#FFFFFF" />
 
                 <TextView
@@ -284,38 +251,6 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Time spent -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_agenda"
-                    android:tint="#FFFFFF" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Time spent"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right"
-                    android:tint="#888888" />
-            </LinearLayout>
 
             <!-- Divider -->
             <View
@@ -349,7 +284,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_lock_idle_lock"
+                    android:src="@drawable/ic_setting_account_privacy"
                     android:tint="#FFFFFF" />
 
                 <TextView
@@ -382,7 +317,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_my_calendar"
+                    android:src="@drawable/ic_setting_close_friends"
                     android:tint="#FFFFFF" />
 
                 <TextView
@@ -415,7 +350,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:src="@drawable/ic_setting_blocked"
                     android:tint="#FFFFFF" />
 
                 <TextView
@@ -423,39 +358,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Blocked"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right"
-                    android:tint="#888888" />
-            </LinearLayout>
-
-            <!-- Hide story and live -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_view"
-                    android:tint="#FFFFFF" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Hide story and live"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:layout_marginStart="16dp" />
@@ -557,44 +459,6 @@
                 android:layout_height="1dp"
                 android:background="#1A1A1A"
                 android:layout_marginVertical="8dp" />
-
-            <!-- Login Section -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Login"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp" />
-
-            <!-- Add account -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_add"
-                    android:tint="#FFFFFF" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Add account"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginStart="16dp" />
-            </LinearLayout>
 
             <!-- Log out -->
             <LinearLayout
