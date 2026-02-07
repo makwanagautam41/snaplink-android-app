@@ -24,7 +24,7 @@ class HomeActivityKt : AppCompatActivity() {
     private lateinit var navHome: ImageView
     private lateinit var navSearch: ImageView
     private lateinit var navAdd: ImageView
-    private lateinit var navReels: ImageView
+    private lateinit var navMessage: ImageView
     private lateinit var navProfile: CircleImageView
     private lateinit var feedAdapter: FeedAdapter
     
@@ -55,7 +55,7 @@ class HomeActivityKt : AppCompatActivity() {
         navHome = findViewById(R.id.navHome)
         navSearch = findViewById(R.id.navSearch)
         navAdd = findViewById(R.id.navAdd)
-        navReels = findViewById(R.id.navReels)
+        navMessage = findViewById(R.id.navMessage)
         navProfile = findViewById(R.id.navProfile)
     }
 
@@ -82,9 +82,9 @@ class HomeActivityKt : AppCompatActivity() {
         navAdd.setOnClickListener {
             startActivity(Intent(this, CreatePostActivity::class.java))
         }
-        
-        navReels.setOnClickListener {
-            Toast.makeText(this, "Reels coming soon", Toast.LENGTH_SHORT).show()
+
+        navMessage.setOnClickListener {
+            Toast.makeText(this, "Message coming soon", Toast.LENGTH_SHORT).show()
         }
 
         navProfile.setOnClickListener {
