@@ -117,10 +117,12 @@ class OtherUserProfileActivity : AppCompatActivity() {
         btnFollow.setOnClickListener {
             currentUser?.let { user ->
                 val isFollowing = user.isFollowing == true
-                if (isFollowing) {
-                    unfollowUser(user.username)
-                } else {
-                    followUser(user.username)
+                val isRequested = user.isRequested == true
+                
+                when {
+                    isFollowing -> unfollowUser(user.username)
+                    isRequested -> cancelFollowRequest(user.username)
+                    else -> followUser(user.username)
                 }
             }
         }
@@ -140,17 +142,34 @@ class OtherUserProfileActivity : AppCompatActivity() {
                     btnFollow.isEnabled = true
                     
                     if (response.isSuccessful && response.body()?.message != null) {
+                        val message = response.body()?.message ?: ""
                         Toast.makeText(
                             this@OtherUserProfileActivity,
-                            response.body()?.message ?: "Followed",
+                            message,
                             Toast.LENGTH_SHORT
                         ).show()
                         
-                        // Update UI to reflect follow state
+                        // Update UI based on account type
                         currentUser?.let { user ->
-                            val updatedUser = user.copy(isFollowing = true)
-                            currentUser = updatedUser
-                            updateFollowButton(true, user.profileVisibility == "private")
+                            val isPrivate = user.profileVisibility == "private"
+                            
+                            if (isPrivate) {
+                                // Private account - follow request sent
+                                val updatedUser = user.copy(
+                                    isRequested = true,
+                                    isFollowing = false
+                                )
+                                currentUser = updatedUser
+                                updateFollowButton(false, true, true)
+                            } else {
+                                // Public account - followed immediately
+                                val updatedUser = user.copy(
+                                    isFollowing = true,
+                                    isRequested = false
+                                )
+                                currentUser = updatedUser
+                                updateFollowButton(true, false, false)
+                            }
                         }
                     } else {
                         Toast.makeText(
@@ -195,14 +214,70 @@ class OtherUserProfileActivity : AppCompatActivity() {
                         
                         // Update UI to reflect unfollow state
                         currentUser?.let { user ->
-                            val updatedUser = user.copy(isFollowing = false)
+                            val updatedUser = user.copy(
+                                isFollowing = false,
+                                isRequested = false
+                            )
                             currentUser = updatedUser
-                            updateFollowButton(false, user.profileVisibility == "private")
+                            val isPrivate = user.profileVisibility == "private"
+                            updateFollowButton(false, isPrivate, false)
                         }
                     } else {
                         Toast.makeText(
                             this@OtherUserProfileActivity,
                             "Failed to unfollow",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    t: Throwable
+                ) {
+                    btnFollow.isEnabled = true
+                    Toast.makeText(
+                        this@OtherUserProfileActivity,
+                        "Error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    private fun cancelFollowRequest(username: String) {
+        btnFollow.isEnabled = false
+        
+        // Use unfollow endpoint to cancel the request
+        ApiClient.api.unfollowUser(username)
+            .enqueue(object : Callback<com.example.snaplink.network.ApiResponse> {
+                override fun onResponse(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    response: Response<com.example.snaplink.network.ApiResponse>
+                ) {
+                    btnFollow.isEnabled = true
+                    
+                    if (response.isSuccessful && response.body()?.message != null) {
+                        Toast.makeText(
+                            this@OtherUserProfileActivity,
+                            "Request cancelled",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        
+                        // Update UI to reflect cancelled request
+                        currentUser?.let { user ->
+                            val updatedUser = user.copy(
+                                isRequested = false,
+                                isFollowing = false
+                            )
+                            currentUser = updatedUser
+                            val isPrivate = user.profileVisibility == "private"
+                            updateFollowButton(false, isPrivate, false)
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@OtherUserProfileActivity,
+                            "Failed to cancel request",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -334,9 +409,11 @@ class OtherUserProfileActivity : AppCompatActivity() {
 
         val isPrivate = user.profileVisibility == "private"
         val isFollowing = user.isFollowing == true
+        val isRequested = user.isRequested == true
 
-        updateFollowButton(isFollowing, isPrivate)
+        updateFollowButton(isFollowing, isPrivate, isRequested)
 
+        // Show posts only if following or public account
         if (isFollowing) {
             fetchUserPosts(user.username)
         } else if (!isPrivate) {
@@ -344,36 +421,53 @@ class OtherUserProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateFollowButton(isFollowing: Boolean, isPrivate: Boolean) {
-        if (isFollowing) {
-            // User is following - show "Following" button
-            btnFollow.text = "Following"
-            btnFollow.setBackgroundColor(Color.parseColor("#262626")) // Grey
-            btnFollow.setTextColor(Color.WHITE)
+    private fun updateFollowButton(isFollowing: Boolean, isPrivate: Boolean, isRequested: Boolean) {
+        when {
+            isFollowing -> {
+                // User is following - show "Following" button (grey)
+                btnFollow.text = "Following"
+                btnFollow.setBackgroundColor(Color.parseColor("#262626"))
+                btnFollow.setTextColor(Color.WHITE)
 
-            btnMessage.visibility = View.VISIBLE
-            btnEmail.visibility = View.VISIBLE
+                btnMessage.visibility = View.VISIBLE
+                btnEmail.visibility = View.VISIBLE
 
-            layoutPrivateAccount.visibility = View.GONE
-            layoutPublicContent.visibility = View.VISIBLE
-
-        } else {
-            // User is not following - show "Follow" button
-            btnFollow.text = "Follow"
-            btnFollow.setBackgroundColor(Color.parseColor("#0095F6")) // Blue
-            btnFollow.setTextColor(Color.WHITE)
-
-            btnMessage.visibility = View.GONE
-            btnEmail.visibility = View.GONE
-
-            if (isPrivate) {
-                // Private account - show private message
-                layoutPrivateAccount.visibility = View.VISIBLE
-                layoutPublicContent.visibility = View.GONE
-            } else {
-                // Public account - show posts
                 layoutPrivateAccount.visibility = View.GONE
                 layoutPublicContent.visibility = View.VISIBLE
+            }
+            
+            isRequested -> {
+                // Follow request sent - show "Requested" button (grey)
+                btnFollow.text = "Requested"
+                btnFollow.setBackgroundColor(Color.parseColor("#262626"))
+                btnFollow.setTextColor(Color.WHITE)
+
+                btnMessage.visibility = View.GONE
+                btnEmail.visibility = View.GONE
+
+                // Show private account message
+                layoutPrivateAccount.visibility = View.VISIBLE
+                layoutPublicContent.visibility = View.GONE
+            }
+            
+            else -> {
+                // Not following - show "Follow" button (blue)
+                btnFollow.text = "Follow"
+                btnFollow.setBackgroundColor(Color.parseColor("#0095F6"))
+                btnFollow.setTextColor(Color.WHITE)
+
+                btnMessage.visibility = View.GONE
+                btnEmail.visibility = View.GONE
+
+                if (isPrivate) {
+                    // Private account - show private message
+                    layoutPrivateAccount.visibility = View.VISIBLE
+                    layoutPublicContent.visibility = View.GONE
+                } else {
+                    // Public account - show posts
+                    layoutPrivateAccount.visibility = View.GONE
+                    layoutPublicContent.visibility = View.VISIBLE
+                }
             }
         }
     }

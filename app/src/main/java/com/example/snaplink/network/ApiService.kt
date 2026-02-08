@@ -39,6 +39,7 @@ data class User(
     val postCount: Int?,
     val isPrivate: Boolean? = false,
     val isFollowing: Boolean? = false,
+    val isRequested: Boolean? = false,
     val profileVisibility: String? = "public",
     val isVerified: Boolean? = false
 )
