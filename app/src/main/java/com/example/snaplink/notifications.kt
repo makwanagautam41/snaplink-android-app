@@ -127,12 +127,76 @@ class notifications : AppCompatActivity() {
     }
 
     private fun handleAcceptRequest(request: FollowRequest) {
-        // TODO: Implement accept follow request API call
-        Toast.makeText(this, "Accepted ${request.username}", Toast.LENGTH_SHORT).show()
+        ApiClient.api.acceptFollowRequest(request.username)
+            .enqueue(object : Callback<com.example.snaplink.network.ApiResponse> {
+                override fun onResponse(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    response: Response<com.example.snaplink.network.ApiResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.message != null) {
+                        Toast.makeText(
+                            this@notifications,
+                            "Accepted ${request.username}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // Reload notifications to update the list
+                        loadNotifications()
+                    } else {
+                        Toast.makeText(
+                            this@notifications,
+                            "Failed to accept request",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(
+                        this@notifications,
+                        "Error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 
     private fun handleRejectRequest(request: FollowRequest) {
-        // TODO: Implement reject follow request API call
-        Toast.makeText(this, "Rejected ${request.username}", Toast.LENGTH_SHORT).show()
+        ApiClient.api.rejectFollowRequest(request.username)
+            .enqueue(object : Callback<com.example.snaplink.network.ApiResponse> {
+                override fun onResponse(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    response: Response<com.example.snaplink.network.ApiResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.message != null) {
+                        Toast.makeText(
+                            this@notifications,
+                            "Rejected ${request.username}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // Reload notifications to update the list
+                        loadNotifications()
+                    } else {
+                        Toast.makeText(
+                            this@notifications,
+                            "Failed to reject request",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(
+                        this@notifications,
+                        "Error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 }

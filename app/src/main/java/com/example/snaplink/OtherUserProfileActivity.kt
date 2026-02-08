@@ -113,18 +113,113 @@ class OtherUserProfileActivity : AppCompatActivity() {
         indicatorTags = findViewById(R.id.indicatorTags)
 
         btnBack.setOnClickListener { finish() }
-        
+
         btnFollow.setOnClickListener {
-             // Toggle follow state logic here (simulated)
-             currentUser?.let { user ->
-                 val isFollowing = user.isFollowing == true
-                 // In a real app, call API here. 
-                 // For now, simple UI toggle simulation would need mutable user or local var
-                 Toast.makeText(this, if (isFollowing) "Unfollowed" else "Followed", Toast.LENGTH_SHORT).show()
-             }
+            currentUser?.let { user ->
+                val isFollowing = user.isFollowing == true
+                if (isFollowing) {
+                    unfollowUser(user.username)
+                } else {
+                    followUser(user.username)
+                }
+            }
         }
-        
+
         loadNavProfileImage()
+    }
+
+    private fun followUser(username: String) {
+        btnFollow.isEnabled = false
+        
+        ApiClient.api.followUser(username)
+            .enqueue(object : Callback<com.example.snaplink.network.ApiResponse> {
+                override fun onResponse(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    response: Response<com.example.snaplink.network.ApiResponse>
+                ) {
+                    btnFollow.isEnabled = true
+                    
+                    if (response.isSuccessful && response.body()?.message != null) {
+                        Toast.makeText(
+                            this@OtherUserProfileActivity,
+                            response.body()?.message ?: "Followed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        
+                        // Update UI to reflect follow state
+                        currentUser?.let { user ->
+                            val updatedUser = user.copy(isFollowing = true)
+                            currentUser = updatedUser
+                            updateFollowButton(true, user.profileVisibility == "private")
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@OtherUserProfileActivity,
+                            "Failed to follow",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    t: Throwable
+                ) {
+                    btnFollow.isEnabled = true
+                    Toast.makeText(
+                        this@OtherUserProfileActivity,
+                        "Error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+    }
+
+    private fun unfollowUser(username: String) {
+        btnFollow.isEnabled = false
+        
+        ApiClient.api.unfollowUser(username)
+            .enqueue(object : Callback<com.example.snaplink.network.ApiResponse> {
+                override fun onResponse(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    response: Response<com.example.snaplink.network.ApiResponse>
+                ) {
+                    btnFollow.isEnabled = true
+                    
+                    if (response.isSuccessful && response.body()?.message != null) {
+                        Toast.makeText(
+                            this@OtherUserProfileActivity,
+                            response.body()?.message ?: "Unfollowed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        
+                        // Update UI to reflect unfollow state
+                        currentUser?.let { user ->
+                            val updatedUser = user.copy(isFollowing = false)
+                            currentUser = updatedUser
+                            updateFollowButton(false, user.profileVisibility == "private")
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@OtherUserProfileActivity,
+                            "Failed to unfollow",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<com.example.snaplink.network.ApiResponse>,
+                    t: Throwable
+                ) {
+                    btnFollow.isEnabled = true
+                    Toast.makeText(
+                        this@OtherUserProfileActivity,
+                        "Error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 
     private fun loadNavProfileImage() {
@@ -237,45 +332,52 @@ class OtherUserProfileActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        // Check legacy isPrivate/isFollowing first, fallback to new profileVisibility 
-        // But the new API uses profileVisibility: "public" or "private"
         val isPrivate = user.profileVisibility == "private"
-        // isFollowing field might not be in the new user object if it just returns raw user data
-        // For now, assuming isFollowing logic needs to be handled if available or defaulted
         val isFollowing = user.isFollowing == true
 
+        updateFollowButton(isFollowing, isPrivate)
+
         if (isFollowing) {
+            fetchUserPosts(user.username)
+        } else if (!isPrivate) {
+            fetchUserPosts(user.username)
+        }
+    }
+
+    private fun updateFollowButton(isFollowing: Boolean, isPrivate: Boolean) {
+        if (isFollowing) {
+            // User is following - show "Following" button
             btnFollow.text = "Following"
             btnFollow.setBackgroundColor(Color.parseColor("#262626")) // Grey
             btnFollow.setTextColor(Color.WHITE)
-            
+
             btnMessage.visibility = View.VISIBLE
             btnEmail.visibility = View.VISIBLE
-            
+
             layoutPrivateAccount.visibility = View.GONE
             layoutPublicContent.visibility = View.VISIBLE
-            
-            fetchUserPosts(user.username)
-             
+
         } else {
-             btnFollow.text = "Follow"
-             btnFollow.setBackgroundColor(Color.parseColor("#0095F6")) // Blue
-             btnFollow.setTextColor(Color.WHITE)
-             
-             btnMessage.visibility = View.GONE
-             btnEmail.visibility = View.GONE
-             
-             if (isPrivate) {
-                 layoutPrivateAccount.visibility = View.VISIBLE
-                 layoutPublicContent.visibility = View.GONE
-             } else {
-                 layoutPrivateAccount.visibility = View.GONE
-                 layoutPublicContent.visibility = View.VISIBLE
-                 fetchUserPosts(user.username)
-             }
+            // User is not following - show "Follow" button
+            btnFollow.text = "Follow"
+            btnFollow.setBackgroundColor(Color.parseColor("#0095F6")) // Blue
+            btnFollow.setTextColor(Color.WHITE)
+
+            btnMessage.visibility = View.GONE
+            btnEmail.visibility = View.GONE
+
+            if (isPrivate) {
+                // Private account - show private message
+                layoutPrivateAccount.visibility = View.VISIBLE
+                layoutPublicContent.visibility = View.GONE
+            } else {
+                // Public account - show posts
+                layoutPrivateAccount.visibility = View.GONE
+                layoutPublicContent.visibility = View.VISIBLE
+            }
         }
     }
-    
+
     private var currentPosts: List<com.example.snaplink.models.Post>? = null
 
     private fun fetchUserPosts(username: String) {

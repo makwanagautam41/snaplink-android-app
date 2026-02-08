@@ -106,4 +106,16 @@ interface ApiService {
 
     @retrofit2.http.GET("users/notifications")
     fun getNotifications(): Call<NotificationResponse>
+
+    @retrofit2.http.POST("users/follow/{username}")
+    fun followUser(@retrofit2.http.Path("username") username: String): Call<ApiResponse>
+
+    @retrofit2.http.POST("users/unfollow/{username}")
+    fun unfollowUser(@retrofit2.http.Path("username") username: String): Call<ApiResponse>
+
+    @retrofit2.http.POST("users/follow/accept/{username}")
+    fun acceptFollowRequest(@retrofit2.http.Path("username") username: String): Call<ApiResponse>
+
+    @retrofit2.http.POST("users/follow/reject/{username}")
+    fun rejectFollowRequest(@retrofit2.http.Path("username") username: String): Call<ApiResponse>
 }
