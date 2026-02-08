@@ -16,6 +16,14 @@ data class LoginRequest(val identifier: String, val password: String)
 data class RegisterRequest(val name: String, val email: String, val password: String, val username: String, val phone: String, val gender: String)
 data class ApiResponse(val message: String, val token: String?, val accessToken: String?, val user: User?)
 
+// Simple user object for followers/following lists
+data class FollowerUser(
+    val _id: String,
+    val name: String,
+    val username: String,
+    val profileImg: String?
+)
+
 data class User(
     val _id: String,
     val name: String,
@@ -25,8 +33,9 @@ data class User(
     val phone: String?,
     val profileImg: String?,
     val bio: String?,
-    val followers: List<String>?,
-    val following: List<String>?,
+    val followers: List<FollowerUser>?,
+    val following: List<FollowerUser>?,
+    val followRequests: List<FollowerUser>?,
     val postCount: Int?,
     val isPrivate: Boolean? = false,
     val isFollowing: Boolean? = false,
