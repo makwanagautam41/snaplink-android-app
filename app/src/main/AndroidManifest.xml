@@ -20,9 +20,11 @@
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".notifications"
+            android:name=".Messages"
             android:exported="false" />
-        <!-- <activity -->
+        <activity
+            android:name=".notifications"
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".SearchAndExplore" -->
         <!-- android:exported="false" /> -->
         <activity

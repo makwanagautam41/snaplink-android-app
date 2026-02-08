@@ -308,8 +308,8 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         navMessage.setOnClickListener {
-            // Navigate to reels
-            android.widget.Toast.makeText(this, "Message coming soon", android.widget.Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, Messages::class.java)
+            startActivity(intent)
         }
 
         navProfile.setOnClickListener {

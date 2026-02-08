@@ -101,10 +101,12 @@ class ExploreActivity : AppCompatActivity() {
 
         navAdd.setOnClickListener {
             startActivity(Intent(this, CreatePostActivity::class.java))
+            startActivity(intent)
         }
 
         navMessage.setOnClickListener {
-            Toast.makeText(this, "Message coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, Messages::class.java))
+            startActivity(intent)
         }
 
         navProfile.setOnClickListener {

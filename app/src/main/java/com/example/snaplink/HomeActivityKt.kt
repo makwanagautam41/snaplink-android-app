@@ -83,11 +83,13 @@ class HomeActivityKt : AppCompatActivity() {
         }
         
         navAdd.setOnClickListener {
-            startActivity(Intent(this, CreatePostActivity::class.java))
+            val intent = Intent(this, CreatePostActivity::class.java)
+            startActivity(intent)
         }
 
         navMessage.setOnClickListener {
-            Toast.makeText(this, "Message coming soon", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, Messages::class.java)
+            startActivity(intent)
         }
 
         navProfile.setOnClickListener {
