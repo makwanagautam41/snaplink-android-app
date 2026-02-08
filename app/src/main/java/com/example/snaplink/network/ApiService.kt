@@ -3,6 +3,7 @@ package com.example.snaplink.network
 import com.example.snaplink.models.CreatePostResponse
 import com.example.snaplink.models.FeedResponse
 import com.example.snaplink.models.MyPostResponse
+import com.example.snaplink.models.NotificationResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -102,4 +103,7 @@ interface ApiService {
 
     @retrofit2.http.PUT("users/remove-profile-img")
     fun removeProfileImage(): Call<ImageUpdateResponse>
+
+    @retrofit2.http.GET("users/notifications")
+    fun getNotifications(): Call<NotificationResponse>
 }

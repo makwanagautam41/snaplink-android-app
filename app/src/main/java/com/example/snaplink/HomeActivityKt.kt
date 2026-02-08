@@ -27,6 +27,8 @@ class HomeActivityKt : AppCompatActivity() {
     private lateinit var navMessage: ImageView
     private lateinit var navProfile: CircleImageView
     private lateinit var feedAdapter: FeedAdapter
+
+    private lateinit var btnNotification: ImageView
     
     private val storyList = mutableListOf<StoryKt>()
     private val postList = mutableListOf<Post>()
@@ -57,6 +59,7 @@ class HomeActivityKt : AppCompatActivity() {
         navAdd = findViewById(R.id.navAdd)
         navMessage = findViewById(R.id.navMessage)
         navProfile = findViewById(R.id.navProfile)
+        btnNotification = findViewById(R.id.btnNotification)
     }
 
     private fun loadNavProfileImage() {
@@ -89,6 +92,11 @@ class HomeActivityKt : AppCompatActivity() {
 
         navProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnNotification.setOnClickListener {
+            val intent = Intent(this, notifications::class.java)
             startActivity(intent)
         }
     }
