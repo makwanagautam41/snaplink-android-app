@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".personal_details"
+            android:exported="false" />
+        <activity
             android:name=".Messages"
             android:exported="false" />
         <activity

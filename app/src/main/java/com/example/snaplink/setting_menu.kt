@@ -14,6 +14,7 @@ class setting_menu : AppCompatActivity() {
 
     private lateinit var btnBackFromSetting: ImageView
     private lateinit var layoutLogout: LinearLayout
+    private lateinit var personalDetailsLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class setting_menu : AppCompatActivity() {
     private fun initViews() {
         btnBackFromSetting = findViewById(R.id.btnBackFromSetting)
         layoutLogout = findViewById(R.id.layoutLogout)
+        personalDetailsLayout = findViewById(R.id.personalDetailsLayout)
     }
 
     private fun setupListeners() {
@@ -49,6 +51,11 @@ class setting_menu : AppCompatActivity() {
 
         layoutLogout.setOnClickListener {
             performLogout()
+        }
+
+        personalDetailsLayout.setOnClickListener {
+            val intent = Intent(this, personal_details::class.java)
+            startActivity(intent)
         }
     }
 

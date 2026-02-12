@@ -89,6 +89,7 @@
 
             <!-- Accounts -->
             <LinearLayout
+                android:id="@+id/personalDetailsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -151,7 +152,7 @@
                     android:layout_marginStart="16dp">
 
                     <TextView
-                        android:text="Passwo    rd &amp; Security"
+                        android:text="Password &amp; Security"
                         android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"
