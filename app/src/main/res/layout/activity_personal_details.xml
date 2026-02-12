@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+    android:fitsSystemWindows="true"
     tools:context=".personal_details">
 
     <!-- Top Bar -->
@@ -13,7 +14,7 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="12dp"
         android:background="#000000"
         app:layout_constraintTop_toTopOf="parent">
 
