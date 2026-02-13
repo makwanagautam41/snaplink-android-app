@@ -5,25 +5,37 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#000000">
 
     <LinearLayout
+        android:id="@+id/contentContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:alpha="1">
 
         <ImageView
+            android:id="@+id/appLogo"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/app_logo"/>
+            android:src="@drawable/app_logo"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/app_name"/>
 
         <TextView
+            android:id="@+id/appName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Snaplink"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"/>
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#F5F5F5"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/dancing_script_regular"
+            android:letterSpacing="0.02"/>
 
     </LinearLayout>
 
