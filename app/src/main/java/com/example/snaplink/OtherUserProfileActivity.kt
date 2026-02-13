@@ -424,10 +424,11 @@ class OtherUserProfileActivity : AppCompatActivity() {
     private fun updateFollowButton(isFollowing: Boolean, isPrivate: Boolean, isRequested: Boolean) {
         when {
             isFollowing -> {
-                // User is following - show "Following" button (grey)
+                // User is following - show "Following" button (grey outline)
                 btnFollow.text = "Following"
-                btnFollow.setBackgroundColor(Color.parseColor("#262626"))
+                btnFollow.setBackgroundResource(R.drawable.button_outline)
                 btnFollow.setTextColor(Color.WHITE)
+                // No need for: btnFollow.backgroundTintList = null (already set in XML)
 
                 btnMessage.visibility = View.VISIBLE
                 btnEmail.visibility = View.VISIBLE
@@ -451,20 +452,19 @@ class OtherUserProfileActivity : AppCompatActivity() {
             }
             
             else -> {
-                // Not following - show "Follow" button (blue)
+                // Not following - show "Follow" button (blue solid)
                 btnFollow.text = "Follow"
-                btnFollow.setBackgroundColor(Color.parseColor("#0095F6"))
+                btnFollow.setBackgroundResource(R.drawable.button_primary)
                 btnFollow.setTextColor(Color.WHITE)
+                // No need for: btnFollow.backgroundTintList = null (already set in XML)
 
                 btnMessage.visibility = View.GONE
                 btnEmail.visibility = View.GONE
 
                 if (isPrivate) {
-                    // Private account - show private message
                     layoutPrivateAccount.visibility = View.VISIBLE
                     layoutPublicContent.visibility = View.GONE
                 } else {
-                    // Public account - show posts
                     layoutPrivateAccount.visibility = View.GONE
                     layoutPublicContent.visibility = View.VISIBLE
                 }

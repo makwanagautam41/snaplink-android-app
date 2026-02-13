@@ -56,7 +56,6 @@
         android:textSize="16sp"
         android:backgroundTint="#2563EB" />
 
-
     <TextView
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"

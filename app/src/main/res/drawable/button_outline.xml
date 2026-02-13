@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Secondary/Outline Button Background -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#00000000" />
+    <stroke 
+        android:width="2dp" 
+        android:color="#1e1f22" />
+    <corners android:radius="12dp" />
+</shape>
