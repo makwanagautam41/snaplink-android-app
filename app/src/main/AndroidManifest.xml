@@ -20,6 +20,12 @@
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Following"
+            android:exported="false" />
+        <activity
+            android:name=".Followers"
+            android:exported="false" />
+        <activity
             android:name=".Splash_screen"
             android:exported="true">
             <intent-filter>

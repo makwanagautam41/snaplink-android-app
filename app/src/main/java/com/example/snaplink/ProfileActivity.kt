@@ -33,6 +33,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import android.app.AlertDialog
+import android.widget.LinearLayout
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -68,8 +69,9 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tabTags: ImageView
     private lateinit var indicatorGrid: android.view.View
     private lateinit var indicatorTags: android.view.View
-
     private lateinit var btnSettingMenu: ImageView
+    private lateinit var followersLayoutBtn: LinearLayout
+    private lateinit var followingLayoutBtn: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,6 +148,8 @@ class ProfileActivity : AppCompatActivity() {
         tabTags = findViewById(R.id.tabTags)
         indicatorGrid = findViewById(R.id.indicatorGrid)
         indicatorTags = findViewById(R.id.indicatorTags)
+        followersLayoutBtn = findViewById(R.id.followersLayoutBtn)
+        followingLayoutBtn = findViewById(R.id.followingLayoutBtn)
     }
     
     private fun setupRecyclerView() {
@@ -323,6 +327,15 @@ class ProfileActivity : AppCompatActivity() {
 
         btnEditProfile.setOnClickListener {
             val intent = Intent(this, EditProfile::class.java)
+            startActivity(intent)
+        }
+
+        followersLayoutBtn.setOnClickListener {
+            val intent = Intent(this, Followers::class.java)
+            startActivity(intent)
+        }
+        followingLayoutBtn.setOnClickListener {
+            val intent = Intent(this, Following::class.java)
             startActivity(intent)
         }
     }

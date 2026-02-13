@@ -104,6 +104,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/followersLayoutBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
@@ -128,6 +129,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/followingLayoutBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
