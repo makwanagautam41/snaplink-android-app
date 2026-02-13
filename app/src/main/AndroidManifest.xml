@@ -20,6 +20,27 @@
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".About"
+            android:exported="false" />
+        <activity
+            android:name=".Help"
+            android:exported="false" />
+        <activity
+            android:name=".Blocked"
+            android:exported="false" />
+        <activity
+            android:name=".CloseFriends"
+            android:exported="false" />
+        <activity
+            android:name=".AccountPrivacy"
+            android:exported="false" />
+        <activity
+            android:name=".Saved"
+            android:exported="false" />
+        <activity
+            android:name=".AccountVerification"
+            android:exported="false" />
+        <activity
             android:name=".PasswordAndSecurity"
             android:exported="false" />
         <activity
