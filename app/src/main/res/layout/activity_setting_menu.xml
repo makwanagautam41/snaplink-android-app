@@ -169,6 +169,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/accountVerificationLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -227,6 +228,7 @@
 
             <!-- Saved -->
             <LinearLayout
+                android:id="@+id/saved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -260,6 +262,7 @@
 
             <!-- Notifications -->
             <LinearLayout
+                android:id="@+id/notifactions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -312,6 +315,7 @@
 
             <!-- Account privacy -->
             <LinearLayout
+                android:id="@+id/accountPrivacy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -345,6 +349,7 @@
 
             <!-- Close friends -->
             <LinearLayout
+                android:id="@+id/closeFriends"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -378,6 +383,7 @@
 
             <!-- Blocked -->
             <LinearLayout
+                android:id="@+id/blocked"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -429,6 +435,7 @@
 
             <!-- Help -->
             <LinearLayout
+                android:id="@+id/help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -462,6 +469,7 @@
 
             <!-- About -->
             <LinearLayout
+                android:id="@+id/about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
