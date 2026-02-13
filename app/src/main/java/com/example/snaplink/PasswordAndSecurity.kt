@@ -5,17 +5,19 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
-class Followers : AppCompatActivity() {
+class PasswordAndSecurity : AppCompatActivity() {
     private lateinit var btnBack: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         try {
-            setContentView(R.layout.activity_followers_page)
+            setContentView(R.layout.activity_password_and_security)
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, "Error loading followers details layout", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Error loading password and security layout", Toast.LENGTH_LONG).show()
             finish()
             return
         }

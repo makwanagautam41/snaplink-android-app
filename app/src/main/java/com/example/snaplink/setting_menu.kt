@@ -15,6 +15,7 @@ class setting_menu : AppCompatActivity() {
     private lateinit var btnBackFromSetting: ImageView
     private lateinit var layoutLogout: LinearLayout
     private lateinit var personalDetailsLayout: LinearLayout
+    private lateinit var passwordAndSecurity: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,7 @@ class setting_menu : AppCompatActivity() {
         btnBackFromSetting = findViewById(R.id.btnBackFromSetting)
         layoutLogout = findViewById(R.id.layoutLogout)
         personalDetailsLayout = findViewById(R.id.personalDetailsLayout)
+        passwordAndSecurity = findViewById(R.id.passwordAndSecurity)
     }
 
     private fun setupListeners() {
@@ -55,6 +57,11 @@ class setting_menu : AppCompatActivity() {
 
         personalDetailsLayout.setOnClickListener {
             val intent = Intent(this, personal_details::class.java)
+            startActivity(intent)
+        }
+
+        passwordAndSecurity.setOnClickListener {
+            val intent = Intent(this, PasswordAndSecurity::class.java)
             startActivity(intent)
         }
     }

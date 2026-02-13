@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PasswordAndSecurity"
+            android:exported="false" />
+        <activity
             android:name=".Following"
             android:exported="false" />
         <activity
