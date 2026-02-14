@@ -10,5 +10,10 @@
             <item name="colorSecondary">@color/my_secondary_color</item>
         -->
     </style>
+    <style name="CustomSwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">#6366F1</item>
+        <item name="colorSwitchThumbNormal">#666666</item>
+        <item name="android:colorForeground">#333333</item>
+    </style>
 
 </resources>
