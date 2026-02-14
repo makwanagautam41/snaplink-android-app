@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:fitsSystemWindows="true"
-    tools:context=".help">
+    android:fitsSystemWindows="true">
 
     <!-- Top Bar -->
     <RelativeLayout
@@ -139,6 +138,7 @@
                             android:layout_height="24dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_about_customer_care"
                             app:tint="#6366F1"
                             android:layout_marginEnd="16dp" />
 
@@ -196,6 +196,7 @@
                             android:layout_height="24dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_warning"
                             app:tint="#EF4444"
                             android:layout_marginEnd="16dp" />
 
@@ -253,6 +254,7 @@
                             android:layout_height="24dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_feedback"
                             app:tint="#10B981"
                             android:layout_marginEnd="16dp" />
 
@@ -341,6 +343,7 @@
                             android:layout_height="24dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_rocket"
                             app:tint="#F59E0B"
                             android:layout_marginEnd="16dp" />
 
@@ -424,6 +427,7 @@
                             android:layout_height="24dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_setting_account_privacy"
                             app:tint="#06B6D4"
                             android:layout_marginEnd="16dp" />
 
@@ -465,6 +469,7 @@
                             android:layout_height="24dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_about_image"
                             app:tint="#EC4899"
                             android:layout_marginEnd="16dp" />
 
@@ -506,6 +511,7 @@
                             android:layout_height="24dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_message"
                             app:tint="#F97316"
                             android:layout_marginEnd="16dp" />
 
@@ -547,6 +553,7 @@
                             android:layout_height="24dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_wrench"
                             app:tint="#14B8A6"
                             android:layout_marginEnd="16dp" />
 
@@ -867,7 +874,7 @@
                             android:layout_height="20dp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/ic_chevron_right"
+                            android:src="@drawable/ic_chevron_down"
                             app:tint="#808080" />
 
                     </RelativeLayout>
