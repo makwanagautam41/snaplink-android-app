@@ -7,7 +7,6 @@
     android:background="#000000"
     android:fitsSystemWindows="true">
 
-    <!-- Top Bar -->
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -35,7 +34,6 @@
 
     </RelativeLayout>
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -50,7 +48,6 @@
             android:orientation="vertical"
             android:paddingTop="8dp">
 
-            <!-- Search Bar -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/searchBar"
                 android:layout_width="match_parent"
@@ -94,7 +91,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Your Account Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +101,6 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp" />
 
-            <!-- Personal Details -->
             <LinearLayout
                 android:id="@+id/personalDetailsLayout"
                 android:layout_width="match_parent"
@@ -146,7 +141,6 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Password & Security -->
             <LinearLayout
                 android:id="@+id/passwordAndSecurity"
                 android:layout_width="match_parent"
@@ -187,7 +181,6 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Account Verification -->
             <LinearLayout
                 android:id="@+id/accountVerificationLayout"
                 android:layout_width="match_parent"
@@ -228,14 +221,12 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#1A1A1A"
                 android:layout_marginVertical="8dp" />
 
-            <!-- How You Use Instagram Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -246,7 +237,6 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp" />
 
-            <!-- Saved -->
             <LinearLayout
                 android:id="@+id/saved"
                 android:layout_width="match_parent"
@@ -280,7 +270,6 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Notifications -->
             <LinearLayout
                 android:id="@+id/notifactions"
                 android:layout_width="match_parent"
@@ -314,14 +303,12 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#1A1A1A"
                 android:layout_marginVertical="8dp" />
 
-            <!-- Who Can See Your Content Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -332,7 +319,6 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp" />
 
-            <!-- Account privacy -->
             <LinearLayout
                 android:id="@+id/accountPrivacy"
                 android:layout_width="match_parent"
@@ -366,7 +352,6 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Close friends -->
             <LinearLayout
                 android:id="@+id/closeFriends"
                 android:layout_width="match_parent"
@@ -400,7 +385,6 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Blocked -->
             <LinearLayout
                 android:id="@+id/blocked"
                 android:layout_width="match_parent"
@@ -434,14 +418,12 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#1A1A1A"
                 android:layout_marginVertical="8dp" />
 
-            <!-- More Info and Support Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -452,7 +434,6 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp" />
 
-            <!-- Help -->
             <LinearLayout
                 android:id="@+id/help"
                 android:layout_width="match_parent"
@@ -486,7 +467,6 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- About -->
             <LinearLayout
                 android:id="@+id/about"
                 android:layout_width="match_parent"
@@ -520,14 +500,12 @@
                     android:tint="#888888" />
             </LinearLayout>
 
-            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#1A1A1A"
                 android:layout_marginVertical="8dp" />
 
-            <!-- Log out -->
             <LinearLayout
                 android:id="@+id/layoutLogout"
                 android:layout_width="match_parent"
@@ -554,7 +532,6 @@
                     android:layout_marginStart="16dp" />
             </LinearLayout>
 
-            <!-- Bottom Spacing -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="24dp" />

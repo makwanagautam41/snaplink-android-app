@@ -50,7 +50,10 @@ class HomeActivityKt : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadNavProfileImage()
+        setupStories()
+        feedAdapter.notifyDataSetChanged()
     }
+
 
     private fun initViews() {
         rvFeed = findViewById(R.id.rvFeed)
@@ -104,18 +107,31 @@ class HomeActivityKt : AppCompatActivity() {
     }
 
     private fun setupStories() {
-        // Keep stories as mock data for now
-        storyList.apply {
-            add(StoryKt("Your Story", R.drawable.img_current_user, true))
-            add(StoryKt("punit_super", R.drawable.img_user_1, false))
-            add(StoryKt("siko.speed", R.drawable.img_user_2, false))
-            add(StoryKt("galish...", R.drawable.img_user_3, false))
-            add(StoryKt("talvin", R.drawable.img_user_4, false))
-            add(StoryKt("john_doe", R.drawable.img_user_placeholder, false))
-            add(StoryKt("jane_smith", R.drawable.img_user_placeholder, false))
-            add(StoryKt("mike_ross", R.drawable.img_user_placeholder, false))
-        }
+
+        val profileUrl = TokenManager.getProfileImage()
+
+        storyList.clear()
+
+        // Your Story (Dynamic profile image)
+        storyList.add(
+            StoryKt(
+                username = "Your Story",
+                imageUrl = profileUrl,
+                avatarResource = null,
+                isYourStory = true
+            )
+        )
+
+        // Other stories (Drawable)
+        storyList.add(StoryKt("punit_super", null, R.drawable.img_user_1))
+        storyList.add(StoryKt("siko.speed", null, R.drawable.img_user_2))
+        storyList.add(StoryKt("galish...", null, R.drawable.img_user_3))
+        storyList.add(StoryKt("talvin", null, R.drawable.img_user_4))
+        storyList.add(StoryKt("john_doe", null, R.drawable.img_user_placeholder))
+        storyList.add(StoryKt("jane_smith", null, R.drawable.img_user_placeholder))
+        storyList.add(StoryKt("mike_ross", null, R.drawable.img_user_placeholder))
     }
+
 
     private fun setupFeed() {
         rvFeed.layoutManager = LinearLayoutManager(this)

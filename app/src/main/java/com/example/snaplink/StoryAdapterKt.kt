@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
+import com.bumptech.glide.Glide
+
 
 class StoryAdapterKt(private val storyList: List<StoryKt>) :
     RecyclerView.Adapter<StoryAdapterKt.StoryViewHolder>() {
@@ -19,10 +21,20 @@ class StoryAdapterKt(private val storyList: List<StoryKt>) :
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         val story = storyList[position]
-        
+
         holder.tvUsername.text = story.username
-        holder.ivAvatar.setImageResource(story.avatarResource)
-        
+        if (!story.imageUrl.isNullOrEmpty()) {
+            Glide.with(holder.itemView.context)
+                .load(story.imageUrl)
+                .placeholder(R.drawable.img_current_user)
+                .into(holder.ivAvatar)
+        } else {
+            story.avatarResource?.let {
+                holder.ivAvatar.setImageResource(it)
+            }
+        }
+
+
         holder.ivAddStory.visibility = if (story.isYourStory) {
             View.VISIBLE
         } else {
