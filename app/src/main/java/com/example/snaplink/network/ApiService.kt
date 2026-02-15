@@ -87,7 +87,7 @@ interface ApiService {
     fun getPastSearchedUsers(): Call<RecentSearchResponse>
 
     @retrofit2.http.PUT("users/update")
-    fun updateProfile(@Body request: UpdateProfileRequest): Call<UserDetailsResponse>
+    fun updateProfile(@Body request: UpdateProfileRequest): Call<UpdateProfileResponse>
 
     @retrofit2.http.GET("posts/feed")
     fun getFeedPosts(): Call<FeedResponse>
