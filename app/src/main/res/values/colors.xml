@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="devider_bg">#1C1C1E</color>
+    <color name="setting_options_bg">#DA141313</color>
 </resources>

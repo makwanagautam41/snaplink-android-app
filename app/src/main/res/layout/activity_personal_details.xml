@@ -244,18 +244,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/field_single_bg"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="16dp"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@id/arrowIcon4"
-                        android:paddingEnd="8dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingEnd="8dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -267,11 +267,11 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:lineSpacingExtra="5dp"
                             android:text="manage your data, modify your legacy contact, deactivate or delete your account."
                             android:textColor="#8E8E93"
-                            android:textSize="13sp"
-                            android:lineSpacingExtra="5dp"
-                            android:layout_marginTop="4dp" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 

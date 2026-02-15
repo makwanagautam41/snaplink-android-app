@@ -13,16 +13,16 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:paddingHorizontal="12dp"
         android:background="#000000"
+        android:paddingHorizontal="12dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_back"
             app:tint="#FFFFFF" />
 
@@ -30,10 +30,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-medium"
             android:text="Help"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:fontFamily="sans-serif-medium"
             android:textStyle="bold" />
 
     </RelativeLayout>
@@ -42,8 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/topBar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,31 +65,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="14dp"
-                    android:gravity="center_vertical">
+                    android:padding="14dp">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_search"
-                        app:tint="#808080"
                         android:layout_marginStart="4dp"
-                        android:layout_marginEnd="12dp" />
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/ic_search"
+                        app:tint="#808080" />
 
                     <EditText
                         android:id="@+id/etSearchHelp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Search help articles..."
-                        android:textColorHint="#666666"
-                        android:textColor="#FFFFFF"
-                        android:textSize="15sp"
                         android:background="@null"
                         android:fontFamily="sans-serif"
+                        android:hint="Search help articles..."
+                        android:imeOptions="actionSearch"
                         android:inputType="text"
-                        android:imeOptions="actionSearch" />
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#666666"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -99,501 +99,516 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingStart="4dp"
                 android:text="Quick Actions"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:paddingStart="4dp" />
+                android:textStyle="bold" />
 
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                android:orientation="vertical"
+                android:background="@drawable/rounded_container_bg">
 
-                <LinearLayout
+                <!-- Contact Support -->
+                <RelativeLayout
+                    android:id="@+id/btnContactSupport"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:divider="@drawable/divider_horizontal"
-                    android:showDividers="middle">
+                    android:background="@drawable/field_top_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-                    <!-- Contact Support -->
-                    <RelativeLayout
-                        android:id="@+id/btnContactSupport"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iconContactSupport"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_about_customer_care"
+                        app:tint="#6366F1" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronContactSupport"
+                        android:layout_toEndOf="@id/iconContactSupport"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/iconContactSupport"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_about_customer_care"
-                            app:tint="#6366F1"
-                            android:layout_marginEnd="16dp" />
-
-                        <LinearLayout
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconContactSupport"
-                            android:layout_toStartOf="@id/chevronContactSupport"
-                            android:orientation="vertical">
+                            android:fontFamily="sans-serif-medium"
+                            android:text="Contact Support"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Contact Support"
-                                android:textColor="#FFFFFF"
-                                android:textSize="15sp"
-                                android:fontFamily="sans-serif-medium" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Get help from our support team"
-                                android:textColor="#808080"
-                                android:textSize="12sp"
-                                android:fontFamily="sans-serif"
-                                android:layout_marginTop="2dp" />
-
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/chevronContactSupport"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
-
-                    </RelativeLayout>
-
-                    <!-- Report a Problem -->
-                    <RelativeLayout
-                        android:id="@+id/btnReportProblem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
-
-                        <ImageView
-                            android:id="@+id/iconReportProblem"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_warning"
-                            app:tint="#EF4444"
-                            android:layout_marginEnd="16dp" />
-
-                        <LinearLayout
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconReportProblem"
-                            android:layout_toStartOf="@id/chevronReportProblem"
-                            android:orientation="vertical">
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:text="Get help from our support team"
+                            android:textColor="#8E8E93"
+                            android:textSize="12sp" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Report a Problem"
-                                android:textColor="#FFFFFF"
-                                android:textSize="15sp"
-                                android:fontFamily="sans-serif-medium" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Report technical issues or bugs"
-                                android:textColor="#808080"
-                                android:textSize="12sp"
-                                android:fontFamily="sans-serif"
-                                android:layout_marginTop="2dp" />
+                    <ImageView
+                        android:id="@+id/chevronContactSupport"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
 
-                        </LinearLayout>
+                </RelativeLayout>
 
-                        <ImageView
-                            android:id="@+id/chevronReportProblem"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devider_bg" />
 
-                    </RelativeLayout>
+                <!-- Report a Problem -->
+                <RelativeLayout
+                    android:id="@+id/btnReportProblem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/field_middle_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-                    <!-- Give Feedback -->
-                    <RelativeLayout
-                        android:id="@+id/btnGiveFeedback"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iconReportProblem"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_warning"
+                        app:tint="#EF4444" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronReportProblem"
+                        android:layout_toEndOf="@id/iconReportProblem"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/iconGiveFeedback"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_feedback"
-                            app:tint="#10B981"
-                            android:layout_marginEnd="16dp" />
-
-                        <LinearLayout
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconGiveFeedback"
-                            android:layout_toStartOf="@id/chevronGiveFeedback"
-                            android:orientation="vertical">
+                            android:fontFamily="sans-serif-medium"
+                            android:text="Report a Problem"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Give Feedback"
-                                android:textColor="#FFFFFF"
-                                android:textSize="15sp"
-                                android:fontFamily="sans-serif-medium" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:text="Report technical issues or bugs"
+                            android:textColor="#8E8E93"
+                            android:textSize="12sp" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Share your suggestions with us"
-                                android:textColor="#808080"
-                                android:textSize="12sp"
-                                android:fontFamily="sans-serif"
-                                android:layout_marginTop="2dp" />
+                    </LinearLayout>
 
-                        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/chevronReportProblem"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
 
-                        <ImageView
-                            android:id="@+id/chevronGiveFeedback"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
+                </RelativeLayout>
 
-                    </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devider_bg" />
 
-                </LinearLayout>
+                <!-- Give Feedback -->
+                <RelativeLayout
+                    android:id="@+id/btnGiveFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/field_bottom_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-            </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/iconGiveFeedback"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_feedback"
+                        app:tint="#10B981" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronGiveFeedback"
+                        android:layout_toEndOf="@id/iconGiveFeedback"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="Give Feedback"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:text="Share your suggestions with us"
+                            android:textColor="#8E8E93"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/chevronGiveFeedback"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
             <!-- Help Topics -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingStart="4dp"
                 android:text="Help Topics"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:paddingStart="4dp" />
+                android:textStyle="bold" />
 
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                android:orientation="vertical"
+                android:background="@drawable/rounded_container_bg">
 
-                <LinearLayout
+                <!-- Getting Started -->
+                <RelativeLayout
+                    android:id="@+id/btnGettingStarted"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:divider="@drawable/divider_horizontal"
-                    android:showDividers="middle">
+                    android:background="@drawable/field_top_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-                    <!-- Getting Started -->
-                    <RelativeLayout
-                        android:id="@+id/btnGettingStarted"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iconGettingStarted"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_rocket"
+                        app:tint="#F59E0B" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronGettingStarted"
+                        android:layout_toEndOf="@id/iconGettingStarted"
+                        android:fontFamily="sans-serif"
+                        android:text="Getting Started"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
-                        <ImageView
-                            android:id="@+id/iconGettingStarted"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_rocket"
-                            app:tint="#F59E0B"
-                            android:layout_marginEnd="16dp" />
+                    <ImageView
+                        android:id="@+id/chevronGettingStarted"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconGettingStarted"
-                            android:layout_toStartOf="@id/chevronGettingStarted"
-                            android:text="Getting Started"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:fontFamily="sans-serif" />
+                </RelativeLayout>
 
-                        <ImageView
-                            android:id="@+id/chevronGettingStarted"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devider_bg" />
 
-                    </RelativeLayout>
+                <!-- Account Management -->
+                <RelativeLayout
+                    android:id="@+id/btnAccountManagement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/field_middle_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-                    <!-- Account Management -->
-                    <RelativeLayout
-                        android:id="@+id/btnAccountManagement"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iconAccountManagement"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_user"
+                        app:tint="#8B5CF6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronAccountManagement"
+                        android:layout_toEndOf="@id/iconAccountManagement"
+                        android:fontFamily="sans-serif"
+                        android:text="Account Management"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
-                        <ImageView
-                            android:id="@+id/iconAccountManagement"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_user"
-                            app:tint="#8B5CF6"
-                            android:layout_marginEnd="16dp" />
+                    <ImageView
+                        android:id="@+id/chevronAccountManagement"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconAccountManagement"
-                            android:layout_toStartOf="@id/chevronAccountManagement"
-                            android:text="Account Management"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:fontFamily="sans-serif" />
+                </RelativeLayout>
 
-                        <ImageView
-                            android:id="@+id/chevronAccountManagement"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devider_bg" />
 
-                    </RelativeLayout>
+                <!-- Privacy & Security -->
+                <RelativeLayout
+                    android:id="@+id/btnPrivacySecurity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/field_middle_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-                    <!-- Privacy & Security -->
-                    <RelativeLayout
-                        android:id="@+id/btnPrivacySecurity"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iconPrivacySecurity"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_setting_account_privacy"
+                        app:tint="#06B6D4" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronPrivacySecurity"
+                        android:layout_toEndOf="@id/iconPrivacySecurity"
+                        android:fontFamily="sans-serif"
+                        android:text="Privacy &amp; Security"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
-                        <ImageView
-                            android:id="@+id/iconPrivacySecurity"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_setting_account_privacy"
-                            app:tint="#06B6D4"
-                            android:layout_marginEnd="16dp" />
+                    <ImageView
+                        android:id="@+id/chevronPrivacySecurity"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconPrivacySecurity"
-                            android:layout_toStartOf="@id/chevronPrivacySecurity"
-                            android:text="Privacy &amp; Security"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:fontFamily="sans-serif" />
+                </RelativeLayout>
 
-                        <ImageView
-                            android:id="@+id/chevronPrivacySecurity"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devider_bg" />
 
-                    </RelativeLayout>
+                <!-- Posts & Stories -->
+                <RelativeLayout
+                    android:id="@+id/btnPostsStories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/field_middle_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-                    <!-- Posts & Stories -->
-                    <RelativeLayout
-                        android:id="@+id/btnPostsStories"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iconPostsStories"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_about_image"
+                        app:tint="#EC4899" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronPostsStories"
+                        android:layout_toEndOf="@id/iconPostsStories"
+                        android:fontFamily="sans-serif"
+                        android:text="Posts &amp; Stories"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
-                        <ImageView
-                            android:id="@+id/iconPostsStories"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_about_image"
-                            app:tint="#EC4899"
-                            android:layout_marginEnd="16dp" />
+                    <ImageView
+                        android:id="@+id/chevronPostsStories"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconPostsStories"
-                            android:layout_toStartOf="@id/chevronPostsStories"
-                            android:text="Posts &amp; Stories"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:fontFamily="sans-serif" />
+                </RelativeLayout>
 
-                        <ImageView
-                            android:id="@+id/chevronPostsStories"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devider_bg" />
 
-                    </RelativeLayout>
+                <!-- Messages & Notifications -->
+                <RelativeLayout
+                    android:id="@+id/btnMessagesNotifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/field_middle_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-                    <!-- Messages & Notifications -->
-                    <RelativeLayout
-                        android:id="@+id/btnMessagesNotifications"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iconMessagesNotifications"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_message"
+                        app:tint="#F97316" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronMessagesNotifications"
+                        android:layout_toEndOf="@id/iconMessagesNotifications"
+                        android:fontFamily="sans-serif"
+                        android:text="Messages &amp; Notifications"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
-                        <ImageView
-                            android:id="@+id/iconMessagesNotifications"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_message"
-                            app:tint="#F97316"
-                            android:layout_marginEnd="16dp" />
+                    <ImageView
+                        android:id="@+id/chevronMessagesNotifications"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconMessagesNotifications"
-                            android:layout_toStartOf="@id/chevronMessagesNotifications"
-                            android:text="Messages &amp; Notifications"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:fontFamily="sans-serif" />
+                </RelativeLayout>
 
-                        <ImageView
-                            android:id="@+id/chevronMessagesNotifications"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devider_bg" />
 
-                    </RelativeLayout>
+                <!-- Troubleshooting -->
+                <RelativeLayout
+                    android:id="@+id/btnTroubleshooting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/field_bottom_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="18dp">
 
-                    <!-- Troubleshooting -->
-                    <RelativeLayout
-                        android:id="@+id/btnTroubleshooting"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iconTroubleshooting"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_wrench"
+                        app:tint="#14B8A6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="18dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackground">
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/chevronTroubleshooting"
+                        android:layout_toEndOf="@id/iconTroubleshooting"
+                        android:fontFamily="sans-serif"
+                        android:text="Troubleshooting"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
-                        <ImageView
-                            android:id="@+id/iconTroubleshooting"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:src="@drawable/ic_wrench"
-                            app:tint="#14B8A6"
-                            android:layout_marginEnd="16dp" />
+                    <ImageView
+                        android:id="@+id/chevronTroubleshooting"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/iconTroubleshooting"
-                            android:layout_toStartOf="@id/chevronTroubleshooting"
-                            android:text="Troubleshooting"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:fontFamily="sans-serif" />
+                </RelativeLayout>
 
-                        <ImageView
-                            android:id="@+id/chevronTroubleshooting"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#808080" />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
             <!-- FAQs Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingStart="4dp"
                 android:text="Frequently Asked Questions"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp"
-                android:paddingStart="4dp" />
+                android:textStyle="bold" />
 
             <!-- FAQ Item 1 -->
             <androidx.cardview.widget.CardView
@@ -601,12 +616,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                app:cardBackgroundColor="@color/setting_options_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -623,10 +637,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_toStartOf="@id/iconExpand1"
+                            android:fontFamily="sans-serif-medium"
                             android:text="How do I reset my password?"
                             android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:textSize="14sp" />
 
                         <ImageView
                             android:id="@+id/iconExpand1"
@@ -635,7 +649,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_chevron_down"
-                            app:tint="#808080" />
+                            app:tint="#8E8E93" />
 
                     </RelativeLayout>
 
@@ -644,11 +658,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="2dp"
                         android:text="Go to Settings → Account → Change Password. You'll need to enter your current password before setting a new one."
                         android:textColor="#B3B3B3"
                         android:textSize="13sp"
-                        android:lineSpacingExtra="2dp"
-                        android:fontFamily="sans-serif"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -661,12 +675,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                app:cardBackgroundColor="@color/setting_options_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -683,10 +696,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_toStartOf="@id/iconExpand2"
+                            android:fontFamily="sans-serif-medium"
                             android:text="How do I make my account private?"
                             android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:textSize="14sp" />
 
                         <ImageView
                             android:id="@+id/iconExpand2"
@@ -695,7 +708,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_chevron_down"
-                            app:tint="#808080" />
+                            app:tint="#8E8E93" />
 
                     </RelativeLayout>
 
@@ -704,11 +717,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="2dp"
                         android:text="Navigate to Settings → Privacy → Account Privacy and toggle the switch to make your account private."
                         android:textColor="#B3B3B3"
                         android:textSize="13sp"
-                        android:lineSpacingExtra="2dp"
-                        android:fontFamily="sans-serif"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -721,12 +734,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                app:cardBackgroundColor="@color/setting_options_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -743,10 +755,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_toStartOf="@id/iconExpand3"
+                            android:fontFamily="sans-serif-medium"
                             android:text="How do I delete a post?"
                             android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:textSize="14sp" />
 
                         <ImageView
                             android:id="@+id/iconExpand3"
@@ -755,7 +767,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_chevron_down"
-                            app:tint="#808080" />
+                            app:tint="#8E8E93" />
 
                     </RelativeLayout>
 
@@ -764,11 +776,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="2dp"
                         android:text="Tap on the post you want to delete, then tap the three dots (⋯) at the top right corner and select 'Delete'."
                         android:textColor="#B3B3B3"
                         android:textSize="13sp"
-                        android:lineSpacingExtra="2dp"
-                        android:fontFamily="sans-serif"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -781,12 +793,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                app:cardBackgroundColor="@color/setting_options_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -803,10 +814,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_toStartOf="@id/iconExpand4"
+                            android:fontFamily="sans-serif-medium"
                             android:text="Can I recover a deleted account?"
                             android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:textSize="14sp" />
 
                         <ImageView
                             android:id="@+id/iconExpand4"
@@ -815,7 +826,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_chevron_down"
-                            app:tint="#808080" />
+                            app:tint="#8E8E93" />
 
                     </RelativeLayout>
 
@@ -824,11 +835,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="2dp"
                         android:text="You have 30 days to recover your account after deletion. Simply log back in during this period to reactivate it."
                         android:textColor="#B3B3B3"
                         android:textSize="13sp"
-                        android:lineSpacingExtra="2dp"
-                        android:fontFamily="sans-serif"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -841,12 +852,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                app:cardBackgroundColor="@color/setting_options_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -863,10 +873,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_toStartOf="@id/iconExpand5"
+                            android:fontFamily="sans-serif-medium"
                             android:text="How do I block or report someone?"
                             android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:textSize="14sp" />
 
                         <ImageView
                             android:id="@+id/iconExpand5"
@@ -875,7 +885,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_chevron_down"
-                            app:tint="#808080" />
+                            app:tint="#8E8E93" />
 
                     </RelativeLayout>
 
@@ -884,11 +894,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="2dp"
                         android:text="Visit their profile, tap the three dots (⋯) and select 'Block' or 'Report'. Blocked users won't be able to find your profile or contact you."
                         android:textColor="#B3B3B3"
                         android:textSize="13sp"
-                        android:lineSpacingExtra="2dp"
-                        android:fontFamily="sans-serif"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -899,54 +909,54 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#1A1A1A"
+                app:cardBackgroundColor="@color/setting_options_bg"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="24dp"
-                    android:gravity="center">
+                    android:padding="24dp">
 
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        android:layout_marginBottom="16dp"
                         android:src="@drawable/ic_about_customer_care"
-                        app:tint="#6366F1"
-                        android:layout_marginBottom="16dp" />
+                        app:tint="#6366F1" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif-medium"
                         android:text="Still Need Help?"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
-                        android:fontFamily="sans-serif-medium"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="8dp" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Our support team is here to help you 24/7"
-                        android:textColor="#B3B3B3"
-                        android:textSize="14sp"
+                        android:layout_marginBottom="20dp"
                         android:fontFamily="sans-serif"
                         android:gravity="center"
-                        android:layout_marginBottom="20dp" />
+                        android:text="Our support team is here to help you 24/7"
+                        android:textColor="#B3B3B3"
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/btnContactSupportBottom"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:text="Contact Support"
-                        android:textColor="#FFFFFF"
-                        android:textSize="15sp"
-                        android:fontFamily="sans-serif-medium"
                         android:background="@drawable/button_primary"
-                        android:textAllCaps="false" />
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Contact Support"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
