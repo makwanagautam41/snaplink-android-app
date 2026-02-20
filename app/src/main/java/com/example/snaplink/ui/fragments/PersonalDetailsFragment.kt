@@ -15,6 +15,7 @@ class PersonalDetailsFragment : Fragment() {
     private lateinit var contactInfoField: RelativeLayout
     private lateinit var usernameField: RelativeLayout
     private lateinit var dobField: RelativeLayout
+    private lateinit var accountOwnershipField: RelativeLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +32,7 @@ class PersonalDetailsFragment : Fragment() {
         contactInfoField = view.findViewById(R.id.contactInfoField)
         usernameField = view.findViewById(R.id.usernameField)
         dobField = view.findViewById(R.id.dobField)
+        accountOwnershipField = view.findViewById(R.id.accountOwnershipField)
 
         btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -45,6 +47,9 @@ class PersonalDetailsFragment : Fragment() {
         }
         dobField.setOnClickListener {
             (activity as? MainActivity)?.navigateToFragment(ChangeDateOfBirth())
+        }
+        accountOwnershipField.setOnClickListener {
+            (activity as? MainActivity)?.navigateToFragment(AccountOwnershipFragment())
         }
     }
 }
