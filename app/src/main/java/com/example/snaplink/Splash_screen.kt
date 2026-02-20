@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.snaplink.network.TokenManager
+import com.example.snaplink.ui.activities.MainActivity
 
 class Splash_screen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,14 +17,8 @@ class Splash_screen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
         
         Handler(Looper.getMainLooper()).postDelayed({
-            // Check if user is logged in
-            val intent = if (TokenManager.isLoggedIn()) {
-                // User is logged in, navigate to Home
-                Intent(this, HomeActivityKt::class.java)
-            } else {
-                // User is not logged in, navigate to Login
-                Intent(this, LoginActivity::class.java)
-            }
+            // Navigate to single-activity container (auth check handled inside)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }, 3000)

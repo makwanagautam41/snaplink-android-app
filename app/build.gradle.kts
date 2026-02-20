@@ -62,6 +62,9 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    
+    // Fragment KTX for single-activity architecture
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
     // keep version-catalog (libs) dependencies as before
     implementation(libs.androidx.core.ktx)

@@ -19,51 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".ChangeUsername"
-            android:exported="false" />
-        <activity
-            android:name=".PersonalDetails"
-            android:exported="false" />
-        <activity
-            android:name=".ContactInformation"
-            android:exported="false" />
-        <activity
-            android:name=".ChangeMobile"
-            android:exported="false" />
-        <activity
-            android:name=".ChangeEmail"
-            android:exported="false" />
-        <activity
-            android:name=".About"
-            android:exported="false" />
-        <activity
-            android:name=".Help"
-            android:exported="false" />
-        <activity
-            android:name=".Blocked"
-            android:exported="false" />
-        <activity
-            android:name=".CloseFriends"
-            android:exported="false" />
-        <activity
-            android:name=".AccountPrivacy"
-            android:exported="false" />
-        <activity
-            android:name=".Saved"
-            android:exported="false" />
-        <activity
-            android:name=".AccountVerification"
-            android:exported="false" />
-        <activity
-            android:name=".PasswordAndSecurity"
-            android:exported="false" />
-        <activity
-            android:name=".Following"
-            android:exported="false" />
-        <activity
-            android:name=".Followers"
-            android:exported="false" />
+        <!-- Splash screen remains as the LAUNCHER activity -->
         <activity
             android:name=".Splash_screen"
             android:exported="true">
@@ -73,45 +29,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Single Activity container for all fragments -->
         <activity
-            android:name=".Messages"
-            android:exported="false" />
-        <activity
-            android:name=".notifications"
-            android:exported="false" />
-        <activity
-            android:name=".CreatePostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EditProfile"
-            android:exported="false" />
-        <activity
-            android:name=".setting_menu"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".OtherUserProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivityKt"
-            android:exported="false" />
-        <activity
-            android:name=".PostDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ExploreActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
+            android:name=".ui.activities.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
