@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 class PersonalDetails : AppCompatActivity() {
     private lateinit var btnBack: ImageView
     private lateinit var contactInfoField: RelativeLayout
+    private lateinit var usernameField: RelativeLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +20,7 @@ class PersonalDetails : AppCompatActivity() {
 
         btnBack = findViewById(R.id.btnBack)
         contactInfoField = findViewById(R.id.contactInfoField)
+        usernameField = findViewById(R.id.usernameField)
 
         btnBack.setOnClickListener {
             finish()
@@ -26,6 +28,10 @@ class PersonalDetails : AppCompatActivity() {
 
         contactInfoField.setOnClickListener {
             startActivity(Intent(this, ContactInformation::class.java))
+        }
+
+        usernameField.setOnClickListener {
+            startActivity(Intent(this, ChangeUsername::class.java))
         }
     }
 }
