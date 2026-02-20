@@ -20,6 +20,18 @@
         android:theme="@style/Theme.Snaplink"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PersonalDetails"
+            android:exported="false" />
+        <activity
+            android:name=".ContactInformation"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeMobile"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeEmail"
+            android:exported="false" />
+        <activity
             android:name=".About"
             android:exported="false" />
         <activity
@@ -59,16 +71,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".personal_details"
-            android:exported="false" />
-        <activity
             android:name=".Messages"
             android:exported="false" />
         <activity
             android:name=".notifications"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".SearchAndExplore" -->
-        <!-- android:exported="false" /> -->
+            android:exported="false" />
         <activity
             android:name=".CreatePostActivity"
             android:exported="false" />

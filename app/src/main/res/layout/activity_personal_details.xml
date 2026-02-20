@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#000000"
     android:fitsSystemWindows="true"
-    tools:context=".personal_details">
+    tools:context=".PersonalDetails">
 
     <RelativeLayout
         android:id="@+id/topBar"

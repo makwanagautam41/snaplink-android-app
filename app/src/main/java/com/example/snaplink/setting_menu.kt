@@ -79,7 +79,7 @@ class setting_menu : AppCompatActivity() {
         }
 
         personalDetailsLayout.setOnClickListener {
-            val intent = Intent(this, personal_details::class.java)
+            val intent = Intent(this, PersonalDetails::class.java)
             startActivity(intent)
         }
 
