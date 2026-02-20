@@ -14,6 +14,7 @@ class PersonalDetailsFragment : Fragment() {
     private lateinit var btnBack: ImageView
     private lateinit var contactInfoField: RelativeLayout
     private lateinit var usernameField: RelativeLayout
+    private lateinit var dobField: RelativeLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +30,7 @@ class PersonalDetailsFragment : Fragment() {
         btnBack = view.findViewById(R.id.btnBack)
         contactInfoField = view.findViewById(R.id.contactInfoField)
         usernameField = view.findViewById(R.id.usernameField)
+        dobField = view.findViewById(R.id.dobField)
 
         btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -40,6 +42,9 @@ class PersonalDetailsFragment : Fragment() {
 
         usernameField.setOnClickListener {
             (activity as? MainActivity)?.navigateToFragment(ChangeUsernameFragment())
+        }
+        dobField.setOnClickListener {
+            (activity as? MainActivity)?.navigateToFragment(ChangeDateOfBirth())
         }
     }
 }
