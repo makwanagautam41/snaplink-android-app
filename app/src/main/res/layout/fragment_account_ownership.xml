@@ -62,7 +62,7 @@
                 android:layout_marginBottom="20dp"/>
 
             <RelativeLayout
-                android:id="@+id/changePasswordField"
+                android:id="@+id/accountDeactivationField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/field_top_bg"
@@ -94,7 +94,7 @@
                 android:background="@color/devider_bg" />
 
             <RelativeLayout
-                android:id="@+id/twoFactorAuthField"
+                android:id="@+id/accountDeletionField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/field_bottom_bg"
