@@ -60,6 +60,11 @@ class LoginFragment : Fragment() {
             (activity as? MainActivity)?.navigateToFragment(RegisterFragment())
         }
 
+        val tvForgotPassword = view.findViewById<android.widget.TextView>(R.id.tvForgotPassword)
+        tvForgotPassword.setOnClickListener {
+            (activity as? MainActivity)?.navigateToFragment(ForgotPasswordEmailFragment())
+        }
+
         loginBtn.setOnClickListener {
             val identifier = emailOrUsername.text.toString().trim()
             val pass = password.text.toString()

@@ -69,6 +69,12 @@ data class RecentSearchResponse(
     val message: String?
 )
 
+// Forgot Password flow
+data class SendOtpRequest(val email: String)
+data class VerifyOtpRequest(val email: String, val otp: String)
+data class ResetPasswordRequest(val email: String, val otp: String, val newPassword: String)
+data class SimpleApiResponse(val success: Boolean, val message: String)
+
 interface ApiService {
 
     @POST("users/signin")
@@ -76,6 +82,15 @@ interface ApiService {
 
     @POST("users/signup")
     fun register(@Body body: RegisterRequest): Call<ApiResponse>
+
+    @POST("users/send-password-rest-otp")
+    fun sendPasswordResetOtp(@Body body: SendOtpRequest): Call<SimpleApiResponse>
+
+    @POST("users/verify-password-reset-otp")
+    fun verifyPasswordResetOtp(@Body body: VerifyOtpRequest): Call<SimpleApiResponse>
+
+    @POST("users/reset-password")
+    fun resetPassword(@Body body: ResetPasswordRequest): Call<SimpleApiResponse>
 
     @retrofit2.http.GET("users/profile")
     fun getUserDetails(): Call<UserDetailsResponse>
