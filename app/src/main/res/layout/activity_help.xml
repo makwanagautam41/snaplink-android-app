@@ -70,11 +70,11 @@
                     android:padding="14dp">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="21dp"
+                        android:layout_height="19dp"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="12dp"
-                        android:src="@drawable/ic_search"
+                        android:src="@android:drawable/ic_menu_search"
                         app:tint="#808080" />
 
                     <EditText

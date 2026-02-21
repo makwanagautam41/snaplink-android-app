@@ -1,11 +1,13 @@
 package com.example.snaplink.ui.fragments
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.snaplink.R
@@ -85,6 +87,33 @@ class RegisterFragment : Fragment() {
                     Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
+        setupPasswordToggle(view, R.id.password, R.id.toggleRegisterPassword)
+    }
+
+    private fun setupPasswordToggle(view: View, editTextId: Int, toggleId: Int) {
+        val editText = view.findViewById<EditText>(editTextId)
+        val toggle = view.findViewById<ImageView>(toggleId)
+
+        var isVisible = false
+
+        toggle.setOnClickListener {
+            isVisible = !isVisible
+
+            if (isVisible) {
+                editText.inputType =
+                    InputType.TYPE_CLASS_TEXT or
+                            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                toggle.setImageResource(R.drawable.ic_eye)
+            } else {
+                editText.inputType =
+                    InputType.TYPE_CLASS_TEXT or
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD
+                toggle.setImageResource(R.drawable.ic_eye_off)
+            }
+
+            editText.setSelection(editText.text.length)
         }
     }
 }

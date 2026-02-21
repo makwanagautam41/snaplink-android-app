@@ -83,17 +83,35 @@
             android:inputType="text"
             android:layout_marginBottom="14dp" />
 
-        <EditText
-            android:id="@+id/password"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Password"
-            android:padding="14dp"
-            android:inputType="textPassword"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#9CA3AF"
+            android:layout_height="48dp"
             android:background="@drawable/bg_input"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#8E8E93"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
+
+            <ImageView
+                android:id="@+id/toggleRegisterPassword"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_eye_off"
+                android:clickable="true"
+                android:focusable="true"/>
+        </RelativeLayout>
 
         <Button
             android:id="@+id/registerBtn"

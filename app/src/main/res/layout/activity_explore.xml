@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:fitsSystemWindows="true"
-    tools:context=".ExploreActivity">
+    android:fitsSystemWindows="true">
 
     <!-- Search Bar Stub -->
     <LinearLayout
@@ -22,9 +21,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/ic_search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_search"
             app:tint="#8E8E8E" />
 
         <TextView
