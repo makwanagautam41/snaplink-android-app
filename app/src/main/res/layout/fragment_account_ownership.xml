@@ -2,8 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
@@ -11,31 +9,31 @@
 
     <RelativeLayout
         android:id="@+id/topBar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="12dp"
         android:background="#000000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/ic_back"
-            app:tint="#FFFFFF"/>
+            app:tint="#FFFFFF" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Account Ownership"
+            android:text="Password &amp; Security"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 
     <ScrollView
@@ -51,74 +49,83 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Snaplink uses this information to verify your identity and to keep our community safe. You decide what personal details you make visible to others."
+                android:text="Snaplink uses this information to verify your identity and to keep our community safe."
                 android:textColor="#8E8E93"
                 android:textSize="14sp"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="24dp"/>
 
-            <RelativeLayout
-                android:id="@+id/accountDeactivationField"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/field_top_bg"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="16dp"
-                android:clickable="true"
-                android:focusable="true">
+                android:orientation="vertical"
+                android:background="@drawable/rounded_container_bg">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/accountDeactivationField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Account Deactivation"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp" />
+                    android:background="@drawable/field_top_bg"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="#8E8E93" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Account Deactivation"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
-            </RelativeLayout>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
+                </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/devider_bg" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devider_bg" />
 
-            <RelativeLayout
-                android:id="@+id/accountDeletionField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/field_bottom_bg"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="16dp"
-                android:clickable="true"
-                android:focusable="true">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/accountDeletionField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Account Deletion"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp" />
+                    android:background="@drawable/field_bottom_bg"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp"
+                    android:clickable="true"
+                    android:focusable="true">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="#8E8E93" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Account Deletion"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
 
-            </RelativeLayout>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#8E8E93" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
