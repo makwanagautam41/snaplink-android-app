@@ -12,6 +12,7 @@ class FeedAdapter(
     private val posts: List<Post>,
     private val stories: List<StoryKt>,
     private val showStories: Boolean = true,
+    private val onCommentClick: ((String) -> Unit)? = null,
     private val onUserClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -93,6 +94,11 @@ class FeedAdapter(
                 } else {
                     holder.vpPostImages.adapter = null
                     holder.layoutIndicators.visibility = View.GONE
+                }
+
+                // Comment button click
+                holder.ivComment.setOnClickListener {
+                    onCommentClick?.invoke(post._id)
                 }
             }
         }

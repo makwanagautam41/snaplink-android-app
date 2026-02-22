@@ -46,5 +46,6 @@ class PostAdapterKt(private val postList: List<PostKt>) :
         val tvCaptionUsername: TextView = itemView.findViewById(R.id.tvCaptionUsername)
         val tvCaption: TextView = itemView.findViewById(R.id.tvCaption)
         val tvTimeAgo: TextView = itemView.findViewById(R.id.tvTimeAgo)
+        val ivComment: ImageView = itemView.findViewById(R.id.ivComment)
     }
 }

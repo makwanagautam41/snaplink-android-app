@@ -140,7 +140,10 @@ class HomeFragment : Fragment() {
 
     private fun setupFeed() {
         rvFeed.layoutManager = LinearLayoutManager(requireContext())
-        feedAdapter = FeedAdapter(postList, storyList, true) { username ->
+        feedAdapter = FeedAdapter(postList, storyList, true, onCommentClick = { postId ->
+            val fragment = ViewCommentsFragment.newInstance(postId)
+            (activity as? MainActivity)?.navigateToFragment(fragment)
+        }) { username ->
             if (username != "current_user_username_placeholder") {
                 val fragment = OtherUserProfileFragment.newInstance(username)
                 (activity as? MainActivity)?.navigateToFragment(fragment)
