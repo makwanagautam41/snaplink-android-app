@@ -59,8 +59,8 @@ data class SettingsUser(
 )
 
 // Request/Response models for settings update operations
-data class UpdateEmailRequest(val newEmail: String)
-data class UpdatePhoneRequest(val newPhone: String)
+data class UpdateEmailRequest(val email: String)
+data class UpdatePhoneRequest(val phone: String)
 data class ChangeUsernameRequest(val newUsername: String)
 data class UpdateProfileVisibilityRequest(val profileVisibility: String)
 
