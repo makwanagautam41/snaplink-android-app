@@ -88,6 +88,15 @@ data class VerifyOtpRequest(val email: String, val otp: String)
 data class ResetPasswordRequest(val email: String, val otp: String, val newPassword: String)
 data class SimpleApiResponse(val success: Boolean, val message: String)
 
+// Account Deactivation/Deletion
+data class DeactivateAccountRequest(val password: String, val reason: String? = null)
+data class DeleteAccountRequest(val password: String, val reason: String? = null)
+
+// Reactivation/Cancel Deletion
+data class ReactivateRequest(val username: String, val email: String, val password: String)
+data class VerifyReactivateOtpRequest(val email: String, val otp: String)
+data class CancelDeletionRequest(val username: String, val email: String, val password: String, val confirmCancel: Boolean)
+
 interface ApiService {
 
     @POST("users/signin")
@@ -178,4 +187,19 @@ interface ApiService {
 
     @retrofit2.http.PUT("users/update-password")
     fun updatePassword(@Body body: ChangePasswordRequest): Call<ChangePasswordResponse>
+
+    @POST("users/deactivate-account")
+    fun deactivateAccount(@Body body: DeactivateAccountRequest): Call<SimpleApiResponse>
+
+    @POST("users/delete-account")
+    fun deleteAccount(@Body body: DeleteAccountRequest): Call<SimpleApiResponse>
+
+    @POST("users/send-reactivate-account-otp")
+    fun sendReactivateAccountOtp(@Body body: ReactivateRequest): Call<SimpleApiResponse>
+
+    @POST("users/verify-otp-and-reactivate-account")
+    fun verifyReactivateAccountOtp(@Body body: VerifyReactivateOtpRequest): Call<SimpleApiResponse>
+
+    @POST("users/cancel-account-deletion")
+    fun cancelAccountDeletion(@Body body: CancelDeletionRequest): Call<SimpleApiResponse>
 }

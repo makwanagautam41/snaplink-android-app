@@ -103,7 +103,16 @@ class LoginFragment : Fragment() {
                             if (errorBody != null && errorBody.contains("message")) {
                                 val match = "\"message\":\"(.*?)\"".toRegex().find(errorBody)
                                 val msg = match?.groupValues?.get(1) ?: "Login Failed"
-                                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                                
+                                if (msg.contains("deactivated", ignoreCase = true)) {
+                                    Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+                                    (activity as? MainActivity)?.navigateToFragment(ReactivateAccountFragment())
+                                } else if (msg.contains("deletion", ignoreCase = true)) {
+                                    Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+                                    (activity as? MainActivity)?.navigateToFragment(CancelAccountDeletionFragment())
+                                } else {
+                                    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                                }
                             } else {
                                 Toast.makeText(requireContext(), "Login Failed: ${response.code()}", Toast.LENGTH_SHORT).show()
                             }
