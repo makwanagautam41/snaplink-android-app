@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -43,7 +42,6 @@ class ForgotPasswordNewPasswordFragment :
         val etNewPassword = view.findViewById<EditText>(R.id.etNewPassword)
         val togglePassword = view.findViewById<ImageView>(R.id.toggleResetPassword)
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
-        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
         val tvError = view.findViewById<TextView>(R.id.tvError)
         val tvSuccess = view.findViewById<TextView>(R.id.tvSuccess)
 
@@ -106,11 +104,11 @@ class ForgotPasswordNewPasswordFragment :
                 return@setOnClickListener
             }
 
-            // Show loading
-            progressBar.visibility = View.VISIBLE
+            // Disable button and show submitting text
             tvError.visibility = View.GONE
             tvSuccess.visibility = View.GONE
             btnSubmit.isEnabled = false
+            btnSubmit.text = "Submitting..."
 
             ApiClient.api.resetPassword(ResetPasswordRequest(email, otp, newPassword))
                 .enqueue(object : Callback<SimpleApiResponse> {
@@ -119,7 +117,7 @@ class ForgotPasswordNewPasswordFragment :
                         response: Response<SimpleApiResponse>
                     ) {
                         if (!isAdded) return
-                        progressBar.visibility = View.GONE
+                        btnSubmit.text = "Submit"
 
                         if (response.isSuccessful) {
                             val body = response.body()
@@ -159,8 +157,8 @@ class ForgotPasswordNewPasswordFragment :
 
                     override fun onFailure(call: Call<SimpleApiResponse>, t: Throwable) {
                         if (!isAdded) return
-                        progressBar.visibility = View.GONE
                         btnSubmit.isEnabled = true
+                        btnSubmit.text = "Submit"
                         tvError.visibility = View.VISIBLE
                         tvError.text = "Network error: ${t.message}"
                     }

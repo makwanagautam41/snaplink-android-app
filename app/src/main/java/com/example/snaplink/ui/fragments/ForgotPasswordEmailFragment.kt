@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.snaplink.R
@@ -28,7 +27,6 @@ class ForgotPasswordEmailFragment : Fragment(R.layout.fragment_forgot_password_e
         val btnBack = view.findViewById<ImageView>(R.id.btnBack)
         val etEmail = view.findViewById<EditText>(R.id.etEmail)
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
-        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
         val tvMessage = view.findViewById<TextView>(R.id.tvMessage)
 
         // Back button
@@ -70,10 +68,10 @@ class ForgotPasswordEmailFragment : Fragment(R.layout.fragment_forgot_password_e
                 return@setOnClickListener
             }
 
-            // Show loading, hide messages, disable button
-            progressBar.visibility = View.VISIBLE
+            // Disable button and show submitting text
             tvMessage.visibility = View.GONE
             btnSubmit.isEnabled = false
+            btnSubmit.text = "Submitting..."
 
             ApiClient.api.sendPasswordResetOtp(SendOtpRequest(email))
                 .enqueue(object : Callback<SimpleApiResponse> {
@@ -82,8 +80,8 @@ class ForgotPasswordEmailFragment : Fragment(R.layout.fragment_forgot_password_e
                         response: Response<SimpleApiResponse>
                     ) {
                         if (!isAdded) return
-                        progressBar.visibility = View.GONE
                         btnSubmit.isEnabled = true
+                        btnSubmit.text = "Submit"
 
                         if (response.isSuccessful) {
                             val body = response.body()
@@ -110,8 +108,8 @@ class ForgotPasswordEmailFragment : Fragment(R.layout.fragment_forgot_password_e
 
                     override fun onFailure(call: Call<SimpleApiResponse>, t: Throwable) {
                         if (!isAdded) return
-                        progressBar.visibility = View.GONE
                         btnSubmit.isEnabled = true
+                        btnSubmit.text = "Submit"
                         showMessage(
                             tvMessage,
                             "Network error: ${t.message}",

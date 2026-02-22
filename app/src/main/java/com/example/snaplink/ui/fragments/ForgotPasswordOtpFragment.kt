@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.snaplink.R
@@ -38,7 +37,6 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
 
         val btnBack = view.findViewById<ImageView>(R.id.btnBack)
         val btnVerifyOtp = view.findViewById<Button>(R.id.btnVerifyOtp)
-        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
         val tvError = view.findViewById<TextView>(R.id.tvError)
         val tvResend = view.findViewById<TextView>(R.id.tvResend)
         val tvOtpSent = view.findViewById<TextView>(R.id.tvOtpSent)
@@ -69,7 +67,7 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
         // Resend OTP click
         tvResend.setOnClickListener {
             if (tvResend.text == "Resend OTP") {
-                resendOtp(tvResend, tvOtpSent, tvError, progressBar)
+                resendOtp(tvResend, tvOtpSent, tvError)
             }
         }
 
@@ -84,11 +82,11 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
                 return@setOnClickListener
             }
 
-            // Show loading
-            progressBar.visibility = View.VISIBLE
+            // Disable button and show verifying text
             tvError.visibility = View.GONE
             tvOtpSent.visibility = View.GONE
             btnVerifyOtp.isEnabled = false
+            btnVerifyOtp.text = "Verifying..."
 
             ApiClient.api.verifyPasswordResetOtp(VerifyOtpRequest(email, otp))
                 .enqueue(object : Callback<SimpleApiResponse> {
@@ -97,8 +95,8 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
                         response: Response<SimpleApiResponse>
                     ) {
                         if (!isAdded) return
-                        progressBar.visibility = View.GONE
                         btnVerifyOtp.isEnabled = true
+                        btnVerifyOtp.text = "Verify OTP"
 
                         if (response.isSuccessful) {
                             val body = response.body()
@@ -127,8 +125,8 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
 
                     override fun onFailure(call: Call<SimpleApiResponse>, t: Throwable) {
                         if (!isAdded) return
-                        progressBar.visibility = View.GONE
                         btnVerifyOtp.isEnabled = true
+                        btnVerifyOtp.text = "Verify OTP"
                         tvError.visibility = View.VISIBLE
                         tvError.text = "Network error: ${t.message}"
                     }
@@ -207,11 +205,10 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
     private fun resendOtp(
         tvResend: TextView,
         tvOtpSent: TextView,
-        tvError: TextView,
-        progressBar: ProgressBar
+        tvError: TextView
     ) {
-        progressBar.visibility = View.VISIBLE
         tvError.visibility = View.GONE
+        tvResend.text = "Sending..."
 
         ApiClient.api.sendPasswordResetOtp(SendOtpRequest(email))
             .enqueue(object : Callback<SimpleApiResponse> {
@@ -220,13 +217,13 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
                     response: Response<SimpleApiResponse>
                 ) {
                     if (!isAdded) return
-                    progressBar.visibility = View.GONE
 
                     if (response.isSuccessful && response.body()?.success == true) {
                         tvOtpSent.visibility = View.VISIBLE
                         tvOtpSent.text = "OTP has been resent to your email address"
                         startResendTimer(tvResend)
                     } else {
+                        tvResend.text = "Resend OTP"
                         val body = response.body()
                         tvError.visibility = View.VISIBLE
                         tvError.text = body?.message ?: "Failed to resend OTP"
@@ -235,7 +232,7 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
 
                 override fun onFailure(call: Call<SimpleApiResponse>, t: Throwable) {
                     if (!isAdded) return
-                    progressBar.visibility = View.GONE
+                    tvResend.text = "Resend OTP"
                     tvError.visibility = View.VISIBLE
                     tvError.text = "Network error: ${t.message}"
                 }

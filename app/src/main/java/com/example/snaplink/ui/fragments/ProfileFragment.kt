@@ -378,7 +378,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun removeProfileImage() {
-        Toast.makeText(requireContext(), "Removing profile image...", Toast.LENGTH_SHORT).show()
 
         ApiClient.api.removeProfileImage().enqueue(object : Callback<ImageUpdateResponse> {
             override fun onResponse(call: Call<ImageUpdateResponse>, response: Response<ImageUpdateResponse>) {
@@ -411,7 +410,6 @@ class ProfileFragment : Fragment() {
             val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
             val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
-            Toast.makeText(requireContext(), "Updating profile image...", Toast.LENGTH_SHORT).show()
 
             ApiClient.api.updateProfileImage(body).enqueue(object : Callback<ImageUpdateResponse> {
                 override fun onResponse(call: Call<ImageUpdateResponse>, response: Response<ImageUpdateResponse>) {
