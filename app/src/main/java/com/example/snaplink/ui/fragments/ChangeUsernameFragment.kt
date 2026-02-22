@@ -1,6 +1,7 @@
 package com.example.snaplink.ui.fragments
 
 import android.os.Bundle
+import org.json.JSONObject
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,7 +109,13 @@ class ChangeUsernameFragment : Fragment() {
                     etNewUsername.text.clear()
                 } else {
                     val errorMsg = try {
-                        response.errorBody()?.string() ?: "Failed to update username"
+                        val errorBody = response.errorBody()?.string()
+                        if (errorBody != null) {
+                            val json = JSONObject(errorBody)
+                            json.optString("message", "Failed to update username")
+                        } else {
+                            "Failed to update username"
+                        }
                     } catch (e: Exception) {
                         "Failed to update username"
                     }

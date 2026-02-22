@@ -1,6 +1,7 @@
 package com.example.snaplink.ui.fragments
 
 import android.os.Bundle
+import org.json.JSONObject
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -103,7 +104,13 @@ class ChangeMobileFragment : Fragment() {
                     etNewMobile.text.clear()
                 } else {
                     val errorMsg = try {
-                        response.errorBody()?.string() ?: "Failed to update mobile"
+                        val errorBody = response.errorBody()?.string()
+                        if (errorBody != null) {
+                            val json = JSONObject(errorBody)
+                            json.optString("message", "Failed to update mobile")
+                        } else {
+                            "Failed to update mobile"
+                        }
                     } catch (e: Exception) {
                         "Failed to update mobile"
                     }

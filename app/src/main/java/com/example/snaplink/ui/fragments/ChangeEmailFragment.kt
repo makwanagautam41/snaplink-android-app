@@ -1,6 +1,7 @@
 package com.example.snaplink.ui.fragments
 
 import android.os.Bundle
+import org.json.JSONObject
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -104,7 +105,13 @@ class ChangeEmailFragment : Fragment() {
                     etNewEmail.text.clear()
                 } else {
                     val errorMsg = try {
-                        response.errorBody()?.string() ?: "Failed to update email"
+                        val errorBody = response.errorBody()?.string()
+                        if (errorBody != null) {
+                            val json = JSONObject(errorBody)
+                            json.optString("message", "Failed to update email")
+                        } else {
+                            "Failed to update email"
+                        }
                     } catch (e: Exception) {
                         "Failed to update email"
                     }
