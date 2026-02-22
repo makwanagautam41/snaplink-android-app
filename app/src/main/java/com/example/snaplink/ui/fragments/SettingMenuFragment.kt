@@ -1,17 +1,24 @@
 package com.example.snaplink.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.snaplink.R
+import com.example.snaplink.models.SettingsResponse
 import com.example.snaplink.network.ApiClient
+import com.example.snaplink.network.SettingsManager
 import com.example.snaplink.network.TokenManager
 import com.example.snaplink.ui.activities.MainActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SettingMenuFragment : Fragment() {
 
@@ -42,6 +49,7 @@ class SettingMenuFragment : Fragment() {
         try {
             initViews(view)
             setupListeners()
+            fetchUserSettings()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(requireContext(), "Error initializing settings", Toast.LENGTH_SHORT).show()
@@ -109,7 +117,35 @@ class SettingMenuFragment : Fragment() {
         }
     }
 
+    /**
+     * Fetches all user settings from /users/settings and caches them in SettingsManager.
+     * This is called every time the settings page is opened.
+     */
+    private fun fetchUserSettings() {
+        ApiClient.api.getUserSettings().enqueue(object : Callback<SettingsResponse> {
+            override fun onResponse(call: Call<SettingsResponse>, response: Response<SettingsResponse>) {
+                if (!isAdded) return
+
+                if (response.isSuccessful && response.body()?.success == true) {
+                    val settings = response.body()!!.settings
+                    SettingsManager.setSettings(settings)
+                    Log.d("SettingMenuFragment", "Settings fetched and cached successfully")
+                } else {
+                    Log.e("SettingMenuFragment", "Failed to fetch settings: ${response.code()}")
+                    Toast.makeText(requireContext(), "Failed to load settings", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<SettingsResponse>, t: Throwable) {
+                if (!isAdded) return
+                Log.e("SettingMenuFragment", "Error fetching settings", t)
+                Toast.makeText(requireContext(), "Network error loading settings", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun performLogout() {
+        SettingsManager.clearSettings()
         ApiClient.clearAuth()
         (activity as? MainActivity)?.navigateWithClearStack(LoginFragment())
     }

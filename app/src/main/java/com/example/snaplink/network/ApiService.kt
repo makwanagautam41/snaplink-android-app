@@ -1,9 +1,15 @@
 package com.example.snaplink.network
 
+import com.example.snaplink.models.ChangeUsernameRequest
 import com.example.snaplink.models.CreatePostResponse
 import com.example.snaplink.models.FeedResponse
 import com.example.snaplink.models.MyPostResponse
 import com.example.snaplink.models.NotificationResponse
+import com.example.snaplink.models.SettingsResponse
+import com.example.snaplink.models.SettingsUpdateResponse
+import com.example.snaplink.models.UpdateEmailRequest
+import com.example.snaplink.models.UpdatePhoneRequest
+import com.example.snaplink.models.UpdateProfileVisibilityRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -143,4 +149,20 @@ interface ApiService {
 
     @retrofit2.http.POST("users/follow/reject/{username}")
     fun rejectFollowRequest(@retrofit2.http.Path("username") username: String): Call<ApiResponse>
+
+    // Settings endpoints
+    @retrofit2.http.GET("users/settings")
+    fun getUserSettings(): Call<SettingsResponse>
+
+    @retrofit2.http.PUT("users/update-email")
+    fun updateEmail(@Body body: UpdateEmailRequest): Call<SettingsUpdateResponse>
+
+    @retrofit2.http.PUT("users/update-phone")
+    fun updatePhone(@Body body: UpdatePhoneRequest): Call<SettingsUpdateResponse>
+
+    @retrofit2.http.PUT("users/change-username")
+    fun changeUsername(@Body body: ChangeUsernameRequest): Call<SettingsUpdateResponse>
+
+    @retrofit2.http.POST("users/update-profile-visibility")
+    fun updateProfileVisibility(@Body body: UpdateProfileVisibilityRequest): Call<SettingsUpdateResponse>
 }

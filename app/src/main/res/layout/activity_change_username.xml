@@ -47,6 +47,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Current Username Display -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Username"
+            android:textColor="#8E8E93"
+            android:textSize="13sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvCurrentUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="sans-serif-medium"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,18 +75,26 @@
             android:layout_marginBottom="8dp"/>
 
         <EditText
-            android:id="@+id/etNewEmail"
+            android:id="@+id/etNewUsername"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/bg_input"
             android:hint="username"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:textColor="#FFFFFF"
             android:textColorHint="#8E8E93"
             android:paddingHorizontal="12dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Username can only contain letters, numbers, dots and underscores. Minimum 3 characters."
+            android:textColor="#6B7280"
+            android:textSize="12sp"
+            android:layout_marginTop="8dp"/>
+
         <Button
-            android:id="@+id/btnUpdateEmail"
+            android:id="@+id/btnUpdateUsername"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="24dp"
