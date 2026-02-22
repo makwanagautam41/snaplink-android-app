@@ -1,6 +1,8 @@
 package com.example.snaplink.network
 
 import com.example.snaplink.models.ChangeUsernameRequest
+import com.example.snaplink.models.ChangePasswordRequest
+import com.example.snaplink.models.ChangePasswordResponse
 import com.example.snaplink.models.CreatePostResponse
 import com.example.snaplink.models.FeedResponse
 import com.example.snaplink.models.MyPostResponse
@@ -173,4 +175,7 @@ interface ApiService {
 
     @retrofit2.http.PUT("users/change-date-of-birth")
     fun updateDob(@Body body: UpdateDobRequest): Call<SettingsUpdateResponse>
+
+    @retrofit2.http.PUT("users/update-password")
+    fun updatePassword(@Body body: ChangePasswordRequest): Call<ChangePasswordResponse>
 }

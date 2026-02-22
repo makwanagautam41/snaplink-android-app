@@ -64,6 +64,13 @@ data class UpdatePhoneRequest(val phone: String)
 data class ChangeUsernameRequest(val newUsername: String)
 data class UpdateProfileVisibilityRequest(val profileVisibility: String)
 data class UpdateDobRequest(val newDateOfBirth: String)
+data class ChangePasswordRequest(val oldPassword: String, val newPassword: String)
+
+data class ChangePasswordResponse(
+    val success: Boolean,
+    val message: String,
+    val token: String? = null
+)
 
 data class SettingsUpdateResponse(
     val success: Boolean,
