@@ -85,4 +85,15 @@ object SettingsManager {
             )
         }
     }
+
+    /**
+     * Update cached date of birth after a successful API call
+     */
+    fun updateCachedDateOfBirth(newDob: String) {
+        cachedSettings?.let {
+            cachedSettings = it.copy(
+                profile = it.profile.copy(dateOfBirth = newDob)
+            )
+        }
+    }
 }

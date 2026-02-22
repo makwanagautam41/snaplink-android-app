@@ -225,7 +225,12 @@ class ProfileFragment : Fragment() {
 
                     if (response.isSuccessful) {
                         val user = response.body()?.user
-                        user?.let {
+                        if (user == null) {
+                            Log.e("ProfileFragment", "Response was successful but user is null. Raw: ${response.errorBody()?.string()}")
+                            Toast.makeText(requireContext(), "Failed to parse profile", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+                        user.let {
                             tvName.text = it.name
                             tvUsernameTitle.text = it.username
                             tvEmail.text = it.email
@@ -253,12 +258,15 @@ class ProfileFragment : Fragment() {
                     } else if (response.code() == 401) {
                         performLogout()
                     } else {
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("ProfileFragment", "Failed to load profile: ${response.code()} - $errorBody")
                         Toast.makeText(requireContext(), "Failed to load profile", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
                     if (!isAdded) return
+                    Log.e("ProfileFragment", "Network error loading profile", t)
                     Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
@@ -267,6 +275,7 @@ class ProfileFragment : Fragment() {
             Toast.makeText(requireContext(), "Error connecting to server", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun performLogout() {
         ApiClient.clearAuth()

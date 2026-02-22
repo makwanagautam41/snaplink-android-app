@@ -63,8 +63,14 @@ data class UpdateEmailRequest(val email: String)
 data class UpdatePhoneRequest(val phone: String)
 data class ChangeUsernameRequest(val newUsername: String)
 data class UpdateProfileVisibilityRequest(val profileVisibility: String)
+data class UpdateDobRequest(val newDateOfBirth: String)
 
 data class SettingsUpdateResponse(
     val success: Boolean,
-    val message: String
+    val message: String,
+    val user: UpdatedUserDob? = null
+)
+
+data class UpdatedUserDob(
+    val dateOfBirth: String?
 )

@@ -7,6 +7,7 @@ import com.example.snaplink.models.MyPostResponse
 import com.example.snaplink.models.NotificationResponse
 import com.example.snaplink.models.SettingsResponse
 import com.example.snaplink.models.SettingsUpdateResponse
+import com.example.snaplink.models.UpdateDobRequest
 import com.example.snaplink.models.UpdateEmailRequest
 import com.example.snaplink.models.UpdatePhoneRequest
 import com.example.snaplink.models.UpdateProfileVisibilityRequest
@@ -41,7 +42,11 @@ data class User(
     val bio: String?,
     val followers: List<FollowerUser>?,
     val following: List<FollowerUser>?,
-    val followRequests: List<FollowerUser>?,
+    val followRequests: List<String>?,
+    val closeFriends: List<String>?,
+    val blocked: List<FollowerUser>?,
+    val savedPosts: List<String>?,
+    val dateOfBirth: String?,
     val postCount: Int?,
     val isPrivate: Boolean? = false,
     val isFollowing: Boolean? = false,
@@ -165,4 +170,7 @@ interface ApiService {
 
     @retrofit2.http.POST("users/update-profile-visibility")
     fun updateProfileVisibility(@Body body: UpdateProfileVisibilityRequest): Call<SettingsUpdateResponse>
+
+    @retrofit2.http.PUT("users/change-date-of-birth")
+    fun updateDob(@Body body: UpdateDobRequest): Call<SettingsUpdateResponse>
 }

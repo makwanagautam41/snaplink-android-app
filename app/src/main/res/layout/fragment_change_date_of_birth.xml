@@ -50,26 +50,110 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter New Date Of Bith"
+            android:text="Enter New Date Of Birth"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/etNewEmail"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_input"
-            android:hint="04/01/2006"
-            android:inputType="date"
-            android:focusable="false"
-            android:clickable="true"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#8E8E93"
-            android:paddingHorizontal="12dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Day -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginEnd="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Day"
+                    android:textColor="#8E8E93"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/etDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_input"
+                    android:hint="DD"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:gravity="center"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#8E8E93"
+                    android:paddingHorizontal="8dp"/>
+            </LinearLayout>
+
+            <!-- Month -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Month"
+                    android:textColor="#8E8E93"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/etMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_input"
+                    android:hint="MM"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:gravity="center"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#8E8E93"
+                    android:paddingHorizontal="8dp"/>
+            </LinearLayout>
+
+            <!-- Year -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Year"
+                    android:textColor="#8E8E93"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/etYear"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_input"
+                    android:hint="YYYY"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:gravity="center"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#8E8E93"
+                    android:paddingHorizontal="8dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btnUpdateEmail"
+            android:id="@+id/btnUpdateDob"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="24dp"
