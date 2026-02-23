@@ -11,7 +11,9 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -19,8 +21,10 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
             android:src="@drawable/ic_back"
-            app:tint="#FFFFFF"/>
+            android:contentDescription="Back"
+            app:tint="#FFFFFF" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,8 +32,9 @@
             android:layout_centerInParent="true"
             android:text="Account Status"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
     </RelativeLayout>
     <ScrollView
         android:layout_width="0dp"
@@ -89,6 +94,7 @@
                 android:layout_marginBottom="36dp"/>
 
             <LinearLayout
+                android:id="@+id/btnRemovedContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -124,6 +130,7 @@
                     app:tint="#8E8E93"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/btnAvailabilityUnder18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -159,6 +166,7 @@
                     app:tint="#8E8E93"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/btnFeaturesCantUse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

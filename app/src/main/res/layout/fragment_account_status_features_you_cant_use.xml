@@ -8,13 +8,13 @@
     android:background="#000000"
     android:fitsSystemWindows="true">
 
-    <!-- Top Bar -->
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:paddingHorizontal="12dp"
-        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -24,16 +24,16 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:src="@drawable/ic_back"
+            android:contentDescription="Back"
             app:tint="#FFFFFF" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Saved"
+            android:text="Features you can't use"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:fontFamily="sans-serif-medium"
             android:textStyle="bold" />
 
     </RelativeLayout>

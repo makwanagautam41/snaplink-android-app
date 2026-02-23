@@ -58,6 +58,18 @@ class AccountStatusFragment : Fragment() {
     private fun setupVerifiedUI(view: View) {
         val tvUsername: TextView = view.findViewById(R.id.tvUsername)
         tvUsername.text = SettingsManager.getUsername() ?: "_user"
+
+        view.findViewById<View>(R.id.btnRemovedContent).setOnClickListener {
+            (activity as? MainActivity)?.navigateToFragment(AccountStatusCommunityFragment())
+        }
+
+        view.findViewById<View>(R.id.btnAvailabilityUnder18).setOnClickListener {
+            (activity as? MainActivity)?.navigateToFragment(AccountStatusAvailabilityToUnder18Fragment())
+        }
+
+        view.findViewById<View>(R.id.btnFeaturesCantUse).setOnClickListener {
+            (activity as? MainActivity)?.navigateToFragment(AccountStatusFeaturesYouCantUseFragment())
+        }
     }
 
     private fun loadProfileImage(view: View) {
