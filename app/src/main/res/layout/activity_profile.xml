@@ -8,10 +8,10 @@
     android:fitsSystemWindows="true">
 
     <RelativeLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingHorizontal="12dp">
 
         <ImageView
             android:id="@+id/btnBack"
@@ -20,6 +20,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_back"
+            android:contentDescription="Back"
             app:tint="#FFFFFF" />
 
         <TextView
@@ -29,7 +30,7 @@
             android:layout_centerInParent="true"
             android:text="username"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -39,6 +40,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/setting_menu"
+            android:contentDescription="Settings"
             app:tint="#FFFFFF" />
 
     </RelativeLayout>
