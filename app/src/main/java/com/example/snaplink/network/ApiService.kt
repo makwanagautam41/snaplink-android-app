@@ -97,6 +97,10 @@ data class ReactivateRequest(val username: String, val email: String, val passwo
 data class VerifyReactivateOtpRequest(val email: String, val otp: String)
 data class CancelDeletionRequest(val username: String, val email: String, val password: String, val confirmCancel: Boolean)
 
+// Verify User
+data class VerifyUserRequest(val otp: String)
+
+
 interface ApiService {
 
     @POST("users/signin")
@@ -202,4 +206,11 @@ interface ApiService {
 
     @POST("users/cancel-account-deletion")
     fun cancelAccountDeletion(@Body body: CancelDeletionRequest): Call<SimpleApiResponse>
+
+    @POST("users/send-verify-user-otp")
+    fun sendVerifyUserOtp(): Call<SimpleApiResponse>
+
+    @POST("users/verify-user")
+    fun verifyUser(@Body body: VerifyUserRequest): Call<SimpleApiResponse>
 }
+

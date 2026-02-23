@@ -182,7 +182,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/accountVerificationLayout"
+                android:id="@+id/accountStatusLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -206,7 +206,7 @@
                     android:layout_marginStart="16dp">
 
                     <TextView
-                        android:text="Account Verification"
+                        android:text="Account Status"
                         android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"

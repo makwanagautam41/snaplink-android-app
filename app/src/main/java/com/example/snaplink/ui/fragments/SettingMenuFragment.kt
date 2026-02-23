@@ -26,7 +26,7 @@ class SettingMenuFragment : Fragment() {
     private lateinit var layoutLogout: LinearLayout
     private lateinit var personalDetailsLayout: LinearLayout
     private lateinit var passwordAndSecurity: LinearLayout
-    private lateinit var accountVerificationLayout: LinearLayout
+    private lateinit var accountStatusLayout: LinearLayout
     private lateinit var saved: LinearLayout
     private lateinit var notifactions: LinearLayout
     private lateinit var accountPrivacy: LinearLayout
@@ -61,7 +61,7 @@ class SettingMenuFragment : Fragment() {
         layoutLogout = view.findViewById(R.id.layoutLogout)
         personalDetailsLayout = view.findViewById(R.id.personalDetailsLayout)
         passwordAndSecurity = view.findViewById(R.id.passwordAndSecurity)
-        accountVerificationLayout = view.findViewById(R.id.accountVerificationLayout)
+        accountStatusLayout = view.findViewById(R.id.accountStatusLayout)
         saved = view.findViewById(R.id.saved)
         notifactions = view.findViewById(R.id.notifactions)
         accountPrivacy = view.findViewById(R.id.accountPrivacy)
@@ -84,8 +84,8 @@ class SettingMenuFragment : Fragment() {
             (activity as? MainActivity)?.navigateToFragment(PasswordAndSecurityFragment())
         }
 
-        accountVerificationLayout.setOnClickListener {
-            (activity as? MainActivity)?.navigateToFragment(AccountVerificationFragment())
+        accountStatusLayout.setOnClickListener {
+            (activity as? MainActivity)?.navigateToFragment(AccountStatusFragment())
         }
 
         saved.setOnClickListener {

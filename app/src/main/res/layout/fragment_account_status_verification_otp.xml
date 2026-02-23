@@ -28,9 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Account Verification"
+            android:text="Verify Account"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"/>
     </RelativeLayout>
 
@@ -39,8 +39,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="28dp"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -49,35 +49,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter the OTP sent to your email to verify your account and unlock all features."
-            android:textColor="#4F6DFF"
-            android:textSize="14sp"
-            android:layout_marginBottom="28dp"/>
+            android:text="We have sent a 6-digit verification code to your email. Please enter it below to verify your account."
+            android:textColor="#CFCFCF"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="36dp"/>
 
-        <!-- Section Title -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="18dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Enter OTP Sent to Your Email"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:textStyle="bold"/>
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:background="#3A3A3C"/>
-        </LinearLayout>
-
-        <!-- OTP Boxes -->
+        <!-- OTP Container -->
         <LinearLayout
             android:id="@+id/otpContainer"
             android:layout_width="match_parent"
@@ -108,53 +87,32 @@
 
             <EditText
                 android:id="@+id/otp6"
-                style="@style/OtpBoxStyle"/>
+                style="@style/OtpBoxStyle"
+                android:layout_marginEnd="0dp"/>
         </LinearLayout>
 
         <!-- Verify Button -->
         <Button
-            android:id="@+id/btnVerifyAccount"
+            android:id="@+id/btnVerify"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Verify Account"
+            android:text="Verify Now"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:backgroundTint="#2563EB"/>
+            android:backgroundTint="#2563EB"
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Error Message -->
+        <!-- Resend OTP -->
         <TextView
-            android:id="@+id/tvError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#FF3B30"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:layout_marginTop="14dp"
-            android:visibility="gone"/>
-
-        <!-- Resend -->
-        <TextView
-            android:id="@+id/tvResend"
+            android:id="@+id/tvResendOtp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Resend in 30s"
+            android:text="Didn't receive code? Resend"
             android:textColor="#4F6DFF"
             android:textSize="14sp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"/>
-
-        <!-- Success -->
-        <TextView
-            android:id="@+id/tvSuccess"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Your account has been verified successfully."
-            android:textColor="#00C853"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"/>
+            android:layout_gravity="center_horizontal"
+            android:padding="8dp"/>
 
     </LinearLayout>
 

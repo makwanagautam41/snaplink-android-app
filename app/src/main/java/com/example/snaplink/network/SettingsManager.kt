@@ -96,4 +96,15 @@ object SettingsManager {
             )
         }
     }
+
+    /**
+     * Update cached verification status after a successful API call
+     */
+    fun updateCachedVerifiedStatus(isVerified: Boolean) {
+        cachedSettings?.let {
+            cachedSettings = it.copy(
+                account = it.account.copy(isVerified = isVerified)
+            )
+        }
+    }
 }
