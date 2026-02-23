@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.snaplink.R
 import com.example.snaplink.ui.activities.MainActivity
 import com.example.snaplink.network.ApiClient
@@ -46,6 +47,7 @@ class AccountStatusFragment : Fragment() {
             } else {
                 setupUnverifiedUI(view)
             }
+            loadProfileImage(view)
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(requireContext(), "Error initializing views", Toast.LENGTH_SHORT).show()
@@ -56,8 +58,21 @@ class AccountStatusFragment : Fragment() {
     private fun setupVerifiedUI(view: View) {
         val tvUsername: TextView = view.findViewById(R.id.tvUsername)
         tvUsername.text = SettingsManager.getUsername() ?: "_user"
-        // Note: Image is already set to img_current_user in XML as requested, 
-        // but we could also load profile image from SettingsManager if needed.
+    }
+
+    private fun loadProfileImage(view: View) {
+        val ivUserProfile: ImageView? = view.findViewById(R.id.ivUserProfile)
+        val imageUrl = SettingsManager.getProfileImg()
+        
+        ivUserProfile?.let {
+            if (!imageUrl.isNullOrEmpty()) {
+                Glide.with(this)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.img_current_user)
+                    .circleCrop()
+                    .into(it)
+            }
+        }
     }
 
     private fun setupUnverifiedUI(view: View) {
