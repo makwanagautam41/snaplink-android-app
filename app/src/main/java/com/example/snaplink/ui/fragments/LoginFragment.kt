@@ -40,6 +40,9 @@ class LoginFragment : Fragment() {
                 override fun onResponse(call: Call<com.example.snaplink.network.UserDetailsResponse>, response: Response<com.example.snaplink.network.UserDetailsResponse>) {
                     if (!isAdded) return
                     if (response.isSuccessful) {
+                        response.body()?.user?.username?.let {
+                            TokenManager.saveUsername(it)
+                        }
                         (activity as? MainActivity)?.navigateWithClearStack(HomeFragment())
                     } else if (response.code() == 401) {
                         TokenManager.clearToken()
@@ -89,6 +92,10 @@ class LoginFragment : Fragment() {
 
                             apiResponse.user?.profileImg?.let {
                                 TokenManager.saveProfileImage(it)
+                            }
+                            
+                            apiResponse.user?.username?.let {
+                                TokenManager.saveUsername(it)
                             }
 
                             Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()

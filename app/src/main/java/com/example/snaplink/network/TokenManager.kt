@@ -15,12 +15,22 @@ object TokenManager {
 
     //for profile image in bottom navigation
     private const val KEY_PROFILE_IMAGE = "profile_image"
+    private const val KEY_USERNAME = "username"
+
     fun saveProfileImage(url: String) {
         prefs?.edit()?.putString(KEY_PROFILE_IMAGE, url)?.apply()
     }
 
     fun getProfileImage(): String? {
         return prefs?.getString(KEY_PROFILE_IMAGE, null)
+    }
+
+    fun saveUsername(username: String) {
+        prefs?.edit()?.putString(KEY_USERNAME, username)?.apply()
+    }
+
+    fun getUsername(): String? {
+        return prefs?.getString(KEY_USERNAME, null)
     }
 
     fun init(context: Context) {
@@ -46,7 +56,7 @@ object TokenManager {
      * Clear stored token (logout)
      */
     fun clearToken() {
-        prefs?.edit()?.remove(KEY_TOKEN)?.remove(KEY_PROFILE_IMAGE)?.apply()
+        prefs?.edit()?.remove(KEY_TOKEN)?.remove(KEY_PROFILE_IMAGE)?.remove(KEY_USERNAME)?.apply()
     }
     
     /**
