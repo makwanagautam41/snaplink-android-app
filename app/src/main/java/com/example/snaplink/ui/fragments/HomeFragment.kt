@@ -112,12 +112,14 @@ class HomeFragment : Fragment() {
 
         // Load feed data from API
         loadFeedOnce()
+        loadStories()
     }
 
     override fun onResume() {
         super.onResume()
         loadNavProfileImage()
         setupStories()
+        loadStories()
         feedAdapter.notifyDataSetChanged()
     }
 
@@ -182,15 +184,6 @@ class HomeFragment : Fragment() {
                 isYourStory = true
             )
         )
-
-        // Other stories (Drawable)
-        storyList.add(StoryKt("punit_super", null, R.drawable.img_user_1))
-        storyList.add(StoryKt("siko.speed", null, R.drawable.img_user_2))
-        storyList.add(StoryKt("galish...", null, R.drawable.img_user_3))
-        storyList.add(StoryKt("talvin", null, R.drawable.img_user_4))
-        storyList.add(StoryKt("john_doe", null, R.drawable.img_user_placeholder))
-        storyList.add(StoryKt("jane_smith", null, R.drawable.img_user_placeholder))
-        storyList.add(StoryKt("mike_ross", null, R.drawable.img_user_placeholder))
     }
 
     private fun setupFeed() {
@@ -205,6 +198,16 @@ class HomeFragment : Fragment() {
             },
             onAddStoryClick = {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+            },
+            onStoryClick = { story ->
+                story.storyGroup?.let { group ->
+                    val fragment = MyStoriesFragment.newInstance(group)
+                    (activity as? MainActivity)?.navigateToFragment(fragment)
+                } ?: run {
+                    if (story.isYourStory) {
+                        Toast.makeText(context, "No stories yet", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         ) { username ->
             if (username != "current_user_username_placeholder") {
@@ -213,6 +216,67 @@ class HomeFragment : Fragment() {
             }
         }
         rvFeed.adapter = feedAdapter
+    }
+
+    private fun loadStories() {
+        // 1. Load My Story
+        ApiClient.api.getMyStories().enqueue(object : Callback<com.example.snaplink.models.UserStoryResponse> {
+            override fun onResponse(call: Call<com.example.snaplink.models.UserStoryResponse>, response: Response<com.example.snaplink.models.UserStoryResponse>) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    val groups = response.body()?.stories ?: emptyList()
+                    if (groups.isNotEmpty()) {
+                        val myGroup = groups[0]
+                        updateMyStoryInList(myGroup)
+                    }
+                }
+                // 2. Load Other Stories (nested to ensure order or just parallel)
+                loadOtherStories()
+            }
+            override fun onFailure(call: Call<com.example.snaplink.models.UserStoryResponse>, t: Throwable) {
+                loadOtherStories()
+            }
+        })
+    }
+
+    private fun loadOtherStories() {
+        ApiClient.api.getOtherStories().enqueue(object : Callback<com.example.snaplink.models.UserStoryResponse> {
+            override fun onResponse(call: Call<com.example.snaplink.models.UserStoryResponse>, response: Response<com.example.snaplink.models.UserStoryResponse>) {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    val otherGroups = response.body()?.stories ?: emptyList()
+                    updateOtherStoriesInList(otherGroups)
+                }
+            }
+            override fun onFailure(call: Call<com.example.snaplink.models.UserStoryResponse>, t: Throwable) {
+                // Ignore failure for stories
+            }
+        })
+    }
+
+    private fun updateMyStoryInList(group: com.example.snaplink.models.UserStoryGroup) {
+        val index = storyList.indexOfFirst { it.isYourStory }
+        if (index != -1) {
+            val old = storyList[index]
+            storyList[index] = old.copy(storyGroup = group)
+            feedAdapter.notifyItemChanged(0)
+        }
+    }
+
+    private fun updateOtherStoriesInList(groups: List<com.example.snaplink.models.UserStoryGroup>) {
+        // Keep "Your Story" as first
+        val yourStory = if (storyList.isNotEmpty()) storyList[0] else null
+        storyList.clear()
+        if (yourStory != null) storyList.add(yourStory)
+        
+        groups.forEach { group ->
+            storyList.add(
+                StoryKt(
+                    username = group.user.username,
+                    imageUrl = group.user.profileImg,
+                    storyGroup = group
+                )
+            )
+        }
+        feedAdapter.notifyItemChanged(0)
     }
 
     private fun loadFeedOnce() {

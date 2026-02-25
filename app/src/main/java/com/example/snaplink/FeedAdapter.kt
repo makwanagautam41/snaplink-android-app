@@ -14,6 +14,7 @@ class FeedAdapter(
     private val showStories: Boolean = true,
     private val onCommentClick: ((String) -> Unit)? = null,
     private val onAddStoryClick: (() -> Unit)? = null,
+    private val onStoryClick: ((StoryKt) -> Unit)? = null,
     private val onUserClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -42,7 +43,7 @@ class FeedAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is StoriesHolder -> holder.bind(stories, onAddStoryClick)
+            is StoriesHolder -> holder.bind(stories, onAddStoryClick, onStoryClick)
 
             is PostAdapterKt.PostViewHolder -> {
                 val realPosition = if (showStories) position - 1 else position
@@ -181,10 +182,12 @@ class FeedAdapter(
             )
         }
 
-        fun bind(stories: List<StoryKt>, onAddStoryClick: (() -> Unit)? = null) {
-            rvStoriesInner.adapter = StoryAdapterKt(stories) {
+        fun bind(stories: List<StoryKt>, onAddStoryClick: (() -> Unit)? = null, onStoryClick: ((StoryKt) -> Unit)? = null) {
+            rvStoriesInner.adapter = StoryAdapterKt(stories, {
                 onAddStoryClick?.invoke()
-            }
+            }, { story ->
+                onStoryClick?.invoke(story)
+            })
         }
     }
 

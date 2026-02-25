@@ -12,7 +12,8 @@ import com.bumptech.glide.Glide
 
 class StoryAdapterKt(
     private val storyList: List<StoryKt>,
-    private val onAddStoryClick: () -> Unit
+    private val onAddStoryClick: () -> Unit,
+    private val onStoryClick: (StoryKt) -> Unit
 ) : RecyclerView.Adapter<StoryAdapterKt.StoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
@@ -47,6 +48,11 @@ class StoryAdapterKt(
             holder.ivAddStory.visibility = View.GONE
             holder.ivAddStory.setOnClickListener(null)
             holder.itemView.setOnLongClickListener(null)
+        }
+
+        // Add normal click listener to view the story
+        holder.itemView.setOnClickListener {
+            onStoryClick(story)
         }
     }
 

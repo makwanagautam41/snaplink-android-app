@@ -227,5 +227,11 @@ interface ApiService {
         @Part media: MultipartBody.Part,
         @Part("caption") caption: RequestBody?
     ): Call<StoryResponse>
+
+    @retrofit2.http.GET("story/my-story")
+    fun getMyStories(): Call<com.example.snaplink.models.UserStoryResponse>
+
+    @retrofit2.http.GET("story/fetch-stories")
+    fun getOtherStories(): Call<com.example.snaplink.models.UserStoryResponse>
 }
 
