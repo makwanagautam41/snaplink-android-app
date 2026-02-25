@@ -107,4 +107,40 @@ object SettingsManager {
             )
         }
     }
+
+    /**
+     * Update cached close friends after a successful toggle
+     */
+    fun toggleCloseFriend(userId: String) {
+        cachedSettings?.let { settings ->
+            val currentData = settings.closeFriends
+            val isCurrentlyAdded = currentData.closeFriendsAdded.any { it._id == userId }
+            
+            val newAddedList = currentData.closeFriendsAdded.toMutableList()
+            val newNotAddedList = currentData.closeFriendsNotAdded.toMutableList()
+            
+            if (isCurrentlyAdded) {
+                // Remove from added, move to not added
+                val user = newAddedList.find { it._id == userId }
+                if (user != null) {
+                    newAddedList.remove(user)
+                    newNotAddedList.add(0, user)
+                }
+            } else {
+                // Remove from not added, move to added
+                val user = newNotAddedList.find { it._id == userId }
+                if (user != null) {
+                    newNotAddedList.remove(user)
+                    newAddedList.add(user)
+                }
+            }
+            
+            cachedSettings = settings.copy(
+                closeFriends = currentData.copy(
+                    closeFriendsAdded = newAddedList,
+                    closeFriendsNotAdded = newNotAddedList
+                )
+            )
+        }
+    }
 }

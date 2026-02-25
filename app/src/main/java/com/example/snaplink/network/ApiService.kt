@@ -98,6 +98,10 @@ data class CancelDeletionRequest(val username: String, val email: String, val pa
 data class VerifyUserRequest(val otp: String)
 
 
+// Toggle Close Friend
+data class ToggleCloseFriendResponse(val message: String)
+
+
 interface ApiService {
 
     @POST("users/signin")
@@ -209,5 +213,8 @@ interface ApiService {
 
     @POST("users/verify-user")
     fun verifyUser(@Body body: VerifyUserRequest): Call<SimpleApiResponse>
+
+    @retrofit2.http.PUT("users/add-close-friend/{username}")
+    fun toggleCloseFriend(@retrofit2.http.Path("username") username: String): Call<ToggleCloseFriendResponse>
 }
 
