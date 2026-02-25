@@ -15,7 +15,12 @@ data class UserSettings(
     val account: SettingsAccount,
     val counts: SettingsCounts,
     val blockedUsers: List<SettingsUser>,
-    val closeFriends: List<SettingsUser>
+    val closeFriends: CloseFriendsData
+)
+
+data class CloseFriendsData(
+    val closeFriendsAdded: List<SettingsUser>,
+    val closeFriendsNotAdded: List<SettingsUser>
 )
 
 data class SettingsProfile(

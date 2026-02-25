@@ -4,10 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:fitsSystemWindows="true"
-    tools:context=".HomeActivityKt">
+    android:fitsSystemWindows="true">
 
-    <!-- Top Bar -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -38,7 +36,6 @@
     </LinearLayout>
 
 
-    <!-- Unified Feed RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFeed"
         android:layout_width="match_parent"
@@ -48,7 +45,6 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         tools:listitem="@layout/item_post" />
 
-    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
@@ -111,7 +107,6 @@
 
     </LinearLayout>
 
-    <!-- Top Border for Bottom Navigation -->
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
