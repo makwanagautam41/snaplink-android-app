@@ -200,10 +200,13 @@ class HomeFragment : Fragment() {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
             },
             onStoryClick = { story ->
-                story.storyGroup?.let { group ->
-                    val fragment = MyStoriesFragment.newInstance(group)
+                val allStoryGroups = storyList.mapNotNull { it.storyGroup }
+                val currentGroupIndex = allStoryGroups.indexOf(story.storyGroup)
+                
+                if (currentGroupIndex != -1) {
+                    val fragment = MyStoriesFragment.newInstance(allStoryGroups, currentGroupIndex)
                     (activity as? MainActivity)?.navigateToFragment(fragment)
-                } ?: run {
+                } else {
                     if (story.isYourStory) {
                         Toast.makeText(context, "No stories yet", Toast.LENGTH_SHORT).show()
                     }
