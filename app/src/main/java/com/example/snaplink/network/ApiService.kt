@@ -102,6 +102,10 @@ data class VerifyUserRequest(val otp: String)
 data class ToggleCloseFriendResponse(val message: String)
 
 
+// Story
+data class StoryResponse(val success: Boolean, val message: String, val story: StoryData? = null)
+data class StoryData(val _id: String, val media: String, val caption: String?)
+
 interface ApiService {
 
     @POST("users/signin")
@@ -216,5 +220,12 @@ interface ApiService {
 
     @retrofit2.http.PUT("users/add-close-friend/{username}")
     fun toggleCloseFriend(@retrofit2.http.Path("username") username: String): Call<ToggleCloseFriendResponse>
+
+    @Multipart
+    @POST("story/upload")
+    fun uploadStory(
+        @Part media: MultipartBody.Part,
+        @Part("caption") caption: RequestBody?
+    ): Call<StoryResponse>
 }
 

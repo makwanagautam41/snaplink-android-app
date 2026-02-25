@@ -10,8 +10,10 @@ import de.hdodenhof.circleimageview.CircleImageView
 import com.bumptech.glide.Glide
 
 
-class StoryAdapterKt(private val storyList: List<StoryKt>) :
-    RecyclerView.Adapter<StoryAdapterKt.StoryViewHolder>() {
+class StoryAdapterKt(
+    private val storyList: List<StoryKt>,
+    private val onAddStoryClick: () -> Unit
+) : RecyclerView.Adapter<StoryAdapterKt.StoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -34,11 +36,17 @@ class StoryAdapterKt(private val storyList: List<StoryKt>) :
             }
         }
 
-
-        holder.ivAddStory.visibility = if (story.isYourStory) {
-            View.VISIBLE
+        if (story.isYourStory) {
+            holder.ivAddStory.visibility = View.VISIBLE
+            holder.ivAddStory.setOnClickListener { onAddStoryClick() }
+            holder.itemView.setOnLongClickListener {
+                onAddStoryClick()
+                true
+            }
         } else {
-            View.GONE
+            holder.ivAddStory.visibility = View.GONE
+            holder.ivAddStory.setOnClickListener(null)
+            holder.itemView.setOnLongClickListener(null)
         }
     }
 
