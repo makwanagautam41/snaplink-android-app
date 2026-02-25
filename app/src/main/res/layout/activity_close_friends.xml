@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:fitsSystemWindows="true"
-    tools:context=".personal_details">
+    android:fitsSystemWindows="true">
 
-    <!-- Top Bar -->
     <RelativeLayout
         android:id="@+id/topBar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:paddingHorizontal="12dp"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:paddingHorizontal="4dp"
         android:background="#000000"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
+            android:padding="8dp"
             android:src="@drawable/ic_back"
-            app:tint="#FFFFFF" />
+            android:tint="#FFFFFF"
+            android:scaleType="centerInside" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,10 +36,120 @@
             android:layout_centerInParent="true"
             android:text="Close Friends"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="17sp"
+            android:letterSpacing="0.01"
             android:fontFamily="sans-serif-medium"
             android:textStyle="bold" />
 
     </RelativeLayout>
+
+    <View
+        android:id="@+id/dividerTop"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="#1C1C1E"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/dividerTop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="4dp">
+
+            <LinearLayout
+                android:id="@+id/friendRow1"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/avatarFriend1"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/img_current_user"
+                    android:background="@drawable/circle_bg"
+                    android:scaleType="centerCrop"
+                    android:clipToOutline="true" />
+
+                <TextView
+                    android:id="@+id/usernameFriend1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="punit.star"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <ImageView
+                    android:id="@+id/checkFriend1"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_check_circle"
+                    android:scaleType="centerInside" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/friendRow2"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/avatarFriend2"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/img_current_user"
+                    android:background="@drawable/circle_bg"
+                    android:scaleType="centerCrop"
+                    android:clipToOutline="true" />
+
+                <TextView
+                    android:id="@+id/usernameFriend2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="ishowspeed"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <ImageView
+                    android:id="@+id/checkFriend2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle_outline"
+                    android:scaleType="centerInside" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
