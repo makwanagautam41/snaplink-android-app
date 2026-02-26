@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.example.snaplink.network.TokenManager
 import com.example.snaplink.ui.activities.MainActivity
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class MyStoriesFragment : Fragment() {
 
@@ -23,6 +24,7 @@ class MyStoriesFragment : Fragment() {
     private lateinit var profileImage: ImageView
     private lateinit var tvStoryUsername: TextView
     private lateinit var btnClose: ImageView
+    private lateinit var ivPostOptions: ImageView
     private lateinit var layoutProgress: LinearLayout
     private lateinit var viewPrevious: View
     private lateinit var viewNext: View
@@ -78,6 +80,7 @@ class MyStoriesFragment : Fragment() {
         profileImage = view.findViewById(R.id.profileImage)
         tvStoryUsername = view.findViewById(R.id.tvStoryUsername)
         btnClose = view.findViewById(R.id.btnClose)
+        ivPostOptions = view.findViewById(R.id.ivPostOptions)
         layoutProgress = view.findViewById(R.id.layoutProgress)
         viewPrevious = view.findViewById(R.id.viewPrevious)
         viewNext = view.findViewById(R.id.viewNext)
@@ -101,6 +104,48 @@ class MyStoriesFragment : Fragment() {
 
         profileImage.setOnClickListener(onProfileClick)
         tvStoryUsername.setOnClickListener(onProfileClick)
+
+        ivPostOptions.setOnClickListener {
+            showStoryOptions()
+        }
+    }
+
+    private fun showStoryOptions() {
+        val group = storyGroups.getOrNull(currentGroupIndex) ?: return
+        val context = requireContext()
+        val dialog = BottomSheetDialog(context)
+        val currentUsername = TokenManager.getUsername()
+        val isMine = group.user.username == currentUsername
+
+        val layoutRes = if (isMine) R.layout.layout_post_options_mine else R.layout.layout_post_options_other
+        val view = layoutInflater.inflate(layoutRes, null)
+
+        view.findViewById<View>(R.id.cancelField)?.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        if (isMine) {
+            view.findViewById<View>(R.id.deleteField)?.setOnClickListener {
+                Toast.makeText(context, "Delete Story clicked", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            view.findViewById<View>(R.id.editField)?.setOnClickListener {
+                Toast.makeText(context, "Edit Story clicked", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+        } else {
+            view.findViewById<View>(R.id.reportField)?.setOnClickListener {
+                Toast.makeText(context, "Report Story clicked", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            view.findViewById<View>(R.id.aboutAccountField)?.setOnClickListener {
+                Toast.makeText(context, "About account clicked", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+        }
+
+        dialog.setContentView(view)
+        dialog.show()
     }
 
     private fun setupNavigation() {
