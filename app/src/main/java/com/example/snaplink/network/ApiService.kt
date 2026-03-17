@@ -138,6 +138,9 @@ interface ApiService {
     @retrofit2.http.GET("posts/feed")
     fun getFeedPosts(): Call<FeedResponse>
 
+    @retrofit2.http.GET("posts/explore")
+    fun getExplorePosts(): Call<FeedResponse>
+
     @retrofit2.http.GET("posts/searched-user/{username}")
     fun getUserPosts(@retrofit2.http.Path("username") username: String): Call<MyPostResponse>
 

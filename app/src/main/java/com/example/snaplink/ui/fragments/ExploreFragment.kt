@@ -83,7 +83,7 @@ class ExploreFragment : Fragment() {
     }
 
     private fun loadExplorePosts() {
-        ApiClient.api.getFeedPosts().enqueue(object : Callback<FeedResponse> {
+        ApiClient.api.getExplorePosts().enqueue(object : Callback<FeedResponse> {
             override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                 if (!isAdded) return
                 if (response.isSuccessful && response.body()?.success == true) {
