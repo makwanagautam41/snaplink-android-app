@@ -159,7 +159,7 @@ class ProfileFragment : Fragment() {
     private fun setupRecyclerView() {
         profilePostAdapter = ProfilePostAdapter(emptyList()) { position ->
             currentPosts?.let { posts ->
-                PostDataHolder.posts = posts
+                PostDataHolder.posts = posts.toMutableList()
                 val fragment = PostDetailFragment.newInstance(position)
                 (activity as? MainActivity)?.navigateToFragment(fragment)
             }
@@ -193,7 +193,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private var currentPosts: List<Post>? = null
+    private var currentPosts: MutableList<Post>? = null
 
     private fun fetchMyPosts() {
         ApiClient.api.getMyPosts().enqueue(object : Callback<MyPostResponse> {
@@ -201,7 +201,7 @@ class ProfileFragment : Fragment() {
                 if (!isAdded) return
 
                 if (response.isSuccessful && response.body() != null) {
-                    val posts = response.body()!!.posts
+                    val posts = response.body()!!.posts.toMutableList()
                     currentPosts = posts
                     profilePostAdapter.updatePosts(posts)
                     tvPostsCount.text = posts.size.toString()

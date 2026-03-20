@@ -236,5 +236,7 @@ interface ApiService {
 
     @retrofit2.http.GET("story/fetch-stories")
     fun getOtherStories(): Call<com.example.snaplink.models.UserStoryResponse>
-}
 
+    @retrofit2.http.DELETE("posts/{postId}")
+    fun deletePost(@retrofit2.http.Path("postId") postId: String): Call<SimpleApiResponse>
+}

@@ -58,7 +58,7 @@ class PostDetailFragment : Fragment() {
         btnBack = view.findViewById(R.id.btnBack)
     }
 
-    private fun setupRecyclerView(posts: List<com.example.snaplink.models.Post>, startPosition: Int) {
+    private fun setupRecyclerView(posts: MutableList<com.example.snaplink.models.Post>, startPosition: Int) {
         adapter = FeedAdapter(posts, emptyList(), showStories = false, onCommentClick = { postId ->
             val fragment = ViewCommentsFragment.newInstance(postId)
             (activity as? MainActivity)?.navigateToFragment(fragment)

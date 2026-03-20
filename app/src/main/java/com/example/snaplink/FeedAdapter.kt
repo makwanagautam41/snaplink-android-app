@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.snaplink.models.Post
 
 class FeedAdapter(
-    private val posts: List<Post>,
+    private val posts: MutableList<Post>,
     private val stories: List<StoryKt>,
     private val showStories: Boolean = true,
     private val onCommentClick: ((String) -> Unit)? = null,
@@ -17,6 +17,7 @@ class FeedAdapter(
     private val onStoryClick: ((StoryKt) -> Unit)? = null,
     private val onUserClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
 
     companion object {
         private const val TYPE_STORIES = 0
@@ -127,8 +128,8 @@ class FeedAdapter(
         // Handle other buttons as Toasts as requested
         if (isMine) {
             view.findViewById<android.view.View>(R.id.deleteField)?.setOnClickListener {
-                android.widget.Toast.makeText(context, "Delete clicked", android.widget.Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
+                confirmAndDeletePost(context, post)
             }
             view.findViewById<android.view.View>(R.id.editField)?.setOnClickListener {
                 android.widget.Toast.makeText(context, "Edit clicked", android.widget.Toast.LENGTH_SHORT).show()
@@ -140,13 +141,85 @@ class FeedAdapter(
                 dialog.dismiss()
             }
             view.findViewById<android.view.View>(R.id.aboutAccountField)?.setOnClickListener {
-                android.widget.Toast.makeText(context, "About account clicked", android.widget.Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
+                navigateToAboutSection(context, post)
             }
         }
 
         dialog.setContentView(view)
         dialog.show()
+    }
+
+    /**
+     * Opens the UsersAboutSection fragment for the given post's author.
+     */
+    private fun navigateToAboutSection(context: android.content.Context, post: Post) {
+        val activity = (context as? androidx.fragment.app.FragmentActivity)
+            ?: return
+
+        val fragment = UsersAboutSection.newInstance(
+            username   = post.postedBy?.username ?: "",
+            profileImg = post.postedBy?.profileImg,
+            createdAt  = post.createdAt
+        )
+        (activity as? com.example.snaplink.ui.activities.MainActivity)
+            ?.navigateToFragment(fragment)
+    }
+
+    /**
+     * Shows a confirmation dialog, then calls DELETE /api/posts/{postId}.
+     * On success the post is removed from the in-memory list and the adapter is notified.
+     */
+    private fun confirmAndDeletePost(context: android.content.Context, post: Post) {
+        androidx.appcompat.app.AlertDialog.Builder(context)
+            .setTitle("Delete Post")
+            .setMessage("Are you sure you want to delete this post?")
+            .setPositiveButton("Delete") { _, _ ->
+                performDeletePost(context, post)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun performDeletePost(context: android.content.Context, post: Post) {
+        com.example.snaplink.network.ApiClient.api
+            .deletePost(post._id)
+            .enqueue(object : retrofit2.Callback<com.example.snaplink.network.SimpleApiResponse> {
+                override fun onResponse(
+                    call: retrofit2.Call<com.example.snaplink.network.SimpleApiResponse>,
+                    response: retrofit2.Response<com.example.snaplink.network.SimpleApiResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        // Find and remove the deleted post from the backing list
+                        val idx = posts.indexOfFirst { it._id == post._id }
+                        if (idx >= 0) {
+                            posts.removeAt(idx)
+                            // Adjust for the stories row offset when showStories is true
+                            val notifyIdx = if (showStories) idx + 1 else idx
+                            notifyItemRemoved(notifyIdx)
+                        }
+                        android.widget.Toast.makeText(context, "Post deleted", android.widget.Toast.LENGTH_SHORT).show()
+
+                    } else {
+                        android.widget.Toast.makeText(
+                            context,
+                            "Failed to delete post: ${response.message()}",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: retrofit2.Call<com.example.snaplink.network.SimpleApiResponse>,
+                    t: Throwable
+                ) {
+                    android.widget.Toast.makeText(
+                        context,
+                        "Error: ${t.message}",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 
 
