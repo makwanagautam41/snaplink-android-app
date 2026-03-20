@@ -10,7 +10,8 @@ import com.example.snaplink.models.Notification
 import de.hdodenhof.circleimageview.CircleImageView
 
 class NotificationAdapter(
-    private var notifications: List<Notification>
+    private var notifications: List<Notification>,
+    private val onUserClick: (String) -> Unit
 ) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
 
     fun updateNotifications(newNotifications: List<Notification>) {
@@ -37,9 +38,13 @@ class NotificationAdapter(
         fun bind(notification: Notification) {
             tvMessage.text = notification.message
 
+            // Set click listeners for user profile navigation
+            ivAvatar.setOnClickListener { onUserClick(notification.from.username) }
+            itemView.setOnClickListener { onUserClick(notification.from.username) }
+
             Glide.with(itemView.context)
                 .load(notification.from.profileImg)
-                .placeholder(R.drawable.img_user_placeholder)
+                .placeholder(R.drawable.img_current_user)
                 .into(ivAvatar)
         }
     }

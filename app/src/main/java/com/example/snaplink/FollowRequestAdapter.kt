@@ -13,7 +13,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 class FollowRequestAdapter(
     private var followRequests: List<FollowRequest>,
     private val onAcceptClick: (FollowRequest) -> Unit,
-    private val onRejectClick: (FollowRequest) -> Unit
+    private val onRejectClick: (FollowRequest) -> Unit,
+    private val onUserClick: (String) -> Unit
 ) : RecyclerView.Adapter<FollowRequestAdapter.FollowRequestViewHolder>() {
 
     fun updateFollowRequests(newRequests: List<FollowRequest>) {
@@ -42,9 +43,13 @@ class FollowRequestAdapter(
         fun bind(request: FollowRequest) {
             tvUsername.text = request.username
 
+            // Click listener for navigation to profile
+            ivAvatar.setOnClickListener { onUserClick(request.username) }
+            tvUsername.setOnClickListener { onUserClick(request.username) }
+
             Glide.with(itemView.context)
                 .load(request.profileImg)
-                .placeholder(R.drawable.img_user_placeholder)
+                .placeholder(R.drawable.img_current_user)
                 .into(ivAvatar)
 
             btnAccept.setOnClickListener {

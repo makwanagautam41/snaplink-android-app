@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.snaplink.FollowRequestAdapter
 import com.example.snaplink.NotificationAdapter
 import com.example.snaplink.R
+import com.example.snaplink.ui.activities.MainActivity
 import com.example.snaplink.models.FollowRequest
 import com.example.snaplink.models.NotificationResponse
 import com.example.snaplink.network.ApiClient
@@ -61,7 +62,10 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun setupAdapters() {
-        notificationAdapter = NotificationAdapter(emptyList())
+        notificationAdapter = NotificationAdapter(emptyList()) { username ->
+            val fragment = OtherUserProfileFragment.newInstance(username)
+            (activity as? MainActivity)?.navigateToFragment(fragment)
+        }
         rvNotifications.layoutManager = LinearLayoutManager(requireContext())
         rvNotifications.adapter = notificationAdapter
 
@@ -72,6 +76,10 @@ class NotificationsFragment : Fragment() {
             },
             onRejectClick = { request ->
                 handleRejectRequest(request)
+            },
+            onUserClick = { username ->
+                val fragment = OtherUserProfileFragment.newInstance(username)
+                (activity as? MainActivity)?.navigateToFragment(fragment)
             }
         )
         rvFollowRequests.layoutManager = LinearLayoutManager(requireContext())
