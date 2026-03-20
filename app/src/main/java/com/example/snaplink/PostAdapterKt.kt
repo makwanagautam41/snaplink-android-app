@@ -88,5 +88,9 @@ class PostAdapterKt(private val postList: List<PostKt>) :
         val tvTimeAgo: TextView = itemView.findViewById(R.id.tvTimeAgo)
         val ivComment: ImageView = itemView.findViewById(R.id.ivComment)
         val ivPostOptions: ImageView = itemView.findViewById(R.id.ivPostOptions)
+        val ivLike: ImageView = itemView.findViewById(R.id.ivLike)
+        val tvLikesCount: TextView = itemView.findViewById(R.id.tvLikesCount)
+        // Container over the image — used for double-tap (doesn't conflict with VP2 scrolling)
+        val postImageContainer: android.widget.FrameLayout = itemView.findViewById(R.id.postImageContainer)
     }
 }

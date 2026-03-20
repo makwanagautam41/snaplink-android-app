@@ -106,6 +106,14 @@ data class ToggleCloseFriendResponse(val message: String)
 data class StoryResponse(val success: Boolean, val message: String, val story: StoryData? = null)
 data class StoryData(val _id: String, val media: String, val caption: String?)
 
+// Like / Unlike – server toggles automatically, returns updated count
+data class LikeResponse(
+    val success: Boolean,
+    val message: String,   // "Post liked" or "Post unliked"
+    val likesCount: Int,
+    val postId: String
+)
+
 interface ApiService {
 
     @POST("users/signin")
@@ -239,4 +247,8 @@ interface ApiService {
 
     @retrofit2.http.DELETE("posts/{postId}")
     fun deletePost(@retrofit2.http.Path("postId") postId: String): Call<SimpleApiResponse>
+
+    // Toggle like/unlike – same endpoint, server decides based on current state
+    @retrofit2.http.POST("posts/{postId}/like")
+    fun likePost(@retrofit2.http.Path("postId") postId: String): Call<LikeResponse>
 }

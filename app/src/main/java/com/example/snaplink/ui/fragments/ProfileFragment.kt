@@ -240,6 +240,10 @@ class ProfileFragment : Fragment() {
                             tvFollowersCount.text = (it.followers?.size ?: 0).toString()
                             tvFollowingCount.text = (it.following?.size ?: 0).toString()
 
+                            // Always keep userId fresh — needed for like detection
+                            TokenManager.saveUserId(it._id)
+                            TokenManager.saveUsername(it.username)
+
                             it.profileImg?.let { url ->
                                 currentProfileImageUrl = url
                                 try {

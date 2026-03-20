@@ -12,10 +12,10 @@ object TokenManager {
     
     private var prefs: SharedPreferences? = null
 
-
-    //for profile image in bottom navigation
+    // keys
     private const val KEY_PROFILE_IMAGE = "profile_image"
     private const val KEY_USERNAME = "username"
+    private const val KEY_USER_ID = "user_id"   // stored after login to detect own likes
 
     fun saveProfileImage(url: String) {
         prefs?.edit()?.putString(KEY_PROFILE_IMAGE, url)?.apply()
@@ -31,6 +31,14 @@ object TokenManager {
 
     fun getUsername(): String? {
         return prefs?.getString(KEY_USERNAME, null)
+    }
+
+    fun saveUserId(id: String) {
+        prefs?.edit()?.putString(KEY_USER_ID, id)?.apply()
+    }
+
+    fun getUserId(): String? {
+        return prefs?.getString(KEY_USER_ID, null)
     }
 
     fun init(context: Context) {
@@ -56,7 +64,12 @@ object TokenManager {
      * Clear stored token (logout)
      */
     fun clearToken() {
-        prefs?.edit()?.remove(KEY_TOKEN)?.remove(KEY_PROFILE_IMAGE)?.remove(KEY_USERNAME)?.apply()
+        prefs?.edit()
+            ?.remove(KEY_TOKEN)
+            ?.remove(KEY_PROFILE_IMAGE)
+            ?.remove(KEY_USERNAME)
+            ?.remove(KEY_USER_ID)
+            ?.apply()
     }
     
     /**

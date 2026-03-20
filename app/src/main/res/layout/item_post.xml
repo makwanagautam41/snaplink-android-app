@@ -44,44 +44,58 @@
             android:src="@drawable/ic_more_vertical" />
     </LinearLayout>
 
-    <RelativeLayout
+    <!-- Container used to detect double-tap without conflicting with VP2 scroll -->
+    <FrameLayout
+        android:id="@+id/postImageContainer"
         android:layout_width="match_parent"
         android:layout_height="450dp">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vpPostImages"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#121212"/>
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/layoutIndicators"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/search_bg"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="4dp"
-            android:alpha="0.8">
-            
-            <!-- Indicators will be added dynamically -->
-            
-        </LinearLayout>
-        
-        <!-- Fallback ImageView (kept just in case logic fails or for preview, but we'll primarily use VP2) -->
-        <!-- We can remove it or keep it GONE -->
-         <ImageView
-            android:id="@+id/ivPostImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_post_1"
-            android:visibility="gone"/>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpPostImages"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#121212"/>
 
-    </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/layoutIndicators"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/search_bg"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="4dp"
+                android:alpha="0.8">
+            </LinearLayout>
+
+            <!-- Fallback static image (hidden, VP2 is primary) -->
+            <ImageView
+                android:id="@+id/ivPostImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_post_1"
+                android:visibility="gone"/>
+
+            <!-- Heart overlay shown on double-tap, centred over image -->
+            <ImageView
+                android:id="@+id/ivDoubleTapHeart"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_heart_filled_red"
+                android:visibility="gone"
+                android:alpha="0"/>
+
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,14 +105,26 @@
         android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingEnd="10dp"
-        android:paddingBottom="6dp">
+        android:paddingBottom="4dp">
 
+        <!-- Like button: outline when not liked, filled red when liked -->
         <ImageView
             android:id="@+id/ivLike"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:contentDescription="Like"
-            android:src="@drawable/ic_heart" />
+            android:src="@drawable/ic_heart_outline" />
+
+        <!-- Like count displayed right next to heart -->
+        <TextView
+            android:id="@+id/tvLikesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/ivComment"
