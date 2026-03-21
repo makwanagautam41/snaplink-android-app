@@ -3,47 +3,23 @@ package com.example.snaplink
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.snaplink.models.Comment
+import com.example.snaplink.network.TokenManager
 
-class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
-
-    private val fakeComments = listOf(
-        "john_doe" to "This is amazing 🔥",
-        "alex_23" to "Wow bro nice post!",
-        "gautam_dev" to "Love this UI 😍",
-        "snap_user123" to "Clean design!",
-        "android_master" to "Instagram vibes!",
-        "frontend_guy" to "Looks smooth 👌",
-        "designer_01" to "Very nice layout!",
-        "test_user" to "Comment section working!",
-        "dev_ninja" to "This is exactly what I was looking for 💯",
-        "code_wizard" to "Great work on this feature!",
-        "pixel_perfect" to "The attention to detail here is incredible",
-        "ui_lover" to "Can you share the design file? 🎨",
-        "mobile_dev" to "Smooth animations, love it!",
-        "react_fan" to "This looks better than most apps out there",
-        "kotlin_pro" to "Clean code, clean design 🧹",
-        "night_owl" to "Scrolling through this at 3am 😅",
-        "photo_king" to "The image quality is stunning 📸",
-        "travel_girl" to "Where was this taken? Looks beautiful!",
-        "foodie_life" to "This makes me hungry 🍕",
-        "fitness_bro" to "Motivation right here 💪",
-        "music_vibes" to "What song is this? 🎵",
-        "art_studio" to "Pure art, nothing less 🖼️",
-        "wanderlust" to "Adding this to my bucket list ✈️",
-        "coffee_addict" to "Need my coffee to appreciate this ☕",
-        "sunset_chaser" to "Golden hour hits different 🌅",
-        "bookworm" to "This caption though 📖",
-        "gamer_zone" to "GG! This is fire 🎮",
-        "nature_lover" to "Mother nature at her best 🌿",
-        "street_style" to "Outfit check! 👗",
-        "tech_geek" to "What camera did you use? 📷"
-    )
+class CommentsAdapter(
+    private var comments: List<Comment>,
+    private val onOptionClick: (Comment) -> Unit
+) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val imgProfile: ImageView = view.findViewById(R.id.imgProfile)
         val commentText: TextView = view.findViewById(R.id.tvCommentText)
         val time: TextView = view.findViewById(R.id.tvTime)
+        val btnOptions: ImageView = view.findViewById(R.id.btnOptions)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -52,12 +28,60 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = fakeComments.size
+    override fun getItemCount(): Int = comments.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (username, comment) = fakeComments[position]
-        holder.commentText.text = "$username  $comment"
-        val hours = listOf("1m", "5m", "12m", "30m", "1h", "2h", "3h", "5h", "8h", "12h", "1d", "2d", "3d", "5d", "1w")
-        holder.time.text = hours[position % hours.size]
+        val comment = comments[position]
+        
+        val username = comment.postedBy?.username ?: "Unknown"
+        val text = comment.text ?: ""
+        val fullContent = "$username  $text"
+        val spannable = android.text.SpannableString(fullContent)
+        spannable.setSpan(
+            android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+            0, username.length,
+            android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        holder.commentText.text = spannable
+        
+        holder.time.text = getTimeFormat(comment.createdAt ?: "")
+        
+        Glide.with(holder.itemView.context)
+            .load(comment.postedBy?.profileImg)
+            .placeholder(R.drawable.img_current_user)
+            .circleCrop()
+            .into(holder.imgProfile)
+
+        // Show options only if the comment belongs to the current user
+        val currentUsername = TokenManager.getUsername()
+        if (username == currentUsername) {
+            holder.btnOptions.visibility = View.VISIBLE
+            holder.btnOptions.setOnClickListener {
+                onOptionClick(comment)
+            }
+        } else {
+            holder.btnOptions.visibility = View.GONE
+        }
+    }
+
+    fun updateComments(newComments: List<Comment>) {
+        this.comments = newComments
+        notifyDataSetChanged()
+    }
+
+    private fun getTimeFormat(createdAt: String): String {
+        return try {
+            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.getDefault()).apply { 
+                timeZone = java.util.TimeZone.getTimeZone("UTC") 
+            }
+            val time = sdf.parse(createdAt)?.time ?: return "Just now"
+            val diff = System.currentTimeMillis() - time
+            when {
+                diff < 60000 -> "Just now"
+                diff < 3600000 -> "${diff / 60000}m"
+                diff < 86400000 -> "${diff / 3600000}h"
+                else -> "${diff / 86400000}d"
+            }
+        } catch (e: Exception) { "Just now" }
     }
 }

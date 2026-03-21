@@ -74,22 +74,32 @@ class ExploreFragment : Fragment() {
         }
     }
 
+    private var explorePosts: List<com.example.snaplink.models.Post> = emptyList()
+
     private fun setupRecyclerView() {
         rvExplore.layoutManager = GridLayoutManager(requireContext(), 3)
         exploreAdapter = ProfilePostAdapter(emptyList()) { position ->
-            // Handle post click if needed
+            if (position < explorePosts.size) {
+                // To show only THIS post, we pass a list containing only this post
+                val singlePostList = mutableListOf(explorePosts[position])
+                com.example.snaplink.PostDataHolder.posts = singlePostList
+                (activity as? MainActivity)?.navigateToFragment(PostDetailFragment.newInstance(0))
+            }
         }
         rvExplore.adapter = exploreAdapter
     }
 
     private fun loadExplorePosts() {
+        if (explorePosts.isNotEmpty()) {
+            exploreAdapter.updatePosts(explorePosts)
+            return
+        }
         ApiClient.api.getExplorePosts().enqueue(object : Callback<FeedResponse> {
             override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                 if (!isAdded) return
                 if (response.isSuccessful && response.body()?.success == true) {
-                    response.body()?.posts?.let { posts ->
-                        exploreAdapter.updatePosts(posts)
-                    }
+                    explorePosts = response.body()?.posts ?: emptyList()
+                    exploreAdapter.updatePosts(explorePosts)
                 }
             }
 

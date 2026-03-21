@@ -114,6 +114,13 @@ data class LikeResponse(
     val postId: String
 )
 
+data class CommentRequest(val comment: String)
+data class CommentResponse(
+    val success: Boolean,
+    val message: String,
+    val comment: com.example.snaplink.models.Comment? = null
+)
+
 interface ApiService {
 
     @POST("users/signin")
@@ -251,4 +258,16 @@ interface ApiService {
     // Toggle like/unlike – same endpoint, server decides based on current state
     @retrofit2.http.POST("posts/{postId}/like")
     fun likePost(@retrofit2.http.Path("postId") postId: String): Call<LikeResponse>
+
+    @retrofit2.http.POST("posts/{postId}/comment")
+    fun postComment(
+        @retrofit2.http.Path("postId") postId: String,
+        @retrofit2.http.Body body: CommentRequest
+    ): Call<CommentResponse>
+
+    @retrofit2.http.DELETE("posts/{postId}/comment/{commentId}")
+    fun deleteComment(
+        @retrofit2.http.Path("postId") postId: String,
+        @retrofit2.http.Path("commentId") commentId: String
+    ): Call<SimpleApiResponse>
 }

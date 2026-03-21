@@ -18,7 +18,7 @@ class FeedAdapter(
     private val posts: MutableList<Post>,
     private val stories: List<StoryKt>,
     private val showStories: Boolean = true,
-    private val onCommentClick: ((String) -> Unit)? = null,
+    private val onCommentClick: ((String, List<com.example.snaplink.models.Comment>) -> Unit)? = null,
     private val onAddStoryClick: (() -> Unit)? = null,
     private val onStoryClick: ((StoryKt) -> Unit)? = null,
     private val onUserClick: (String) -> Unit
@@ -99,7 +99,7 @@ class FeedAdapter(
                 }
 
                 // Interaction button click listeners
-                holder.ivComment.setOnClickListener { onCommentClick?.invoke(post._id) }
+                holder.ivComment.setOnClickListener { onCommentClick?.invoke(post._id, post.comments) }
                 holder.ivPostOptions.setOnClickListener { showPostOptions(holder.itemView.context, post) }
 
                 // Like feature (Button tap + Double tap)

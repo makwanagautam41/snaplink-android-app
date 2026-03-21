@@ -59,8 +59,8 @@ class PostDetailFragment : Fragment() {
     }
 
     private fun setupRecyclerView(posts: MutableList<com.example.snaplink.models.Post>, startPosition: Int) {
-        adapter = FeedAdapter(posts, emptyList(), showStories = false, onCommentClick = { postId ->
-            val fragment = ViewCommentsFragment.newInstance(postId)
+        adapter = FeedAdapter(posts, emptyList(), showStories = false, onCommentClick = { postId, comments ->
+            val fragment = ViewCommentsFragment.newInstance(postId, comments)
             (activity as? MainActivity)?.navigateToFragment(fragment)
         }) { username ->
             val fragment = OtherUserProfileFragment.newInstance(username)

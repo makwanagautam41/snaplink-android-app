@@ -192,8 +192,8 @@ class HomeFragment : Fragment() {
             postList,
             storyList,
             true,
-            onCommentClick = { postId ->
-                val fragment = ViewCommentsFragment.newInstance(postId)
+            onCommentClick = { postId, comments ->
+                val fragment = ViewCommentsFragment.newInstance(postId, comments)
                 (activity as? MainActivity)?.navigateToFragment(fragment)
             },
             onAddStoryClick = {

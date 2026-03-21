@@ -32,7 +32,9 @@ data class PostUser(
 
 data class Comment(
     val commentId: String?,
-    val text: String?
+    val text: String?,
+    val postedBy: PostUser?,
+    val createdAt: String?
 )
 
 data class CreatePostResponse(
