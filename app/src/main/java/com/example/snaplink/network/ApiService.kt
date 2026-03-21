@@ -270,4 +270,7 @@ interface ApiService {
         @retrofit2.http.Path("postId") postId: String,
         @retrofit2.http.Path("commentId") commentId: String
     ): Call<SimpleApiResponse>
+
+    @retrofit2.http.DELETE("story/delete/{storyId}")
+    fun deleteStory(@retrofit2.http.Path("storyId") storyId: String): Call<SimpleApiResponse>
 }
