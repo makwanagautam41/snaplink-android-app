@@ -160,10 +160,10 @@ interface ApiService {
     fun updateProfile(@Body request: UpdateProfileRequest): Call<UpdateProfileResponse>
 
     @retrofit2.http.GET("posts/feed")
-    fun getFeedPosts(): Call<FeedResponse>
+    fun getFeedPosts(@retrofit2.http.Query("page") page: Int = 1): Call<FeedResponse>
 
     @retrofit2.http.GET("posts/explore")
-    fun getExplorePosts(): Call<FeedResponse>
+    fun getExplorePosts(@retrofit2.http.Query("page") page: Int = 1): Call<FeedResponse>
 
     @retrofit2.http.GET("posts/searched-user/{username}")
     fun getUserPosts(@retrofit2.http.Path("username") username: String): Call<MyPostResponse>

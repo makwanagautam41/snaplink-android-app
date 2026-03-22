@@ -1,8 +1,16 @@
 package com.example.snaplink.models
 
+data class Pagination(
+    val total: Int,
+    val page: Int,
+    val limit: Int,
+    val totalPages: Int
+)
+
 data class FeedResponse(
     val success: Boolean,
-    val posts: List<Post>
+    val posts: List<Post>,
+    val pagination: Pagination? = null
 )
 
 data class MyPostResponse(

@@ -48,12 +48,17 @@ class HomeFragment : Fragment() {
         private val storyList = mutableListOf<StoryKt>()
         private val postList = mutableListOf<Post>()
         private var isDataLoaded = false
+        private var currentPage = 1
+        private var totalPages = 1
+        private var isLoadingMore = false
 
         /** Call this when you want to force a fresh reload (e.g. after posting) */
         fun invalidateCache() {
             isDataLoaded = false
-            postList.clear()
-            storyList.clear()
+            // Note: We don't clear the lists here anymore to avoid index out of bounds 
+            // if an adapter is currently active. The lists will be cleared by loadFeedOnce(1).
+            currentPage = 1
+            totalPages = 1
         }
     }
 
@@ -123,10 +128,11 @@ class HomeFragment : Fragment() {
 
         if (!isDataLoaded) {
             // First time: fetch everything from the API
-            loadFeedOnce()
+            loadFeedOnce(1)
             loadStories()
         } else {
             // Returning from a child screen: restore from cache, no API call
+            feedAdapter.setLoadMoreState(currentPage < totalPages, isLoadingMore)
             feedAdapter.notifyDataSetChanged()
         }
     }
@@ -159,8 +165,8 @@ class HomeFragment : Fragment() {
         }
 
         com.example.snaplink.network.PostUploadManager.uploadSuccessListener = {
-            if (isAdded) {
-                loadFeedOnce() // Refresh the feed after upload
+            if (isAdded && ::feedAdapter.isInitialized && ::rvFeed.isInitialized) {
+                loadFeedOnce(1) // Refresh the feed after upload
                 rvFeed.scrollToPosition(0) // Scroll to top to see the new post
             }
         }
@@ -243,6 +249,13 @@ class HomeFragment : Fragment() {
                         Toast.makeText(context, "No stories yet", Toast.LENGTH_SHORT).show()
                     }
                 }
+            },
+            onLoadMore = {
+                if (!isLoadingMore && currentPage < totalPages) {
+                    isLoadingMore = true
+                    feedAdapter.setLoadMoreState(true, true)
+                    loadFeedOnce(currentPage + 1)
+                }
             }
         ) { username ->
             if (username != "current_user_username_placeholder") {
@@ -315,16 +328,27 @@ class HomeFragment : Fragment() {
         feedAdapter.notifyItemChanged(0)
     }
 
-    fun loadFeedOnce() {
-        ApiClient.api.getFeedPosts().enqueue(object : Callback<FeedResponse> {
+    fun loadFeedOnce(page: Int = 1) {
+        ApiClient.api.getFeedPosts(page).enqueue(object : Callback<FeedResponse> {
             override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                 if (!isAdded) return
+                isLoadingMore = false
+                
                 if (response.isSuccessful && response.body()?.success == true) {
-                    postList.clear()
-                    postList.addAll(response.body()!!.posts)
+                    val body = response.body()!!
+                    if (page == 1) postList.clear()
+                    
+                    postList.addAll(body.posts)
+                    body.pagination?.let {
+                        currentPage = it.page
+                        totalPages = it.totalPages
+                    }
+                    
                     isDataLoaded = true
+                    feedAdapter.setLoadMoreState(currentPage < totalPages, false)
                     feedAdapter.notifyDataSetChanged()
                 } else {
+                    feedAdapter.setLoadMoreState(currentPage < totalPages, false)
                     Toast.makeText(
                         requireContext(),
                         "Failed to load feed: ${response.message()}",
@@ -335,6 +359,8 @@ class HomeFragment : Fragment() {
 
             override fun onFailure(call: Call<FeedResponse>, t: Throwable) {
                 if (!isAdded) return
+                isLoadingMore = false
+                feedAdapter.setLoadMoreState(currentPage < totalPages, false)
                 Toast.makeText(
                     requireContext(),
                     "Failed to load feed: ${t.message}",

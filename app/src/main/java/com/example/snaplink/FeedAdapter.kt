@@ -21,11 +21,14 @@ class FeedAdapter(
     private val onCommentClick: ((String, List<com.example.snaplink.models.Comment>) -> Unit)? = null,
     private val onAddStoryClick: (() -> Unit)? = null,
     private val onStoryClick: ((StoryKt) -> Unit)? = null,
+    private val onLoadMore: (() -> Unit)? = null,
     private val onUserClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val mainHandler = Handler(Looper.getMainLooper())
     private var isUploadingState: Boolean = false
+    private var hasMorePages: Boolean = false
+    private var isLoadingMore: Boolean = false
 
     fun setUploadingState(isUploading: Boolean) {
         if (isUploadingState != isUploading) {
@@ -34,32 +37,61 @@ class FeedAdapter(
         }
     }
 
+    fun setLoadMoreState(hasMore: Boolean, isLoading: Boolean) {
+        val oldHasMore = hasMorePages
+        hasMorePages = hasMore
+        isLoadingMore = isLoading
+        
+        if (oldHasMore != hasMore) {
+            notifyDataSetChanged()
+        } else if (hasMore) {
+            notifyItemChanged(itemCount - 1)
+        }
+    }
+
     companion object {
         private const val TYPE_STORIES = 0
         private const val TYPE_POST = 1
+        private const val TYPE_LOAD_MORE = 2
     }
 
-    override fun getItemCount(): Int = if (showStories) posts.size + 1 else posts.size
+    override fun getItemCount(): Int {
+        var count = if (showStories) posts.size + 1 else posts.size
+        if (hasMorePages) count++
+        return count
+    }
 
     override fun getItemViewType(position: Int): Int {
-        return if (showStories && position == 0) TYPE_STORIES else TYPE_POST
+        if (showStories && position == 0) return TYPE_STORIES
+        if (hasMorePages && position == itemCount - 1) return TYPE_LOAD_MORE
+        return TYPE_POST
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == TYPE_STORIES) {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_stories_feed, parent, false)
-            StoriesHolder(view)
-        } else {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_post, parent, false)
-            PostAdapterKt.PostViewHolder(view)
+        return when (viewType) {
+            TYPE_STORIES -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_stories_feed, parent, false)
+                StoriesHolder(view)
+            }
+            TYPE_LOAD_MORE -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_load_more, parent, false)
+                LoadMoreHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_post, parent, false)
+                PostAdapterKt.PostViewHolder(view)
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is StoriesHolder -> holder.bind(stories, isUploadingState, onAddStoryClick, onStoryClick)
+            
+            is LoadMoreHolder -> holder.bind(isLoadingMore, onLoadMore)
 
             is PostAdapterKt.PostViewHolder -> {
                 val realPosition = if (showStories) position - 1 else position
@@ -285,6 +317,22 @@ class FeedAdapter(
                 else -> "${diff / 86400000}d ago"
             }
         } catch (e: Exception) { "Just now" }
+    }
+
+    class LoadMoreHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val btn: View = view.findViewById(R.id.btnLoadMore)
+        private val pb: View = view.findViewById(R.id.pbLoadMore)
+        
+        fun bind(isLoading: Boolean, onClick: (() -> Unit)?) {
+            if (isLoading) {
+                btn.visibility = View.GONE
+                pb.visibility = View.VISIBLE
+            } else {
+                btn.visibility = View.VISIBLE
+                pb.visibility = View.GONE
+                btn.setOnClickListener { onClick?.invoke() }
+            }
+        }
     }
 
     class StoriesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -36,6 +36,12 @@ class ExploreFragment : Fragment() {
     private lateinit var navMessage: ImageView
     private lateinit var navProfile: CircleImageView
 
+    private var explorePosts: MutableList<com.example.snaplink.models.Post> = mutableListOf()
+    private var currentPage = 1
+    private var totalPages = 1
+    private var isLoadingMore = false
+    private var isDataLoaded = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,8 +56,14 @@ class ExploreFragment : Fragment() {
         initViews(view)
         setupNavigation()
         setupRecyclerView()
-        loadExplorePosts()
         loadNavProfileImage()
+
+        if (!isDataLoaded) {
+            loadExplorePosts(1)
+        } else {
+            exploreAdapter.updatePosts(explorePosts)
+            exploreAdapter.setLoadMoreState(currentPage < totalPages, isLoadingMore)
+        }
     }
 
     override fun onResume() {
@@ -74,11 +86,26 @@ class ExploreFragment : Fragment() {
         }
     }
 
-    private var explorePosts: List<com.example.snaplink.models.Post> = emptyList()
 
     private fun setupRecyclerView() {
-        rvExplore.layoutManager = GridLayoutManager(requireContext(), 3)
-        exploreAdapter = ProfilePostAdapter(emptyList()) { position ->
+        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (exploreAdapter.getItemViewType(position) == ProfilePostAdapter.TYPE_LOAD_MORE) 3 else 1
+            }
+        }
+        rvExplore.layoutManager = gridLayoutManager
+
+        exploreAdapter = ProfilePostAdapter(
+            posts = emptyList(),
+            onLoadMore = {
+                if (!isLoadingMore && currentPage < totalPages) {
+                    isLoadingMore = true
+                    exploreAdapter.setLoadMoreState(true, true)
+                    loadExplorePosts(currentPage + 1)
+                }
+            }
+        ) { position ->
             if (position < explorePosts.size) {
                 // To show only THIS post, we pass a list containing only this post
                 val singlePostList = mutableListOf(explorePosts[position])
@@ -89,22 +116,31 @@ class ExploreFragment : Fragment() {
         rvExplore.adapter = exploreAdapter
     }
 
-    private fun loadExplorePosts() {
-        if (explorePosts.isNotEmpty()) {
-            exploreAdapter.updatePosts(explorePosts)
-            return
-        }
-        ApiClient.api.getExplorePosts().enqueue(object : Callback<FeedResponse> {
+    private fun loadExplorePosts(page: Int = 1) {
+        ApiClient.api.getExplorePosts(page).enqueue(object : Callback<FeedResponse> {
             override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                 if (!isAdded) return
+                isLoadingMore = false
                 if (response.isSuccessful && response.body()?.success == true) {
-                    explorePosts = response.body()?.posts ?: emptyList()
+                    val body = response.body()!!
+                    if (page == 1) explorePosts.clear()
+                    explorePosts.addAll(body.posts)
+                    body.pagination?.let {
+                        currentPage = it.page
+                        totalPages = it.totalPages
+                    }
+                    isDataLoaded = true
                     exploreAdapter.updatePosts(explorePosts)
+                    exploreAdapter.setLoadMoreState(currentPage < totalPages, false)
+                } else {
+                    exploreAdapter.setLoadMoreState(currentPage < totalPages, false)
                 }
             }
 
             override fun onFailure(call: Call<FeedResponse>, t: Throwable) {
-                // Fail silently
+                if (!isAdded) return
+                isLoadingMore = false
+                exploreAdapter.setLoadMoreState(currentPage < totalPages, false)
             }
         })
     }

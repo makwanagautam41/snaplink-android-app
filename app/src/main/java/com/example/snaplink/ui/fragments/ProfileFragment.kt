@@ -157,13 +157,16 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        profilePostAdapter = ProfilePostAdapter(emptyList()) { position ->
-            currentPosts?.let { posts ->
-                PostDataHolder.posts = posts.toMutableList()
-                val fragment = PostDetailFragment.newInstance(position)
-                (activity as? MainActivity)?.navigateToFragment(fragment)
+        profilePostAdapter = ProfilePostAdapter(
+            posts = emptyList(),
+            onPostClick = { position ->
+                currentPosts?.let { posts ->
+                    PostDataHolder.posts = posts.toMutableList()
+                    val fragment = PostDetailFragment.newInstance(position)
+                    (activity as? MainActivity)?.navigateToFragment(fragment)
+                }
             }
-        }
+        )
         rvProfilePosts.layoutManager = GridLayoutManager(requireContext(), 3)
         rvProfilePosts.adapter = profilePostAdapter
 
