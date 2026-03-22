@@ -27,7 +27,6 @@ class SettingMenuFragment : Fragment() {
     private lateinit var personalDetailsLayout: LinearLayout
     private lateinit var passwordAndSecurity: LinearLayout
     private lateinit var accountStatusLayout: LinearLayout
-    private lateinit var saved: LinearLayout
     private lateinit var notifactions: LinearLayout
     private lateinit var accountPrivacy: LinearLayout
     private lateinit var closeFriends: LinearLayout
@@ -62,7 +61,6 @@ class SettingMenuFragment : Fragment() {
         personalDetailsLayout = view.findViewById(R.id.personalDetailsLayout)
         passwordAndSecurity = view.findViewById(R.id.passwordAndSecurity)
         accountStatusLayout = view.findViewById(R.id.accountStatusLayout)
-        saved = view.findViewById(R.id.saved)
         notifactions = view.findViewById(R.id.notifactions)
         accountPrivacy = view.findViewById(R.id.accountPrivacy)
         closeFriends = view.findViewById(R.id.closeFriends)
@@ -86,10 +84,6 @@ class SettingMenuFragment : Fragment() {
 
         accountStatusLayout.setOnClickListener {
             (activity as? MainActivity)?.navigateToFragment(AccountStatusFragment())
-        }
-
-        saved.setOnClickListener {
-            (activity as? MainActivity)?.navigateToFragment(SavedFragment())
         }
 
         notifactions.setOnClickListener {

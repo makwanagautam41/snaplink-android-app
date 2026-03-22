@@ -139,12 +139,6 @@
             android:layout_height="1dp"
             android:layout_weight="1" />
 
-        <ImageView
-            android:id="@+id/ivBookmark"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:contentDescription="Bookmark"
-            android:src="@drawable/ic_bookmark_outline" />
     </LinearLayout>
 
     <LinearLayout
