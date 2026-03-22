@@ -58,14 +58,18 @@ class RegisterFragment : Fragment() {
                     if (!isAdded) return
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
-                        val token = apiResponse?.token
+                        if (apiResponse?.success == true) {
+                            apiResponse.token?.let { TokenManager.saveToken(it) }
+                            
+                            // Save user id if returned (top-level)
+                            apiResponse._id?.let { TokenManager.saveUserId(it) }
 
-                        if (token != null) {
-                            TokenManager.saveToken(token)
+                            Toast.makeText(requireContext(), apiResponse.message ?: "Account created successfully", Toast.LENGTH_SHORT).show()
+                            parentFragmentManager.popBackStack()
+                        } else {
+                            val msg = apiResponse?.message ?: "Registration Failed"
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                         }
-
-                        Toast.makeText(requireContext(), "Account created successfully", Toast.LENGTH_SHORT).show()
-                        parentFragmentManager.popBackStack()
                     } else {
                         try {
                             val errorBody = response.errorBody()?.string()

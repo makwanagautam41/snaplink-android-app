@@ -23,7 +23,15 @@ import retrofit2.http.Part
 
 data class LoginRequest(val identifier: String, val password: String)
 data class RegisterRequest(val name: String, val email: String, val password: String, val username: String, val phone: String, val gender: String)
-data class ApiResponse(val message: String, val token: String?, val accessToken: String?, val user: User?)
+data class ApiResponse(
+    val success: Boolean,
+    val message: String,
+    val token: String?,
+    @com.google.gson.annotations.SerializedName("_id", alternate = ["id"])
+    val _id: String?,
+    val accessToken: String?,
+    val user: User?
+)
 
 // Simple user object for followers/following lists
 data class FollowerUser(
@@ -34,6 +42,7 @@ data class FollowerUser(
 )
 
 data class User(
+    @com.google.gson.annotations.SerializedName("_id", alternate = ["id"])
     val _id: String,
     val name: String,
     val username: String,

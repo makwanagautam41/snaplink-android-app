@@ -36,10 +36,10 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
         super.onViewCreated(view, savedInstanceState)
 
         val btnBack = view.findViewById<ImageView>(R.id.btnBack)
-        val btnVerifyOtp = view.findViewById<Button>(R.id.btnVerifyOtp)
+        val btnVerifyOtp = view.findViewById<Button>(R.id.btnVerifyAccount)
         val tvError = view.findViewById<TextView>(R.id.tvError)
         val tvResend = view.findViewById<TextView>(R.id.tvResend)
-        val tvOtpSent = view.findViewById<TextView>(R.id.tvOtpSent)
+        val tvSuccess = view.findViewById<TextView>(R.id.tvSuccess)
 
         val otpFields = listOf(
             view.findViewById<EditText>(R.id.otp1),
@@ -59,7 +59,8 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
         setupOtpInputs(otpFields)
 
         // Show initial OTP sent message
-        tvOtpSent.visibility = View.VISIBLE
+        tvSuccess.text = "OTP has been sent to your email address"
+        tvSuccess.visibility = View.VISIBLE
 
         // Start resend countdown timer
         startResendTimer(tvResend)
@@ -67,7 +68,7 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
         // Resend OTP click
         tvResend.setOnClickListener {
             if (tvResend.text == "Resend OTP") {
-                resendOtp(tvResend, tvOtpSent, tvError)
+                resendOtp(tvResend, tvSuccess, tvError)
             }
         }
 
@@ -78,13 +79,13 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
             if (otp.length < 6) {
                 tvError.visibility = View.VISIBLE
                 tvError.text = "Please enter the complete 6-digit OTP"
-                tvOtpSent.visibility = View.GONE
+                tvSuccess.visibility = View.GONE
                 return@setOnClickListener
             }
 
             // Disable button and show verifying text
             tvError.visibility = View.GONE
-            tvOtpSent.visibility = View.GONE
+            tvSuccess.visibility = View.GONE
             btnVerifyOtp.isEnabled = false
             btnVerifyOtp.text = "Verifying..."
 
@@ -96,7 +97,7 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
                     ) {
                         if (!isAdded) return
                         btnVerifyOtp.isEnabled = true
-                        btnVerifyOtp.text = "Verify OTP"
+                        btnVerifyOtp.text = "Verify Account"
 
                         if (response.isSuccessful) {
                             val body = response.body()
@@ -126,7 +127,7 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
                     override fun onFailure(call: Call<SimpleApiResponse>, t: Throwable) {
                         if (!isAdded) return
                         btnVerifyOtp.isEnabled = true
-                        btnVerifyOtp.text = "Verify OTP"
+                        btnVerifyOtp.text = "Verify Account"
                         tvError.visibility = View.VISIBLE
                         tvError.text = "Network error: ${t.message}"
                     }
@@ -204,7 +205,7 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
 
     private fun resendOtp(
         tvResend: TextView,
-        tvOtpSent: TextView,
+        tvSuccess: TextView,
         tvError: TextView
     ) {
         tvError.visibility = View.GONE
@@ -219,8 +220,8 @@ class ForgotPasswordOtpFragment : Fragment(R.layout.fragment_forgot_password_otp
                     if (!isAdded) return
 
                     if (response.isSuccessful && response.body()?.success == true) {
-                        tvOtpSent.visibility = View.VISIBLE
-                        tvOtpSent.text = "OTP has been resent to your email address"
+                        tvSuccess.visibility = View.VISIBLE
+                        tvSuccess.text = "OTP has been resent to your email address"
                         startResendTimer(tvResend)
                     } else {
                         tvResend.text = "Resend OTP"

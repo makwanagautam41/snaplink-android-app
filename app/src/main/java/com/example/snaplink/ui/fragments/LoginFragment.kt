@@ -86,29 +86,25 @@ class LoginFragment : Fragment() {
                     if (!isAdded) return
                     if (response.isSuccessful) {
                         val apiResponse = response.body()
-                        val token = apiResponse?.token
-
-                        if (token != null) {
+                        
+                        // Check for both HTTP success and API success flag
+                        if (apiResponse?.success == true && apiResponse.token != null) {
+                            val token = apiResponse.token
                             TokenManager.saveToken(token)
 
-                            apiResponse.user?.profileImg?.let {
-                                TokenManager.saveProfileImage(it)
-                            }
-                            
-                            apiResponse.user?.username?.let {
-                                TokenManager.saveUsername(it)
-                            }
-
-                            // Save userId to detect if current user liked a post
-                            apiResponse.user?._id?.let {
+                            // Save user id from top-level response field
+                            apiResponse._id?.let {
                                 TokenManager.saveUserId(it)
                             }
 
-                            Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
+                            // Note: username & profileImg are no longer provided in the login/signup response
+                            // They can be fetched subsequently via getUserDetails() if needed.
 
+                            Toast.makeText(requireContext(), apiResponse.message ?: "Login successful", Toast.LENGTH_SHORT).show()
                             (activity as? MainActivity)?.navigateWithClearStack(HomeFragment())
                         } else {
-                            Toast.makeText(requireContext(), "Login failed: No token received", Toast.LENGTH_SHORT).show()
+                            val msg = apiResponse?.message ?: "Login failed"
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         try {

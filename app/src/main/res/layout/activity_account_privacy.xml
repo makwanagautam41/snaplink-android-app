@@ -71,14 +71,24 @@
                     android:layout_height="wrap_content"
                     android:padding="20dp">
 
+                    <ImageView
+                        android:id="@+id/ivPrivacyIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:src="@drawable/ic_lock_outline"
+                        android:visibility="gone"
+                        app:tint="#6366F1" />
+
                     <TextView
                         android:id="@+id/tvAccountType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@id/switchPublicAccount"
-                        android:text="Public Account"
+                        android:layout_toEndOf="@id/ivPrivacyIcon"
+                        android:layout_marginStart="12dp"
+                        android:text="Private Account"
                         android:textColor="#FFFFFF"
                         android:textSize="17sp"
                         android:fontFamily="sans-serif-medium" />

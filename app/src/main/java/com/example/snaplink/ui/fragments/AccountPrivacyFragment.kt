@@ -19,7 +19,9 @@ import retrofit2.Response
 
 class AccountPrivacyFragment : Fragment() {
     private lateinit var btnBack: ImageView
-    private lateinit var switchPublicAccount: SwitchCompat
+    private lateinit var switchPrivateAccount: SwitchCompat
+    private lateinit var ivPrivacyIcon: ImageView
+    private lateinit var tvAccountType: android.widget.TextView
 
     // Track if we are programmatically setting the switch to avoid triggering listener
     private var isUpdatingSwitch = false
@@ -48,7 +50,9 @@ class AccountPrivacyFragment : Fragment() {
 
     private fun initViews(view: View) {
         btnBack = view.findViewById(R.id.btnBack)
-        switchPublicAccount = view.findViewById(R.id.switchPublicAccount)
+        switchPrivateAccount = view.findViewById(R.id.switchPublicAccount) // Kept original ID for XML compatibility but renamed variable
+        ivPrivacyIcon = view.findViewById(R.id.ivPrivacyIcon)
+        tvAccountType = view.findViewById(R.id.tvAccountType)
     }
 
     /**
@@ -57,7 +61,10 @@ class AccountPrivacyFragment : Fragment() {
     private fun populateFromSettings() {
         val visibility = SettingsManager.getProfileVisibility()
         isUpdatingSwitch = true
-        switchPublicAccount.isChecked = (visibility == "public")
+        val isPrivate = (visibility == "private")
+        switchPrivateAccount.isChecked = isPrivate
+        ivPrivacyIcon.visibility = if (isPrivate) View.VISIBLE else View.GONE
+        tvAccountType.text = if (isPrivate) "Private Account" else "Public Account"
         isUpdatingSwitch = false
     }
 
@@ -68,37 +75,42 @@ class AccountPrivacyFragment : Fragment() {
 
         // Use the CardView click to toggle the switch
         view?.findViewById<androidx.cardview.widget.CardView>(R.id.cardPublicAccount)?.setOnClickListener {
-            switchPublicAccount.isChecked = !switchPublicAccount.isChecked
+            switchPrivateAccount.isChecked = !switchPrivateAccount.isChecked
         }
 
-        switchPublicAccount.setOnCheckedChangeListener { _, isChecked ->
+        switchPrivateAccount.setOnCheckedChangeListener { _, isChecked ->
             if (isUpdatingSwitch) return@setOnCheckedChangeListener
 
-            val newVisibility = if (isChecked) "public" else "private"
+            ivPrivacyIcon.visibility = if (isChecked) View.VISIBLE else View.GONE
+            tvAccountType.text = if (isChecked) "Private Account" else "Public Account"
+            val newVisibility = if (isChecked) "private" else "public"
             updateProfileVisibility(newVisibility)
         }
     }
 
     private fun updateProfileVisibility(newVisibility: String) {
-        switchPublicAccount.isEnabled = false
+        switchPrivateAccount.isEnabled = false
 
         ApiClient.api.updateProfileVisibility(UpdateProfileVisibilityRequest(newVisibility))
             .enqueue(object : Callback<SettingsUpdateResponse> {
                 override fun onResponse(call: Call<SettingsUpdateResponse>, response: Response<SettingsUpdateResponse>) {
                     if (!isAdded) return
 
-                    switchPublicAccount.isEnabled = true
+                    switchPrivateAccount.isEnabled = true
 
                     if (response.isSuccessful && response.body()?.success == true) {
                         // Update cached settings
                         SettingsManager.updateCachedProfileVisibility(newVisibility)
 
-                        val msg = if (newVisibility == "public") "Account is now public" else "Account is now private"
+                        val msg = if (newVisibility == "private") "Account is now private" else "Account is now public"
                         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     } else {
                         // Revert the switch on failure
                         isUpdatingSwitch = true
-                        switchPublicAccount.isChecked = !switchPublicAccount.isChecked
+                        switchPrivateAccount.isChecked = !switchPrivateAccount.isChecked
+                        val finalChecked = switchPrivateAccount.isChecked
+                        ivPrivacyIcon.visibility = if (finalChecked) View.VISIBLE else View.GONE
+                        tvAccountType.text = if (finalChecked) "Private Account" else "Public Account"
                         isUpdatingSwitch = false
 
                         Toast.makeText(requireContext(), "Failed to update privacy settings", Toast.LENGTH_SHORT).show()
@@ -108,11 +120,14 @@ class AccountPrivacyFragment : Fragment() {
                 override fun onFailure(call: Call<SettingsUpdateResponse>, t: Throwable) {
                     if (!isAdded) return
 
-                    switchPublicAccount.isEnabled = true
+                    switchPrivateAccount.isEnabled = true
 
                     // Revert the switch on failure
                     isUpdatingSwitch = true
-                    switchPublicAccount.isChecked = !switchPublicAccount.isChecked
+                    switchPrivateAccount.isChecked = !switchPrivateAccount.isChecked
+                    val finalChecked = switchPrivateAccount.isChecked
+                    ivPrivacyIcon.visibility = if (finalChecked) View.VISIBLE else View.GONE
+                    tvAccountType.text = if (finalChecked) "Private Account" else "Public Account"
                     isUpdatingSwitch = false
 
                     Toast.makeText(requireContext(), "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
