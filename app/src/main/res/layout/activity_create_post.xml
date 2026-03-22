@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="#3797EF"
-        android:text="Select Images"
+        android:text="Select Media"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />

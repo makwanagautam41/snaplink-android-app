@@ -41,8 +41,8 @@ class CreatePostFragment : Fragment() {
     private val selectedImageUris = mutableListOf<Uri>()
     private lateinit var imageAdapter: SelectedImageAdapter
 
-    // Image picker launcher
-    private val pickImagesLauncher =
+    // Media picker launcher (Images and Videos)
+    private val pickMediaLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
                 selectedImageUris.clear()
@@ -55,7 +55,7 @@ class CreatePostFragment : Fragment() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                openImagePicker()
+                openMediaPicker()
             } else {
                 Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
             }
@@ -101,7 +101,7 @@ class CreatePostFragment : Fragment() {
         }
 
         btnSelectImages.setOnClickListener {
-            checkPermissionAndPickImages()
+            checkPermissionAndPickMedia()
         }
 
         btnPost.setOnClickListener {
@@ -109,17 +109,17 @@ class CreatePostFragment : Fragment() {
         }
     }
 
-    private fun checkPermissionAndPickImages() {
+    private fun checkPermissionAndPickMedia() {
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                if (ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.READ_MEDIA_IMAGES
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    openImagePicker()
+                val hasImages = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                val hasVideos = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                
+                if (hasImages && hasVideos) {
+                    openMediaPicker()
                 } else {
                     requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+                    // Note: In a real app, you should request both.
                 }
             }
             else -> {
@@ -128,7 +128,7 @@ class CreatePostFragment : Fragment() {
                         Manifest.permission.READ_EXTERNAL_STORAGE
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-                    openImagePicker()
+                    openMediaPicker()
                 } else {
                     requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
@@ -136,13 +136,14 @@ class CreatePostFragment : Fragment() {
         }
     }
 
-    private fun openImagePicker() {
-        pickImagesLauncher.launch("image/*")
+    private fun openMediaPicker() {
+        // Allow both images and videos
+        pickMediaLauncher.launch("*/*")
     }
 
     private fun uploadPost() {
         if (selectedImageUris.isEmpty()) {
-            Toast.makeText(requireContext(), "Select at least one image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Select at least one image or video", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -150,55 +151,15 @@ class CreatePostFragment : Fragment() {
         btnPost.text = "Posting..."
 
         val captionText = etCaption.text.toString()
-        val captionBody = captionText.toRequestBody("text/plain".toMediaTypeOrNull())
-
-        val imageParts = selectedImageUris.map { uriToMultipart(it) }
-
-        ApiClient.api.createPost(imageParts, captionBody)
-            .enqueue(object : Callback<CreatePostResponse> {
-                override fun onResponse(
-                    call: Call<CreatePostResponse>,
-                    response: Response<CreatePostResponse>
-                ) {
-                    if (!isAdded) return
-                    btnPost.isEnabled = true
-                    btnPost.text = "Post"
-
-                    if (response.isSuccessful && response.body()?.success == true) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Posted successfully 🎉",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        parentFragmentManager.popBackStack()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Post failed: ${response.message()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
-                    if (!isAdded) return
-                    btnPost.isEnabled = true
-                    btnPost.text = "Post"
-                    Toast.makeText(
-                        requireContext(),
-                        "Error: ${t.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-    }
-
-    private fun uriToMultipart(uri: Uri): MultipartBody.Part {
-        val inputStream = requireContext().contentResolver.openInputStream(uri)!!
-        val file = File(requireContext().cacheDir, "upload_${System.currentTimeMillis()}.jpg")
-        file.outputStream().use { inputStream.copyTo(it) }
-
-        val reqFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData("images", file.name, reqFile)
+        
+        // Let the manager handle the upload in background
+        com.example.snaplink.network.PostUploadManager.uploadPost(
+            requireContext(), 
+            selectedImageUris.toList(), 
+            captionText
+        )
+        
+        Toast.makeText(requireContext(), "Posting in background...", Toast.LENGTH_SHORT).show()
+        (activity as? com.example.snaplink.ui.activities.MainActivity)?.navigateToFragment(com.example.snaplink.ui.fragments.HomeFragment())
     }
 }

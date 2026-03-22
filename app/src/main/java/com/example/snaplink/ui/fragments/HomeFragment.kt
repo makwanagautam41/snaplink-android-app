@@ -119,7 +119,8 @@ class HomeFragment : Fragment() {
         super.onResume()
         loadNavProfileImage()
         setupStories()
-        loadStories()
+        if (storyList.isEmpty()) loadStories()
+        if (postList.isEmpty()) loadFeedOnce()
         feedAdapter.notifyDataSetChanged()
     }
 
@@ -131,6 +132,25 @@ class HomeFragment : Fragment() {
         navMessage = view.findViewById(R.id.navMessage)
         navProfile = view.findViewById(R.id.navProfile)
         btnNotification = view.findViewById(R.id.btnNotification)
+
+        setupUploadListener()
+    }
+
+    private fun setupUploadListener() {
+        // We set the initial state on feedAdapter once it's initialized (done in onViewCreated later)
+        // For realtime updates:
+        com.example.snaplink.network.PostUploadManager.uploadStatusListener = { isUploading ->
+            if (isAdded && ::feedAdapter.isInitialized) {
+                feedAdapter.setUploadingState(isUploading)
+            }
+        }
+
+        com.example.snaplink.network.PostUploadManager.uploadSuccessListener = {
+            if (isAdded) {
+                loadFeedOnce() // Refresh the feed after upload
+                rvFeed.scrollToPosition(0) // Scroll to top to see the new post
+            }
+        }
     }
 
     private fun loadNavProfileImage() {
@@ -218,6 +238,7 @@ class HomeFragment : Fragment() {
                 (activity as? MainActivity)?.navigateToFragment(fragment)
             }
         }
+        feedAdapter.setUploadingState(com.example.snaplink.network.PostUploadManager.isUploading)
         rvFeed.adapter = feedAdapter
     }
 

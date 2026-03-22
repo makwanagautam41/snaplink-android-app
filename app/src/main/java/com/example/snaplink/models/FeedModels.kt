@@ -12,12 +12,19 @@ data class MyPostResponse(
 
 data class Post(
     val _id: String,
-    val caption: String,
-    val images: List<PostImage>,
-    val postedBy: PostUser,
-    val likes: List<String>,
-    val comments: List<Comment>,
-    val createdAt: String
+    val caption: String? = null,
+    val images: List<PostImage>? = null,
+    val media: List<PostMedia>? = null,
+    val postedBy: PostUser? = null,
+    val likes: List<String> = emptyList(),
+    val comments: List<Comment> = emptyList(),
+    val createdAt: String? = null
+)
+
+data class PostMedia(
+    val _id: String?,
+    val url: String,
+    val mediaType: String? // "image" or "video"
 )
 
 data class PostImage(

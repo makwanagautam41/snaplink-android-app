@@ -10,6 +10,9 @@ object ApiClient {
 
     private val client = OkHttpClient.Builder()
         .addInterceptor(AuthInterceptor())
+        .connectTimeout(5, java.util.concurrent.TimeUnit.MINUTES)
+        .readTimeout(5, java.util.concurrent.TimeUnit.MINUTES)
+        .writeTimeout(5, java.util.concurrent.TimeUnit.MINUTES)
         .build()
 
     val api: ApiService by lazy {

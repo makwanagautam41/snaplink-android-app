@@ -29,7 +29,12 @@ class SelectedImageAdapter(
         private val btnRemoveImage: ImageView = itemView.findViewById(R.id.btnRemoveImage)
 
         fun bind(uri: Uri, position: Int) {
-            ivSelectedImage.setImageURI(uri)
+            com.bumptech.glide.Glide.with(itemView.context)
+                .load(uri)
+                .centerCrop()
+                .placeholder(R.drawable.img_post_placeholder)
+                .into(ivSelectedImage)
+
             btnRemoveImage.setOnClickListener {
                 onRemove(position)
             }

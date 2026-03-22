@@ -26,9 +26,10 @@ class ProfilePostAdapter(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = posts[position]
-        if (post.images.isNotEmpty()) {
+        val thumbUrl = post.media?.firstOrNull()?.url ?: post.images?.firstOrNull()?.url
+        if (thumbUrl != null) {
             Glide.with(holder.itemView.context)
-                .load(post.images[0].url)
+                .load(thumbUrl)
                 .placeholder(R.drawable.img_post_placeholder)
                 .centerCrop()
                 .into(holder.ivPostImage)

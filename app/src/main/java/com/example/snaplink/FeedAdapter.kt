@@ -25,6 +25,14 @@ class FeedAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val mainHandler = Handler(Looper.getMainLooper())
+    private var isUploadingState: Boolean = false
+
+    fun setUploadingState(isUploading: Boolean) {
+        if (isUploadingState != isUploading) {
+            isUploadingState = isUploading
+            notifyItemChanged(0)
+        }
+    }
 
     companion object {
         private const val TYPE_STORIES = 0
@@ -51,7 +59,7 @@ class FeedAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is StoriesHolder -> holder.bind(stories, onAddStoryClick, onStoryClick)
+            is StoriesHolder -> holder.bind(stories, isUploadingState, onAddStoryClick, onStoryClick)
 
             is PostAdapterKt.PostViewHolder -> {
                 val realPosition = if (showStories) position - 1 else position
@@ -77,12 +85,21 @@ class FeedAdapter(
                     .circleCrop()
                     .into(holder.ivUserAvatar)
 
-                // Set up image slider (ViewPager2)
-                if (!post.images.isNullOrEmpty()) {
-                    holder.vpPostImages.adapter = ImageSliderAdapter(post.images)
-                    setupIndicators(holder.layoutIndicators, post.images.size)
+                // Set up image slider (ViewPager2) - Supports both images and videos
+                val mediaToDisplay = if (!post.media.isNullOrEmpty()) {
+                    post.media
+                } else if (!post.images.isNullOrEmpty()) {
+                    // Fallback for older posts that only have 'images' array
+                    post.images.map { com.example.snaplink.models.PostMedia(_id = null, url = it.url, mediaType = "image") }
+                } else {
+                    null
+                }
+
+                if (!mediaToDisplay.isNullOrEmpty()) {
+                    holder.vpPostImages.adapter = MediaSliderAdapter(mediaToDisplay)
+                    setupIndicators(holder.layoutIndicators, mediaToDisplay.size)
                     
-                    if (post.images.size > 1) {
+                    if (mediaToDisplay.size > 1) {
                         holder.layoutIndicators.visibility = View.VISIBLE
                         holder.vpPostImages.registerOnPageChangeCallback(object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
                             override fun onPageSelected(pos: Int) {
@@ -272,9 +289,13 @@ class FeedAdapter(
 
     class StoriesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val rv: RecyclerView = itemView.findViewById(R.id.rvStoriesInner)
+        private val layoutUploading: View = itemView.findViewById(R.id.layoutUploading)
+        
         init { rv.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false) }
-        fun bind(stories: List<StoryKt>, onAdd: (() -> Unit)?, onClick: ((StoryKt) -> Unit)?) {
+        
+        fun bind(stories: List<StoryKt>, isUploading: Boolean, onAdd: (() -> Unit)?, onClick: ((StoryKt) -> Unit)?) {
             rv.adapter = StoryAdapterKt(stories, { onAdd?.invoke() }, { s -> onClick?.invoke(s) })
+            layoutUploading.visibility = if (isUploading) View.VISIBLE else View.GONE
         }
     }
 
