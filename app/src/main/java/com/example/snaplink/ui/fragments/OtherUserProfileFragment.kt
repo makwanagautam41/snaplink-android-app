@@ -64,6 +64,8 @@ class OtherUserProfileFragment : Fragment() {
     private lateinit var tabTags: ImageView
     private lateinit var indicatorGrid: View
     private lateinit var indicatorTags: View
+    private lateinit var followersLayoutBtn: LinearLayout
+    private lateinit var followingLayoutBtn: LinearLayout
 
     private var username: String? = null
     private var currentUser: User? = null
@@ -144,6 +146,8 @@ class OtherUserProfileFragment : Fragment() {
         tabTags = view.findViewById(R.id.tabTags)
         indicatorGrid = view.findViewById(R.id.indicatorGrid)
         indicatorTags = view.findViewById(R.id.indicatorTags)
+        followersLayoutBtn = view.findViewById(R.id.followersLayoutBtn)
+        followingLayoutBtn = view.findViewById(R.id.followingLayoutBtn)
 
         btnBack.setOnClickListener { parentFragmentManager.popBackStack() }
 
@@ -157,6 +161,18 @@ class OtherUserProfileFragment : Fragment() {
                     isRequested -> cancelFollowRequest(user.username)
                     else -> followUser(user.username)
                 }
+            }
+        }
+
+        followersLayoutBtn.setOnClickListener {
+            currentUser?.followers?.let { followers ->
+                (activity as? MainActivity)?.navigateToFragment(FollowersFragment.newInstance(followers))
+            }
+        }
+
+        followingLayoutBtn.setOnClickListener {
+            currentUser?.following?.let { following ->
+                (activity as? MainActivity)?.navigateToFragment(FollowingFragment.newInstance(following))
             }
         }
 

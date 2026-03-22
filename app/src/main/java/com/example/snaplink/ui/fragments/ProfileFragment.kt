@@ -197,6 +197,7 @@ class ProfileFragment : Fragment() {
     }
 
     private var currentPosts: MutableList<Post>? = null
+    private var currentUser: com.example.snaplink.network.User? = null
 
     private fun fetchMyPosts() {
         ApiClient.api.getMyPosts().enqueue(object : Callback<MyPostResponse> {
@@ -234,6 +235,7 @@ class ProfileFragment : Fragment() {
                             return
                         }
                         user.let {
+                            currentUser = it
                             tvName.text = it.name
                             tvUsernameTitle.text = it.username
                             tvEmail.text = it.email
@@ -330,10 +332,14 @@ class ProfileFragment : Fragment() {
         }
 
         followersLayoutBtn.setOnClickListener {
-            (activity as? MainActivity)?.navigateToFragment(FollowersFragment())
+            currentUser?.followers?.let { followers ->
+                (activity as? MainActivity)?.navigateToFragment(FollowersFragment.newInstance(followers))
+            }
         }
         followingLayoutBtn.setOnClickListener {
-            (activity as? MainActivity)?.navigateToFragment(FollowingFragment())
+            currentUser?.following?.let { following ->
+                (activity as? MainActivity)?.navigateToFragment(FollowingFragment.newInstance(following))
+            }
         }
     }
 

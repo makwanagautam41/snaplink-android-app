@@ -39,7 +39,7 @@ data class FollowerUser(
     val name: String,
     val username: String,
     val profileImg: String?
-)
+) : java.io.Serializable
 
 data class User(
     @com.google.gson.annotations.SerializedName("_id", alternate = ["id"])
@@ -51,9 +51,9 @@ data class User(
     val phone: String?,
     val profileImg: String?,
     val bio: String?,
-    val followers: List<Any>?,
-    val following: List<Any>?,
-    val followRequests: List<Any>?,
+    val followers: List<FollowerUser>?,
+    val following: List<FollowerUser>?,
+    val followRequests: List<FollowerUser>?,
     val savedPosts: List<String>?,
     val dateOfBirth: String?,
     val postCount: Int?,
