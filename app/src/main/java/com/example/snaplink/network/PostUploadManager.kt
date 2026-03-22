@@ -54,6 +54,8 @@ object PostUploadManager {
                     setUploadingState(false)
                     if (response.isSuccessful && response.body()?.success == true) {
                         Toast.makeText(appCtx, "Posted successfully 🎉", Toast.LENGTH_SHORT).show()
+                        // Invalidate feed cache so the home screen reloads fresh posts
+                        com.example.snaplink.ui.fragments.HomeFragment.invalidateCache()
                         Handler(Looper.getMainLooper()).post {
                             uploadSuccessListener?.invoke()
                         }

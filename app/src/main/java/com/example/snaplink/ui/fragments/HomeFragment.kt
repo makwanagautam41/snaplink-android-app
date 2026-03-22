@@ -43,8 +43,19 @@ class HomeFragment : Fragment() {
 
     private lateinit var btnNotification: ImageView
 
-    private val storyList = mutableListOf<StoryKt>()
-    private val postList = mutableListOf<Post>()
+    companion object {
+        // Cached across fragment recreations (back-nav, tab switches, etc.)
+        private val storyList = mutableListOf<StoryKt>()
+        private val postList = mutableListOf<Post>()
+        private var isDataLoaded = false
+
+        /** Call this when you want to force a fresh reload (e.g. after posting) */
+        fun invalidateCache() {
+            isDataLoaded = false
+            postList.clear()
+            storyList.clear()
+        }
+    }
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
@@ -110,18 +121,20 @@ class HomeFragment : Fragment() {
         setupNavigation()
         loadNavProfileImage()
 
-        // Load feed data from API
-        loadFeedOnce()
-        loadStories()
+        if (!isDataLoaded) {
+            // First time: fetch everything from the API
+            loadFeedOnce()
+            loadStories()
+        } else {
+            // Returning from a child screen: restore from cache, no API call
+            feedAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        // Only refresh the nav profile image; never re-fetch feed/stories here
         loadNavProfileImage()
-        setupStories()
-        if (storyList.isEmpty()) loadStories()
-        if (postList.isEmpty()) loadFeedOnce()
-        feedAdapter.notifyDataSetChanged()
     }
 
     private fun initViews(view: View) {
@@ -191,19 +204,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupStories() {
-        val profileUrl = TokenManager.getProfileImage()
-
-        storyList.clear()
-
-        // Your Story (Dynamic profile image)
-        storyList.add(
-            StoryKt(
-                username = "Your Story",
-                imageUrl = profileUrl,
-                avatarResource = null,
-                isYourStory = true
+        // Only insert the "Your Story" placeholder if the list is empty (first load)
+        if (storyList.isEmpty()) {
+            val profileUrl = TokenManager.getProfileImage()
+            storyList.add(
+                StoryKt(
+                    username = "Your Story",
+                    imageUrl = profileUrl,
+                    avatarResource = null,
+                    isYourStory = true
+                )
             )
-        )
+        }
     }
 
     private fun setupFeed() {
@@ -303,13 +315,14 @@ class HomeFragment : Fragment() {
         feedAdapter.notifyItemChanged(0)
     }
 
-    private fun loadFeedOnce() {
+    fun loadFeedOnce() {
         ApiClient.api.getFeedPosts().enqueue(object : Callback<FeedResponse> {
             override fun onResponse(call: Call<FeedResponse>, response: Response<FeedResponse>) {
                 if (!isAdded) return
                 if (response.isSuccessful && response.body()?.success == true) {
                     postList.clear()
                     postList.addAll(response.body()!!.posts)
+                    isDataLoaded = true
                     feedAdapter.notifyDataSetChanged()
                 } else {
                     Toast.makeText(

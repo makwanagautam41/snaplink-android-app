@@ -67,6 +67,7 @@ class OtherUserProfileFragment : Fragment() {
 
     private var username: String? = null
     private var currentUser: User? = null
+    private var isDataLoaded = false
 
     companion object {
         private const val ARG_USERNAME = "USERNAME"
@@ -104,7 +105,14 @@ class OtherUserProfileFragment : Fragment() {
 
         tvUsernameTitle.text = username
 
-        fetchUserProfile()
+        // Only fetch data once — skip on back-navigation from post detail
+        if (!isDataLoaded) {
+            fetchUserProfile()
+        } else {
+            // Restore cached state to UI without any API call
+            currentUser?.let { updateUI(it, skipPostFetch = true) }
+            currentPosts?.let { profilePostAdapter.updatePosts(it) }
+        }
     }
 
     private fun initViews(view: View) {
@@ -363,7 +371,7 @@ class OtherUserProfileFragment : Fragment() {
         }
     }
 
-    private fun updateUI(user: User) {
+    private fun updateUI(user: User, skipPostFetch: Boolean = false) {
         tvName.text = user.name
         tvUsernameTitle.text = user.username
         tvBio.text = user.bio ?: ""
@@ -387,10 +395,11 @@ class OtherUserProfileFragment : Fragment() {
 
         updateFollowButton(isFollowing, isPrivate, isRequested)
 
-        if (isFollowing) {
-            fetchUserPosts(user.username)
-        } else if (!isPrivate) {
-            fetchUserPosts(user.username)
+        // Only fetch posts the first time, not when restoring after back-navigation
+        if (!skipPostFetch) {
+            if (isFollowing || !isPrivate) {
+                fetchUserPosts(user.username)
+            }
         }
     }
 
@@ -441,6 +450,7 @@ class OtherUserProfileFragment : Fragment() {
 
     private var currentPosts: MutableList<Post>? = null
 
+
     private fun fetchUserPosts(username: String) {
         ApiClient.api.getUserPosts(username).enqueue(object : Callback<MyPostResponse> {
             override fun onResponse(call: Call<MyPostResponse>, response: Response<MyPostResponse>) {
@@ -451,11 +461,10 @@ class OtherUserProfileFragment : Fragment() {
                         val body = response.body()!!
                         if (body.success) {
                             val posts = body.posts.toMutableList()
-                            if (posts != null) {
-                                currentPosts = posts
-                                profilePostAdapter.updatePosts(posts)
-                                tvPostsCount.text = posts.size.toString()
-                            }
+                            currentPosts = posts
+                            profilePostAdapter.updatePosts(posts)
+                            tvPostsCount.text = posts.size.toString()
+                            isDataLoaded = true  // Mark data as loaded
                         }
                     }
                 } catch (e: Exception) {
