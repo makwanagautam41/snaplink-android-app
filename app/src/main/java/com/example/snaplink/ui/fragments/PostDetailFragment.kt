@@ -12,6 +12,10 @@ import com.example.snaplink.FeedAdapter
 import com.example.snaplink.PostDataHolder
 import com.example.snaplink.R
 import com.example.snaplink.ui.activities.MainActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.example.snaplink.models.Comment
+import com.example.snaplink.models.Post
 
 class PostDetailFragment : Fragment() {
 
@@ -50,6 +54,21 @@ class PostDetailFragment : Fragment() {
 
         btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+
+        // Listen for comment updates
+        parentFragmentManager.setFragmentResultListener("comments_update", viewLifecycleOwner) { _, bundle ->
+            val pid = bundle.getString("postId")
+            val commentsJson = bundle.getString("commentsJson")
+            if (pid != null && commentsJson != null) {
+                val index = posts.indexOfFirst { it._id == pid }
+                if (index != -1) {
+                    val type = object : TypeToken<List<Comment>>() {}.type
+                    val updatedComments: List<Comment> = Gson().fromJson(commentsJson, type)
+                    posts[index] = posts[index].copy(comments = updatedComments)
+                    adapter.notifyItemChanged(index)
+                }
+            }
         }
     }
 

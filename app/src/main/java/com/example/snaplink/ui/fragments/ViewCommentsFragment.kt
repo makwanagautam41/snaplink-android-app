@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.ArrayList
 
 class ViewCommentsFragment : Fragment() {
 
@@ -33,8 +34,9 @@ class ViewCommentsFragment : Fragment() {
     private val commentsList = mutableListOf<Comment>()
     private lateinit var etComment: EditText
     private val mainHandler = Handler(Looper.getMainLooper())
-    private val gson = Gson()
+    private lateinit var recycler: RecyclerView
     private var postId: String? = null
+    private val gson = Gson()
 
     companion object {
         private const val ARG_POST_ID = "post_id"
@@ -71,7 +73,7 @@ class ViewCommentsFragment : Fragment() {
             commentsList.addAll(initialComments)
         }
 
-        val recycler = view.findViewById<RecyclerView>(R.id.recyclerComments)
+        recycler = view.findViewById(R.id.recyclerComments)
         etComment = view.findViewById(R.id.etComment)
         val btnSend = view.findViewById<ImageView>(R.id.btnSend)
 
@@ -95,28 +97,64 @@ class ViewCommentsFragment : Fragment() {
 
     private fun postComment(postId: String, text: String) {
         val request = CommentRequest(comment = text)
+
         ApiClient.api.postComment(postId, request).enqueue(object : Callback<CommentResponse> {
             override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                 mainHandler.post {
                     if (response.isSuccessful && response.body()?.success == true) {
-                        val newComment = response.body()?.comment
-                        if (newComment != null) {
-                            commentsList.add(0, newComment)
-                            adapter.updateComments(commentsList)
-                            etComment.text.clear()
-                            view?.findViewById<RecyclerView>(R.id.recyclerComments)?.smoothScrollToPosition(0)
+                        etComment.text.clear()
+                        
+                        val serverComment = response.body()?.comment
+                        val finalComment = if (serverComment != null) {
+                            // Enrichment loop
+                            if (serverComment.postedBy == null) {
+                                serverComment.copy(
+                                    postedBy = com.example.snaplink.models.PostUser(
+                                        _id = TokenManager.getUserId() ?: "",
+                                        username = TokenManager.getUsername() ?: "Member",
+                                        profileImg = TokenManager.getProfileImage() ?: ""
+                                    )
+                                )
+                            } else serverComment
                         } else {
-                            // If backend doesn't return the comment object, we can't show it immediately unless we fetch again
-                            Toast.makeText(requireContext(), "Comment posted", Toast.LENGTH_SHORT).show()
-                            etComment.text.clear()
+                            // Fallback in case backend doesn't return the new comment object
+                            com.example.snaplink.models.Comment(
+                                commentId = "temp_${System.currentTimeMillis()}",
+                                text = text,
+                                postedBy = com.example.snaplink.models.PostUser(
+                                    _id = TokenManager.getUserId() ?: "",
+                                    username = TokenManager.getUsername() ?: "Member",
+                                    profileImg = TokenManager.getProfileImage() ?: ""
+                                ),
+                                createdAt = "Just now"
+                            )
                         }
+
+                        commentsList.add(0, finalComment)
+                        
+                        // Synchronize with parent fragment so it persists after closing
+                        notifyParentOfChange()
+                        
+                        // Use a copy to ensure DiffUtil detects the change
+                        adapter.updateComments(ArrayList(commentsList))
+                        
+                        // Additional fallback to ensure UI refreshes even if DiffUtil misses something
+                        adapter.notifyDataSetChanged()
+                        
+                        recycler.postDelayed({
+                            recycler.scrollToPosition(0)
+                        }, 100)
+
                     } else {
-                        Toast.makeText(requireContext(), "Failed to post comment", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Failed to post: ${response.message()}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
+
             override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
-                mainHandler.post { Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show() }
+                mainHandler.post {
+                    Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         })
     }
@@ -125,19 +163,10 @@ class ViewCommentsFragment : Fragment() {
         val dialog = BottomSheetDialog(requireContext())
         val view = layoutInflater.inflate(R.layout.layout_comment_options, null)
         
-        // Check if I can delete: if I posted it or if I own the post?
-        // For now, let's allow it if I posted it.
         val isMine = comment.postedBy?.username == TokenManager.getUsername()
         
-        // If not mine, maybe hide delete field if we want to be strict, but user asked for delete and cancel
-        // Usually you can only delete your own, so let's show it only if mine?
-        // User request: "just add three dots icon ... and show popup ... add options like delete and cancel"
-        // I'll show "Delete" only if it's the user's own comment.
         if (!isMine) {
-            // If it's not mine, we could show "Report" instead or nothing.
-            // But let's follow the user request and just implement it as they asked.
-            // Actually, showing it and having it fail on server is also an option, but UI check is better.
-            // Let's assume the user wants it to work when they are the ones who can delete it.
+            view.findViewById<View>(R.id.deleteField).visibility = View.GONE
         }
 
         view.findViewById<View>(R.id.deleteField).setOnClickListener {
@@ -161,9 +190,15 @@ class ViewCommentsFragment : Fragment() {
             override fun onResponse(call: Call<SimpleApiResponse>, response: Response<SimpleApiResponse>) {
                 mainHandler.post {
                     if (response.isSuccessful) {
-                        commentsList.remove(comment)
-                        adapter.updateComments(commentsList)
                         Toast.makeText(requireContext(), "Comment deleted", Toast.LENGTH_SHORT).show()
+                        
+                        // Remove from local list and update adapter
+                        commentsList.remove(comment)
+                        
+                        // Synchronize with parent fragment so it persists after closing
+                        notifyParentOfChange()
+                        
+                        adapter.updateComments(ArrayList(commentsList))
                     } else {
                         Toast.makeText(requireContext(), "Failed to delete comment", Toast.LENGTH_SHORT).show()
                     }
@@ -173,5 +208,13 @@ class ViewCommentsFragment : Fragment() {
                 mainHandler.post { Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show() }
             }
         })
+    }
+
+    private fun notifyParentOfChange() {
+        val pid = postId ?: return
+        val bundle = Bundle()
+        bundle.putString("postId", pid)
+        bundle.putString("commentsJson", gson.toJson(commentsList))
+        parentFragmentManager.setFragmentResult("comments_update", bundle)
     }
 }

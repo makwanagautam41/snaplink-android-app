@@ -11,9 +11,11 @@ import com.example.snaplink.models.Comment
 import com.example.snaplink.network.TokenManager
 
 class CommentsAdapter(
-    private var comments: List<Comment>,
+    initialComments: List<Comment>,
     private val onOptionClick: (Comment) -> Unit
 ) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+
+    private var comments: List<Comment> = initialComments.toList()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgProfile: ImageView = view.findViewById(R.id.imgProfile)
@@ -65,8 +67,18 @@ class CommentsAdapter(
     }
 
     fun updateComments(newComments: List<Comment>) {
-        this.comments = newComments
-        notifyDataSetChanged()
+        val diffResult = androidx.recyclerview.widget.DiffUtil.calculateDiff(object : androidx.recyclerview.widget.DiffUtil.Callback() {
+            override fun getOldListSize(): Int = comments.size
+            override fun getNewListSize(): Int = newComments.size
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return comments[oldItemPosition].commentId == newComments[newItemPosition].commentId
+            }
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return comments[oldItemPosition] == newComments[newItemPosition]
+            }
+        })
+        this.comments = newComments.toList() // Use a copy
+        diffResult.dispatchUpdatesTo(this)
     }
 
     private fun getTimeFormat(createdAt: String): String {

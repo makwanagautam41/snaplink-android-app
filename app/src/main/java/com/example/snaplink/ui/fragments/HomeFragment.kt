@@ -21,6 +21,7 @@ import com.example.snaplink.ui.activities.MainActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.PickVisualMediaRequest
+import com.example.snaplink.models.UserStoryGroup
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -30,6 +31,9 @@ import java.io.FileOutputStream
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.example.snaplink.models.Comment
 
 class HomeFragment : Fragment() {
 
@@ -134,6 +138,21 @@ class HomeFragment : Fragment() {
             // Returning from a child screen: restore from cache, no API call
             feedAdapter.setLoadMoreState(currentPage < totalPages, isLoadingMore)
             feedAdapter.notifyDataSetChanged()
+        }
+
+        // Listen for comment updates from ViewCommentsFragment
+        parentFragmentManager.setFragmentResultListener("comments_update", viewLifecycleOwner) { _, bundle ->
+            val pid = bundle.getString("postId")
+            val commentsJson = bundle.getString("commentsJson")
+            if (pid != null && commentsJson != null) {
+                val index = postList.indexOfFirst { it._id == pid }
+                if (index != -1) {
+                    val type = object : TypeToken<List<Comment>>() {}.type
+                    val updatedComments: List<Comment> = Gson().fromJson(commentsJson, type)
+                    postList[index] = postList[index].copy(comments = updatedComments)
+                    feedAdapter.notifyItemChanged(index)
+                }
+            }
         }
     }
 
