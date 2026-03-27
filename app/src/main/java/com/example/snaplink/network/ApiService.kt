@@ -123,12 +123,24 @@ data class LikeResponse(
     val postId: String
 )
 
-data class CommentRequest(val comment: String)
+data class CommentRequest(
+    @com.google.gson.annotations.SerializedName("comment")
+    val text: String
+)
 data class CommentResponse(
     val success: Boolean,
     val message: String,
-    val comment: com.example.snaplink.models.Comment? = null
+    val comments: List<RawComment>? = null
 )
+
+data class RawComment(
+    @com.google.gson.annotations.SerializedName("commentId", alternate = ["id", "_id"])
+    val commentId: String?,
+    val text: String?,
+    val postedBy: String? = null,
+    val createdAt: String?
+)
+
 
 interface ApiService {
 

@@ -96,7 +96,7 @@ class ViewCommentsFragment : Fragment() {
     }
 
     private fun postComment(postId: String, text: String) {
-        val request = CommentRequest(comment = text)
+        val request = CommentRequest(text = text)
 
         ApiClient.api.postComment(postId, request).enqueue(object : Callback<CommentResponse> {
             override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
@@ -104,20 +104,26 @@ class ViewCommentsFragment : Fragment() {
                     if (response.isSuccessful && response.body()?.success == true) {
                         etComment.text.clear()
                         
-                        val serverComment = response.body()?.comment
-                        val finalComment = if (serverComment != null) {
-                            // Enrichment loop
-                            if (serverComment.postedBy == null) {
-                                serverComment.copy(
-                                    postedBy = com.example.snaplink.models.PostUser(
-                                        _id = TokenManager.getUserId() ?: "",
-                                        username = TokenManager.getUsername() ?: "Member",
-                                        profileImg = TokenManager.getProfileImage() ?: ""
-                                    )
-                                )
-                            } else serverComment
+                        val body = response.body()
+                        val rawComments = body?.comments
+                        
+                        // We take the LAST comment because backend seems to return them in ascending order
+                        val newestRawComment = if (!rawComments.isNullOrEmpty()) rawComments.last() else null
+                        
+                        val finalComment = if (newestRawComment != null) {
+                            // Map RawComment (string ID) to UI Comment (PostUser object)
+                            com.example.snaplink.models.Comment(
+                                commentId = newestRawComment.commentId,
+                                text = newestRawComment.text,
+                                postedBy = com.example.snaplink.models.PostUser(
+                                    _id = TokenManager.getUserId() ?: "",
+                                    username = TokenManager.getUsername() ?: "Member",
+                                    profileImg = TokenManager.getProfileImage() ?: ""
+                                ),
+                                createdAt = newestRawComment.createdAt
+                            )
                         } else {
-                            // Fallback in case backend doesn't return the new comment object
+                            // Backend succeeded but returned no info - create a temporary one
                             com.example.snaplink.models.Comment(
                                 commentId = "temp_${System.currentTimeMillis()}",
                                 text = text,
@@ -130,15 +136,13 @@ class ViewCommentsFragment : Fragment() {
                             )
                         }
 
+                        // Add to top of client list
                         commentsList.add(0, finalComment)
                         
-                        // Synchronize with parent fragment so it persists after closing
                         notifyParentOfChange()
-                        
-                        // Use a copy to ensure DiffUtil detects the change
                         adapter.updateComments(ArrayList(commentsList))
                         
-                        // Additional fallback to ensure UI refreshes even if DiffUtil misses something
+                        // Reliability fallback
                         adapter.notifyDataSetChanged()
                         
                         recycler.postDelayed({
@@ -146,7 +150,7 @@ class ViewCommentsFragment : Fragment() {
                         }, 100)
 
                     } else {
-                        Toast.makeText(requireContext(), "Failed to post: ${response.message()}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Failed to post comment", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -160,7 +164,7 @@ class ViewCommentsFragment : Fragment() {
     }
 
     private fun showCommentOptions(comment: Comment) {
-        val dialog = BottomSheetDialog(requireContext())
+        val dialog = com.google.android.material.bottomsheet.BottomSheetDialog(requireContext())
         val view = layoutInflater.inflate(R.layout.layout_comment_options, null)
         
         val isMine = comment.postedBy?.username == TokenManager.getUsername()
@@ -183,29 +187,32 @@ class ViewCommentsFragment : Fragment() {
     }
 
     private fun performDeleteComment(comment: Comment) {
-        val cid = comment.commentId ?: return
+        val cid = comment.commentId
+        if (cid == null) {
+            Toast.makeText(requireContext(), "Error: Invalid comment ID", Toast.LENGTH_SHORT).show()
+            return
+        }
         val pid = postId ?: return
         
-        ApiClient.api.deleteComment(pid, cid).enqueue(object : Callback<SimpleApiResponse> {
-            override fun onResponse(call: Call<SimpleApiResponse>, response: Response<SimpleApiResponse>) {
+        ApiClient.api.deleteComment(pid, cid).enqueue(object : Callback<com.example.snaplink.network.SimpleApiResponse> {
+            override fun onResponse(call: Call<com.example.snaplink.network.SimpleApiResponse>, response: Response<com.example.snaplink.network.SimpleApiResponse>) {
                 mainHandler.post {
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful && response.body()?.success == true) {
                         Toast.makeText(requireContext(), "Comment deleted", Toast.LENGTH_SHORT).show()
                         
-                        // Remove from local list and update adapter
                         commentsList.remove(comment)
-                        
-                        // Synchronize with parent fragment so it persists after closing
                         notifyParentOfChange()
-                        
                         adapter.updateComments(ArrayList(commentsList))
                     } else {
                         Toast.makeText(requireContext(), "Failed to delete comment", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-            override fun onFailure(call: Call<SimpleApiResponse>, t: Throwable) {
-                mainHandler.post { Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show() }
+
+            override fun onFailure(call: Call<com.example.snaplink.network.SimpleApiResponse>, t: Throwable) {
+                mainHandler.post {
+                    Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         })
     }

@@ -46,6 +46,7 @@ data class PostUser(
 )
 
 data class Comment(
+    @com.google.gson.annotations.SerializedName("commentId", alternate = ["id", "_id"])
     val commentId: String?,
     val text: String?,
     val postedBy: PostUser?,
@@ -56,6 +57,7 @@ data class CreatePostResponse(
     val success: Boolean,
     val message: String
 )
+
 
 // Detailed Story Models
 data class UserStoryResponse(
