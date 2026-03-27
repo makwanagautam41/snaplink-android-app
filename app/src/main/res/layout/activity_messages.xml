@@ -1,66 +1,98 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#000000"
+    android:fitsSystemWindows="true">
 
     <TextView
         android:id="@+id/tvInbox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Inbox"
+        android:text="Chats"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvCreateGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create group"
-        android:textColor="#4DA3FF"
-        android:textSize="14sp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tabChat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Chat"
-        android:textColor="#4DA3FF"
         android:gravity="center"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tvInbox" />
-
-    <EditText
-        android:id="@+id/searchBar"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:hint="Search..."
-        android:textColor="#FFFFFF"
-        android:textColorHint="#888888"
-        android:paddingStart="12dp"
-        android:background="#111111"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tabChat"
+        android:paddingTop="18dp"
+        android:paddingBottom="14dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/search_bar_bg"
+        app:layout_constraintTop_toBottomOf="@id/tvInbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="13dp"
+            android:src="@drawable/ic_search_filled"
+            android:alpha="0.4" />
+
+        <EditText
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Search..."
+            android:textColor="#FFFFFF"
+            android:textColorHint="#555555"
+            android:textSize="14sp"
+            android:paddingStart="44dp"
+            android:paddingEnd="14dp"
+            android:background="@null"
+            android:singleLine="true"
+            android:inputType="text" />
+
+    </FrameLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/storiesScroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginTop="14dp"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/storiesContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="10dp" />
+
+    </HorizontalScrollView>
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#1E1E1E"
+        app:layout_constraintTop_toBottomOf="@id/storiesScroll" />
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toBottomOf="@id/separator"
+        app:layout_constraintBottom_toTopOf="@id/navDivider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -69,28 +101,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
+
     </ScrollView>
 
     <View
+        android:id="@+id/navDivider"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#222222"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation" />
 
+    <!-- BOTTOM NAVIGATION — each icon wrapped in a
+         FrameLayout so gravity="center" works for
+         every item independently, including the
+         CircleImageView which has a fixed dp size. -->
     <LinearLayout
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#000000"
-        android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:orientation="horizontal"
+        android:paddingTop="6dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/navHome"
             android:layout_width="0dp"
             android:layout_height="26dp"
             android:layout_weight="1"
+            android:contentDescription="Home"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_home" />
 
         <ImageView
@@ -98,13 +142,17 @@
             android:layout_width="0dp"
             android:layout_height="26dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_search_filled" />
+            android:contentDescription="Search"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_search" />
 
         <ImageView
             android:id="@+id/navAdd"
             android:layout_width="0dp"
             android:layout_height="26dp"
             android:layout_weight="1"
+            android:contentDescription="Add Post"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_add_post" />
 
         <ImageView
@@ -112,6 +160,8 @@
             android:layout_width="0dp"
             android:layout_height="26dp"
             android:layout_weight="1"
+            android:contentDescription="Messages"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_chat_filled" />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -119,6 +169,7 @@
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"
+            android:scaleType="centerCrop"
             android:src="@drawable/img_current_user"
             app:civ_border_color="#FFFFFF"
             app:civ_border_width="1dp" />
