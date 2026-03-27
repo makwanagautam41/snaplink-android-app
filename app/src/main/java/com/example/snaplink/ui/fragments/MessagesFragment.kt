@@ -41,23 +41,49 @@ class MessagesFragment : Fragment() {
         Story("James",   0xFF6BCB77.toInt()),
         Story("David",   0xFFFF922B.toInt()),
         Story("Thomas",  0xFFDA77FF.toInt()),
-        Story("Chris",   0xFFFF5CAD.toInt())
+        Story("Chris",   0xFFFF5CAD.toInt()),
+        Story("Riya",    0xFF00D2FF.toInt()),
+        Story("Arjun",   0xFFFFB347.toInt())
     )
 
     private val chats = listOf(
-        Chat("Liam Murphy",     "Hey thank you! How can I assist...", "23m",       3, isOnline = true),
-        Chat("Michael Johnson", "Hello bro!",                         "10m",       1, isOnline = true),
-        Chat("James Brown",     "See you soon 👋",                    "1h",        0),
-        Chat("David Wilson",    "Ok done 👍",                         "2h",        0),
-        Chat("Thomas Lee",      "Send me the file when you can",      "Yesterday", 2, isOnline = true),
-        Chat("Chris Evans",     "Sounds good, let's do it!",          "Yesterday", 0),
-        Chat("Sarah Connor",    "Thanks for the update 🙌",           "2d",        0, isOnline = true)
+        Chat("Liam Murphy",      "Hey thank you! How can I assist...",     "23m",       3, isOnline = true),
+        Chat("Michael Johnson",  "Hello bro!",                             "10m",       1, isOnline = true),
+        Chat("James Brown",      "See you soon 👋",                        "1h",        0),
+        Chat("David Wilson",     "Ok done 👍",                             "2h",        0),
+        Chat("Thomas Lee",       "Send me the file when you can",          "Yesterday", 2, isOnline = true),
+        Chat("Chris Evans",      "Sounds good, let's do it!",              "Yesterday", 0),
+        Chat("Sarah Connor",     "Thanks for the update 🙌",               "2d",        0, isOnline = true),
+        Chat("Gautam Makwana",   "Let's meet tonight at the cafeteria",    "2d",        1, isOnline = true),
+        Chat("Riya Sharma",      "Hey whatsup bruhhh",                     "2d",        0, isOnline = true),
+        Chat("Arjun Mehta",      "Did you check the assignment? 📚",       "3d",        4, isOnline = false),
+        Chat("Priya Patel",      "Haha yes that was so funny 😂",          "3d",        0, isOnline = true),
+        Chat("Noah Williams",    "Can you share the notes please?",        "3d",        2, isOnline = false),
+        Chat("Emma Davis",       "I'll be there in 10 mins ⏱️",           "4d",        0, isOnline = true),
+        Chat("Oliver Martinez",  "Bro the match was insane last night 🔥", "4d",        1, isOnline = false),
+        Chat("Rahul Verma",      "Confirmed for Saturday 🎉",              "4d",        0, isOnline = true),
+        Chat("Sophia Anderson",  "Just sent you the doc, check it out",    "5d",        0, isOnline = false),
+        Chat("Ethan Thompson",   "Are you coming to the meetup?",          "5d",        3, isOnline = true),
+        Chat("Aisha Khan",       "Loved the photo you posted! 😍",         "5d",        0, isOnline = false),
+        Chat("Lucas Garcia",     "Call me when you're free 📞",            "6d",        0, isOnline = true),
+        Chat("Neha Joshi",       "Happy Birthday!! 🎂🎉",                  "6d",        1, isOnline = true),
+        Chat("Mason Lee",        "That project deadline is tomorrow bro",  "6d",        0, isOnline = false),
+        Chat("Zara Ahmed",       "Let's catch up this weekend 😊",         "1w",        0, isOnline = false),
+        Chat("Ryan Cooper",      "Thanks man, really appreciate it 🙏",    "1w",        2, isOnline = true),
+        Chat("Anjali Singh",     "Did you eat lunch yet? 🍱",              "1w",        0, isOnline = true),
+        Chat("Jake Wilson",      "Game night at mine? Bring snacks 🎮",    "1w",        0, isOnline = false),
+        Chat("Kavya Reddy",      "The presentation went really well!",     "1w",        1, isOnline = true),
+        Chat("Daniel Brown",     "Yo where are you right now??",           "2w",        0, isOnline = false),
+        Chat("Mia Johnson",      "Check this out, it's hilarious 😭",      "2w",        0, isOnline = true),
+        Chat("Vikram Nair",      "Meeting rescheduled to 4pm",             "2w",        3, isOnline = false),
+        Chat("Isabella Clark",   "Just landed, finally home! ✈️",          "2w",        0, isOnline = true)
     )
 
     private val avatarColors = listOf(
         0xFFFF6B6B.toInt(), 0xFF3D9EFF.toInt(), 0xFF6BCB77.toInt(),
         0xFFFFD93D.toInt(), 0xFFDA77FF.toInt(), 0xFFFF922B.toInt(),
-        0xFFFF5CAD.toInt()
+        0xFFFF5CAD.toInt(), 0xFF00D2FF.toInt(), 0xFFFFB347.toInt(),
+        0xFF6BCB77.toInt(), 0xFFFF6B6B.toInt(), 0xFF3D9EFF.toInt()
     )
 
     // ── Lifecycle ─────────────────────────────────────────
@@ -70,15 +96,38 @@ class MessagesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        buildStories(view)
-        buildChatList(view)
+
+        val mainContainer = view.findViewById<LinearLayout>(R.id.mainContainer)
+
+        // ① Inject stories row at the top of the scrollable container
+        mainContainer.addView(buildStoriesRow())
+
+        // ② Thin separator line between stories and chats
+        mainContainer.addView(buildSeparator())
+
+        // ③ Inject every chat row
+        buildChatList(mainContainer)
+
+        // ④ Wire up navigation
         setupNavigation(view)
     }
 
-    // ── Stories slider ────────────────────────────────────
+    // ── Stories row (returned as a View, injected into mainContainer) ────────
 
-    private fun buildStories(view: View) {
-        val container = view.findViewById<LinearLayout>(R.id.storiesContainer)
+    private fun buildStoriesRow(): HorizontalScrollView {
+        val hsv = HorizontalScrollView(requireContext()).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            isHorizontalScrollBarEnabled = false
+            overScrollMode = View.OVER_SCROLL_NEVER
+        }
+
+        val inner = LinearLayout(requireContext()).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(dp(14), dp(14), dp(14), dp(10))
+        }
 
         stories.forEachIndexed { index, story ->
 
@@ -152,15 +201,25 @@ class MessagesFragment : Fragment() {
 
             wrapper.addView(ringFrame)
             wrapper.addView(label)
-            container.addView(wrapper)
+            inner.addView(wrapper)
         }
+
+        hsv.addView(inner)
+        return hsv
     }
 
-    // ── Chat list ─────────────────────────────────────────
+    // ── Thin separator ────────────────────────────────────
 
-    private fun buildChatList(view: View) {
-        val parent = view.findViewById<LinearLayout>(R.id.mainContainer)
+    private fun buildSeparator(): View = View(requireContext()).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 1
+        )
+        setBackgroundColor(Color.parseColor("#1E1E1E"))
+    }
 
+    // ── Chat list rows ────────────────────────────────────
+
+    private fun buildChatList(parent: LinearLayout) {
         chats.forEachIndexed { index, chat ->
             val color = avatarColors[index % avatarColors.size]
 
@@ -292,7 +351,7 @@ class MessagesFragment : Fragment() {
             row.addView(rightCol)
             parent.addView(row)
 
-            // Inset divider
+            // Inset divider between rows
             if (index < chats.size - 1) {
                 parent.addView(View(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(
@@ -339,6 +398,7 @@ class MessagesFragment : Fragment() {
             resources.displayMetrics
         ).toInt()
 
+    /** Colored circle with a single initial letter */
     private fun initialDrawable(letter: String, bgColor: Int): android.graphics.drawable.Drawable {
         return object : android.graphics.drawable.Drawable() {
             private val bgPaint  = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = bgColor; alpha = 200 }
@@ -363,6 +423,7 @@ class MessagesFragment : Fragment() {
         }
     }
 
+    /** Press-state ripple for chat rows */
     private fun rowRipple(): android.graphics.drawable.Drawable {
         val pressed = GradientDrawable().apply { setColor(Color.parseColor("#141414")) }
         return StateListDrawable().also {

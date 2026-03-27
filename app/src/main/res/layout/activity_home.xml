@@ -93,15 +93,20 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_chat" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/navProfile"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_current_user"
-            app:civ_border_color="#FFFFFF"
-            app:civ_border_width="1dp" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/navProfile"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_current_user"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="1dp" />
+        </FrameLayout>
 
 
     </LinearLayout>
