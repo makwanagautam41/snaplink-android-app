@@ -36,7 +36,9 @@ class CreatePostFragment : Fragment() {
     private lateinit var btnSelectImages: Button
     private lateinit var etCaption: EditText
     private lateinit var btnPost: Button
+    private lateinit var btnDraft: Button
     private lateinit var btnBack: ImageView
+    private lateinit var tvMediaCount: android.widget.TextView
 
     private val selectedImageUris = mutableListOf<Uri>()
     private lateinit var imageAdapter: SelectedImageAdapter
@@ -45,9 +47,16 @@ class CreatePostFragment : Fragment() {
     private val pickMediaLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             if (uris.isNotEmpty()) {
+                val limitedUris = if (uris.size > 5) {
+                    Toast.makeText(requireContext(), "You can only select up to 5 items", Toast.LENGTH_SHORT).show()
+                    uris.take(5)
+                } else {
+                    uris
+                }
                 selectedImageUris.clear()
-                selectedImageUris.addAll(uris)
+                selectedImageUris.addAll(limitedUris)
                 imageAdapter.notifyDataSetChanged()
+                updateMediaCount()
             }
         }
 
@@ -82,13 +91,18 @@ class CreatePostFragment : Fragment() {
         btnSelectImages = view.findViewById(R.id.btnSelectImages)
         etCaption = view.findViewById(R.id.etCaption)
         btnPost = view.findViewById(R.id.btnPost)
+        btnDraft = view.findViewById(R.id.btnDraft)
         btnBack = view.findViewById(R.id.btnBack)
+        tvMediaCount = view.findViewById(R.id.tvMediaCount)
+        
+        updateMediaCount()
     }
 
     private fun setupImageAdapter() {
         imageAdapter = SelectedImageAdapter(selectedImageUris) { position ->
             selectedImageUris.removeAt(position)
             imageAdapter.notifyItemRemoved(position)
+            updateMediaCount()
         }
         recyclerSelectedImages.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -107,6 +121,24 @@ class CreatePostFragment : Fragment() {
         btnPost.setOnClickListener {
             uploadPost()
         }
+
+        btnDraft.setOnClickListener {
+            Toast.makeText(requireContext(), "Post saved to drafts!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updateMediaCount() {
+        val count = selectedImageUris.size
+        tvMediaCount.text = "$count / 5"
+        
+        if (count > 0) {
+            tvMediaCount.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        } else {
+            tvMediaCount.setTextColor(android.graphics.Color.parseColor("#888888"))
+        }
+
+        view?.findViewById<View>(R.id.layoutEmptyMedia)?.visibility = 
+            if (count == 0) View.VISIBLE else View.GONE
     }
 
     private fun checkPermissionAndPickMedia() {

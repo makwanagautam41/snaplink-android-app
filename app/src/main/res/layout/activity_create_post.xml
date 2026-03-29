@@ -1,106 +1,413 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:orientation="vertical"
+    android:background="#0A0A0A"
     android:fitsSystemWindows="true">
 
-    <!-- Top Bar -->
     <RelativeLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="60dp"
+        android:background="#0A0A0A"
+        android:elevation="4dp"
         android:paddingHorizontal="16dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_back"
-            android:contentDescription="Back"
-            android:tint="#FFFFFF" />
+            android:padding="8dp"
+            app:tint="#FFFFFF"
+            android:contentDescription="Back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Create Post"
+            android:text="New Post"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-            
-        <!-- Dummy for Right side balance if needed, or action button -->    
+            android:textSize="17sp"
+            android:letterSpacing="0.03"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/tvMediaCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/bg_input"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:text="0 / 5"
+            android:textColor="#888888"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif-medium" />
+
     </RelativeLayout>
-    
-    <LinearLayout
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="88dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:fillViewport="true">
 
-    <!-- Selected Images Preview -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerSelectedImages"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#111111">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSelectedImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <LinearLayout
+                    android:id="@+id/layoutEmptyMedia"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_about_image"
+                        app:tint="#444444"
+                        android:contentDescription="Gallery" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="No media selected"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#1A1A1A" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectImages"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Add Photos/Videos"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:backgroundTint="#1E1E1E"
+                app:iconPadding="8dp"
+                app:iconSize="20dp"
+                app:iconTint="#FFFFFF"
+                app:strokeColor="#2A2A2A"
+                app:strokeWidth="1dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CAPTION"
+                    android:textColor="#3797EF"
+                    android:textSize="10sp"
+                    android:letterSpacing="0.12"
+                    android:fontFamily="sans-serif-medium" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_input"
+                    android:padding="14dp">
+
+                    <EditText
+                        android:id="@+id/etCaption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="top|start"
+                        android:hint="What's on your mind?"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:minHeight="90dp"
+                        android:maxLines="8"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#4A4A4A"
+                        android:textSize="15sp"
+                        android:lineSpacingExtra="4dp"
+                        android:fontFamily="sans-serif" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvCharCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="0 / 2200"
+                    android:textColor="#3A3A3A"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OPTIONS"
+                    android:textColor="#3797EF"
+                    android:textSize="10sp"
+                    android:letterSpacing="0.12"
+                    android:fontFamily="sans-serif-medium" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <!-- Location -->
+                    <RelativeLayout
+                        android:id="@+id/rowLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:paddingHorizontal="14dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_location"
+                            app:tint="#666666"
+                            android:contentDescription="Location" />
+
+                        <TextView
+                            android:id="@+id/tvLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="36dp"
+                            android:text="Add Location"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="#333333"
+                            android:contentDescription="Arrow" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="14dp"
+                        android:background="#1E1E1E" />
+
+                    <!-- Tag People -->
+                    <RelativeLayout
+                        android:id="@+id/rowTagPeople"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:paddingHorizontal="14dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentStart="true"
+                            android:src="@drawable/ic_user"
+                            app:tint="#666666"
+                            android:contentDescription="Tag People" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="36dp"
+                            android:text="Tag People"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="#333333"
+                            android:contentDescription="Arrow" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="14dp"
+                        android:background="#1E1E1E" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Bottom spacer -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/bottomActionBar"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="88dp"
+        android:layout_gravity="bottom"
         android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="20dp"
+        android:gravity="center_vertical"
+        android:elevation="12dp">
 
-    <!-- Select Images Button -->
-    <Button
-        android:id="@+id/btnSelectImages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#3797EF"
-        android:text="Select Media"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDraft"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_weight="1"
+            android:text="Save Draft"
+            android:textAllCaps="false"
+            android:textColor="#AAAAAA"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
+            app:iconTint="#AAAAAA"
+            app:iconSize="16dp"
+            app:iconPadding="6dp"
+            app:backgroundTint="#00000000"
+            app:strokeColor="#2A2A2A"
+            app:strokeWidth="1dp"
+            app:rippleColor="#1AFFFFFF" />
 
-    <!-- Caption Input -->
-    <EditText
-        android:id="@+id/etCaption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/transparent"
-        android:gravity="top"
-        android:hint="Write a caption..."
-        android:inputType="textMultiLine"
-        android:minHeight="100dp"
-        android:padding="12dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#888888"
-        android:textSize="15sp" />
+        <View
+            android:layout_width="12dp"
+            android:layout_height="0dp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#333333" />
-
-    <!-- Spacer -->
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!-- Post Button -->
-    <Button
-        android:id="@+id/btnPost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#3797EF"
-        android:text="Post"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPost"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_weight="1.6"
+            android:text="Share Post"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="bold"
+            app:iconTint="#FFFFFF"
+            app:iconSize="18dp"
+            app:iconPadding="8dp"
+            app:backgroundTint="#3797EF"
+            app:rippleColor="#33FFFFFF" />
 
     </LinearLayout>
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/layoutLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/bg_input"
+            android:padding="32dp">
+
+            <ProgressBar
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:indeterminateTint="#3797EF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Uploading..."
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:id="@+id/tvUploadProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Preparing media"
+                android:textColor="#555555"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
