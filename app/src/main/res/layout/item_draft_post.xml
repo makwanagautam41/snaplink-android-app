@@ -71,16 +71,6 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/btnDraftMore"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_more_vertical"
-            app:tint="#444444"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Options" />
-
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

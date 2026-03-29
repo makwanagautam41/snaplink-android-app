@@ -42,20 +42,7 @@
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium" />
 
-            <TextView
-                android:id="@+id/btnEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:text="Edit"
-                android:textColor="#3797EF"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless" />
-
-        </RelativeLayout>
+            </RelativeLayout>
 
         <View
             android:layout_width="match_parent"

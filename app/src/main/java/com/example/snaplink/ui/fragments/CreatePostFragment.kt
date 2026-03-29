@@ -15,10 +15,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.snaplink.SelectedImageAdapter
+import com.example.snaplink.db.AppDatabase
+import com.example.snaplink.db.DraftPost
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.snaplink.R
-import com.example.snaplink.SelectedImageAdapter
+import kotlinx.coroutines.launch
 import com.example.snaplink.models.CreatePostResponse
 import com.example.snaplink.network.ApiClient
 import com.example.snaplink.ui.activities.MainActivity
@@ -43,6 +47,7 @@ class CreatePostFragment : Fragment() {
 
     private val selectedImageUris = mutableListOf<Uri>()
     private lateinit var imageAdapter: SelectedImageAdapter
+    private var editingDraftId: Int = -1
 
     // Media picker launcher (Images and Videos)
     private val pickMediaLauncher =
@@ -85,6 +90,20 @@ class CreatePostFragment : Fragment() {
         initViews(view)
         setupImageAdapter()
         setupListeners()
+        
+        // Handle arguments from DraftPosts
+        arguments?.let {
+            editingDraftId = it.getInt("draft_id", -1)
+            etCaption.setText(it.getString("caption"))
+            val mediaUris = it.getString("media_uris")
+            if (!mediaUris.isNullOrEmpty()) {
+                val uris = mediaUris.split(";").map { uriString -> Uri.parse(uriString) }
+                selectedImageUris.clear() // Fix: Clear before adding to prevent duplicates
+                selectedImageUris.addAll(uris)
+                imageAdapter.notifyDataSetChanged()
+                updateMediaCount()
+            }
+        }
     }
 
     private fun initViews(view: View) {
@@ -124,11 +143,38 @@ class CreatePostFragment : Fragment() {
         }
 
         btnDraft.setOnClickListener {
-            Toast.makeText(requireContext(), "Post saved to drafts!", Toast.LENGTH_SHORT).show()
+            saveDraft()
         }
 
         btnDraftTop.setOnClickListener {
             (activity as? MainActivity)?.navigateToFragment(DraftPosts())
+        }
+    }
+
+    private fun saveDraft() {
+        val caption = etCaption.text.toString()
+        if (selectedImageUris.isEmpty() && caption.isEmpty()) {
+            Toast.makeText(requireContext(), "Nothing to save", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val mediaUrisString = selectedImageUris.joinToString(";") { it.toString() }
+        
+        // Use existing ID if we are editing an existing draft, otherwise use 0 for auto-generate
+        val draft = if (editingDraftId != -1) {
+            DraftPost(id = editingDraftId, caption = caption, mediaUris = mediaUrisString)
+        } else {
+            DraftPost(caption = caption, mediaUris = mediaUrisString)
+        }
+
+        lifecycleScope.launch {
+            try {
+                AppDatabase.getDatabase(requireContext()).draftPostDao().insertDraft(draft)
+                Toast.makeText(requireContext(), "Draft saved successfully", Toast.LENGTH_SHORT).show()
+                // Optional: navigate away or clear fields
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Failed to save draft", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -183,12 +229,22 @@ class CreatePostFragment : Fragment() {
 
         val captionText = etCaption.text.toString()
         
-        // Let the manager handle the upload in background
         com.example.snaplink.network.PostUploadManager.uploadPost(
             requireContext(), 
             selectedImageUris.toList(), 
             captionText
         )
+
+        // If it was a draft, delete it from the database
+        if (editingDraftId != -1) {
+            lifecycleScope.launch {
+                try {
+                    AppDatabase.getDatabase(requireContext()).draftPostDao().deleteById(editingDraftId)
+                } catch (e: Exception) {
+                    // Silently fail or log
+                }
+            }
+        }
         
         // Toast.makeText(requireContext(), "Posting in background...", Toast.LENGTH_SHORT).show()
         (activity as? com.example.snaplink.ui.activities.MainActivity)?.navigateToFragment(com.example.snaplink.ui.fragments.HomeFragment())

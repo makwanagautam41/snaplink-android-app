@@ -66,6 +66,12 @@ dependencies {
     // Fragment KTX for single-activity architecture
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
+    // Room Database
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
+
     // keep version-catalog (libs) dependencies as before
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.ui)
