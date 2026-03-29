@@ -21,6 +21,7 @@ import com.example.snaplink.R
 import com.example.snaplink.SelectedImageAdapter
 import com.example.snaplink.models.CreatePostResponse
 import com.example.snaplink.network.ApiClient
+import com.example.snaplink.ui.activities.MainActivity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -37,8 +38,8 @@ class CreatePostFragment : Fragment() {
     private lateinit var etCaption: EditText
     private lateinit var btnPost: Button
     private lateinit var btnDraft: Button
+    private lateinit var btnDraftTop: ImageView
     private lateinit var btnBack: ImageView
-    private lateinit var tvMediaCount: android.widget.TextView
 
     private val selectedImageUris = mutableListOf<Uri>()
     private lateinit var imageAdapter: SelectedImageAdapter
@@ -92,8 +93,8 @@ class CreatePostFragment : Fragment() {
         etCaption = view.findViewById(R.id.etCaption)
         btnPost = view.findViewById(R.id.btnPost)
         btnDraft = view.findViewById(R.id.btnDraft)
+        btnDraftTop = view.findViewById(R.id.btnDraftTop)
         btnBack = view.findViewById(R.id.btnBack)
-        tvMediaCount = view.findViewById(R.id.tvMediaCount)
         
         updateMediaCount()
     }
@@ -125,18 +126,16 @@ class CreatePostFragment : Fragment() {
         btnDraft.setOnClickListener {
             Toast.makeText(requireContext(), "Post saved to drafts!", Toast.LENGTH_SHORT).show()
         }
+
+        btnDraftTop.setOnClickListener {
+            (activity as? MainActivity)?.navigateToFragment(DraftPosts())
+        }
     }
 
     private fun updateMediaCount() {
         val count = selectedImageUris.size
-        tvMediaCount.text = "$count / 5"
         
-        if (count > 0) {
-            tvMediaCount.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        } else {
-            tvMediaCount.setTextColor(android.graphics.Color.parseColor("#888888"))
-        }
-
+        // Show/hide placeholder
         view?.findViewById<View>(R.id.layoutEmptyMedia)?.visibility = 
             if (count == 0) View.VISIBLE else View.GONE
     }
@@ -191,7 +190,7 @@ class CreatePostFragment : Fragment() {
             captionText
         )
         
-        Toast.makeText(requireContext(), "Posting in background...", Toast.LENGTH_SHORT).show()
+        // Toast.makeText(requireContext(), "Posting in background...", Toast.LENGTH_SHORT).show()
         (activity as? com.example.snaplink.ui.activities.MainActivity)?.navigateToFragment(com.example.snaplink.ui.fragments.HomeFragment())
     }
 }

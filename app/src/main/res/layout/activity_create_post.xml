@@ -38,19 +38,17 @@
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium" />
 
-        <TextView
-            android:id="@+id/tvMediaCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/btnDraftTop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/bg_input"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="4dp"
-            android:text="0 / 5"
-            android:textColor="#888888"
-            android:textSize="12sp"
-            android:fontFamily="sans-serif-medium" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_draft"
+            android:padding="9dp"
+            app:tint="#FFFFFF"
+            android:contentDescription="Save Draft" />
 
     </RelativeLayout>
 
@@ -327,7 +325,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDraft"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="Save Draft"
             android:textAllCaps="false"
@@ -349,7 +347,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPost"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="48dp"
             android:layout_weight="1.6"
             android:text="Share Post"
             android:textAllCaps="false"

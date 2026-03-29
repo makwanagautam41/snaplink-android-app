@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    app:cardBackgroundColor="#111111"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#1A1A1A"
+    app:strokeWidth="1dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivDraftThumbnail"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:scaleType="centerCrop"
+            android:background="#1E1E1E"
+            app:shapeAppearanceOverlay="@style/RoundedCorners"
+            android:src="@drawable/img_post_placeholder" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDraftCaption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My draft caption goes here..."
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:id="@+id/tvDraftMediaCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="3 Photos"
+                android:textColor="#888888"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif" />
+
+            <TextView
+                android:id="@+id/tvDraftDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Saved 2 hours ago"
+                android:textColor="#444444"
+                android:textSize="11sp"
+                android:fontFamily="sans-serif" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btnDraftMore"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_more_vertical"
+            app:tint="#444444"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Options" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
